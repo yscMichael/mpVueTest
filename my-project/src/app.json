@@ -29,12 +29,12 @@
     }],
 
     "items": [{
-      "name": "首页",
+      "name": "首页1",
       "pagePath": "pages/index/main",
       "icon": "static/tabs/home.png",
       "activeIcon": "static/tabs/home-active.png"
     }, {
-      "name": "订单",
+      "name": "订单1",
       "pagePath": "pages/logs/main",
       "icon": "static/tabs/orders.png",
       "activeIcon": "static/tabs/orders-active.png"
