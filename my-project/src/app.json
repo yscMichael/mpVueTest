@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/index/main",
+    "pages/home/main",
     "pages/logs/main",
     "pages/counter/main"
   ],
@@ -18,7 +18,7 @@
 
     "list": [{
       "text": "首页",
-      "pagePath": "pages/index/main",
+      "pagePath": "pages/home/main",
       "iconPath": "static/tabs/home.png",
       "selectedIconPath": "static/tabs/home-active.png"
     }, {
@@ -30,7 +30,7 @@
 
     "items": [{
       "name": "首页",
-      "pagePath": "pages/index/main",
+      "pagePath": "pages/home/main",
       "icon": "static/tabs/home.png",
       "activeIcon": "static/tabs/home-active.png"
     }, {
