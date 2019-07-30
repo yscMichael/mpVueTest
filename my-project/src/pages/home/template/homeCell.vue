@@ -2,14 +2,14 @@
     <div class="container">
         <div class="content">
             <!-- 图片 -->
-            <img src="/static/images/home/validity_warn.png" alt="">
+            <img :src="item.imageUrl" alt="">
             <!-- 文字 -->
             <div class="title-container">
-                <div>有效期预警</div>
-                <div>共12条预警信息</div>
+                <div>{{item.title}}</div>
+                <div :class="{'hideTitle':isHide}">{{item.subTitle}}</div>
             </div>
             <!-- 数字(这里要添加一个padding类，保证圆角好用) -->
-            <div class="count">1</div>
+            <div :class="['count',{'hideTitle':isHide}]">{{item.count}}</div>
             <!-- 箭头 -->
             <img src="/static/images/home/moreButton.png" alt="">
         </div>
@@ -19,15 +19,33 @@
 
 <script>
     export default {
-        props:[
-            'imageUrl',
-            'title',
-            'subTitle',
-            'count'
-        ],
+        props:{
+            item:{
+                type: Object,
+                required:true,
+                default () {
+                    return {}
+                }
+            }
+        },
         data () {
             return {
+                isHide: true
             };
+        },
+        // 这个会被调用、这里判断是否需要展示副标题和数目
+        beforeMount(){
+            console.log('beforeMount');
+            console.log(this.item.subTitle);
+            if (this.item.subTitle == '-') {
+                this.isHide = true;
+            }else{
+                this.isHide = false;
+            }
+        },
+        // 刚开始加载不会被调用
+        beforeUpdate(){
+            console.log('beforeUpdate');
         }
     }
 </script>
@@ -79,5 +97,8 @@
         width: 100%;
         height: 2rpx;
         margin-left: 24rpx;
+    }
+    .hideTitle{
+        opacity: 0;    
     }
 </style>

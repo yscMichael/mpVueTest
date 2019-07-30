@@ -3,11 +3,11 @@
         <!-- ????? -->
         <div class="home-swiper-class">
             <swiper
-                :indicator-dots="isShowDots"
-                :autoplay="isAutoplay"
-                :interval="interval"
-                :duration="duration"
-                :circular="isCircular"
+                indicator-dots="true"
+                autoplay="true"
+                interval="2000"
+                duration="500"
+                circular="true"
                 indicator-color="#FFFFFF"
                 indicator-active-color="#FFA439">
                 <swiper-item>
@@ -25,7 +25,9 @@
         <div class="line"></div>
         <!-- ??????????????? -->
         <div class="warn-list">
-            <home-cell></home-cell>
+            <home-cell :item="validity"></home-cell>
+            <home-cell :item="inventory"></home-cell>
+            <home-cell :item="undone"></home-cell>
         </div>
         <!-- ??? -->
         <div class="line"></div>
@@ -44,11 +46,24 @@
         },
         data() {
             return {
-                isShowDots: true,
-                isAutoplay: true,
-                interval: 2000,
-                duration: 500,
-                isCircular: true
+                validity:{
+                   imageUrl:'/static/images/home/validity_warn.png',
+                   title:'有效期预警',
+                   subTitle:'共0条预警信息',
+                   count:'0'
+                },
+                inventory:{
+                   imageUrl:'/static/images/home/inventory.png',
+                   title:'库存预警',
+                   subTitle:'共0条预警信息',
+                   count:'0'  
+                },
+                undone:{
+                   imageUrl:'/static/images/home/undone.png',
+                   title:'待办事项',
+                   subTitle:'-',
+                   count:'-1'  
+                }
             }
         },
         methods: {
