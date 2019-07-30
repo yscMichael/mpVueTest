@@ -1,6 +1,13 @@
 <template>
     <div class="home-swiper-class">
-        <swiper>
+        <swiper
+            :indicator-dots="isShowDots"
+            :autoplay="isAutoplay"
+            :interval="interval"
+            :duration="duration"
+            :circular="isCircular"
+            indicator-color="#FFFFFF"
+            indicator-active-color="#FFA439">
             <swiper-item>
                 <img src="/static/images/carousel/1.jpg" alt="">
             </swiper-item>
@@ -15,6 +22,17 @@
 </template>
 
 <script>
+    export default{
+        data() {
+            return {
+                isShowDots: true,
+                isAutoplay: true,
+                interval: 2000,
+                duration: 500,
+                isCircular: true
+            }
+        }
+    }
 </script>
 
 <style>
