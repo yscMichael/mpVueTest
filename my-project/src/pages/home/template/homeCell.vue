@@ -1,16 +1,19 @@
 <template>
     <div class="container">
-        <!-- 图片 -->
-        <img src="/static/images/home/validity_warn.png" alt="">
-        <!-- 文字 -->
-        <div class="title-container">
-            <div>有效期预警</div>
-            <div>共12条预警信息</div>
+        <div class="content">
+            <!-- 图片 -->
+            <img src="/static/images/home/validity_warn.png" alt="">
+            <!-- 文字 -->
+            <div class="title-container">
+                <div>有效期预警</div>
+                <div>共12条预警信息</div>
+            </div>
+            <!-- 数字(这里要添加一个padding类，保证圆角好用) -->
+            <div class="count">1</div>
+            <!-- 箭头 -->
+            <img src="/static/images/home/moreButton.png" alt="">
         </div>
-        <!-- 数字(这里要添加一个padding类，保证圆角好用) -->
-        <div class="count">1</div>
-        <!-- 箭头 -->
-        <img src="/static/images/home/moreButton.png" alt="">
+        <div class="bottom-line"></div>
     </div>
 </template>
 
@@ -31,11 +34,14 @@
 
 <style>
     .container{
-        border: 1rpx solid blue;
-        display: flex;
-        align-items: center;
+        background-color: white;
     }
-    .container > img:first-child{
+    .content{
+        border: 1rpx solid white;
+        display: flex;
+        align-items: center;   
+    }
+    .content > img:first-child{
         width: 90rpx;
         height: 90rpx;
         margin: 20rpx;
@@ -63,10 +69,15 @@
         margin: 0rpx 16rpx 0rpx 16rpx;
         border-radius: 18rpx;
     }
-    .container > img:last-child{
+    .content > img:last-child{
         width: 16rpx;
         height: 27rpx;
         margin-right: 24rpx;
     }
-
+    .bottom-line{
+        background-color: #EEEEEE;
+        width: 100%;
+        height: 2rpx;
+        margin-left: 24rpx;
+    }
 </style>
