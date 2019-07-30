@@ -1,6 +1,10 @@
 {
   "pages": [
     "pages/home/main",
+    "pages/clinic/main",
+    "pages/drugStore/main",
+    "pages/analysis/main",
+    "pages/index/main",
     "pages/logs/main",
     "pages/counter/main"
   ],
@@ -22,10 +26,20 @@
       "iconPath": "static/tabs/home.png",
       "selectedIconPath": "static/tabs/home-active.png"
     }, {
-      "text": "订单",
-      "pagePath": "pages/logs/main",
-      "iconPath": "static/tabs/orders.png",
-      "selectedIconPath": "static/tabs/orders-active.png"
+      "text": "门诊",
+      "pagePath": "pages/clinic/main",
+      "iconPath": "static/tabs/menzhen.png",
+      "selectedIconPath": "static/tabs/menzhen-active.png"
+    },{
+      "text": "药房",
+      "pagePath": "pages/drugStore/main",
+      "iconPath": "static/tabs/yaofang.png",
+      "selectedIconPath": "static/tabs/yaofang-active.png"
+    },{
+      "text": "运营分析",
+      "pagePath": "pages/analysis/main",
+      "iconPath": "static/tabs/yunying.png",
+      "selectedIconPath": "static/tabs/yunying-active.png"
     }],
 
     "items": [{
@@ -34,10 +48,20 @@
       "icon": "static/tabs/home.png",
       "activeIcon": "static/tabs/home-active.png"
     }, {
-      "name": "订单",
-      "pagePath": "pages/logs/main",
-      "icon": "static/tabs/orders.png",
-      "activeIcon": "static/tabs/orders-active.png"
+      "name": "门诊",
+      "pagePath": "pages/clinic/main",
+      "icon": "static/tabs/menzhen.png",
+      "activeIcon": "static/tabs/menzhen-active.png"
+    },{
+      "name": "药房",
+      "pagePath": "pages/drugStore/main",
+      "icon": "static/tabs/yaofang.png",
+      "activeIcon": "static/tabs/yaofang-active.png"
+    },{
+      "name": "运营分析",
+      "pagePath": "pages/analysis/main",
+      "icon": "static/tabs/yunying.png",
+      "activeIcon": "static/tabs/yunying-active.png"
     }],
     "position": "bottom"
   }
