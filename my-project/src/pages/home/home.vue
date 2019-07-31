@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <!-- ????? -->
+        <!-- 轮播图 -->
         <div class="home-swiper-class">
             <swiper
                 indicator-dots="true"
@@ -21,19 +21,24 @@
                 </swiper-item>
             </swiper>
         </div>
-        <!-- ??? -->
+        <!-- 分割线 -->
         <div class="line"></div>
-        <!-- ??????????????? -->
+        <!-- 有效期预警、库存预警、待办事项 -->
         <div class="warn-list">
             <home-cell :item="validity"></home-cell>
             <home-cell :item="inventory"></home-cell>
             <home-cell :item="undone"></home-cell>
         </div>
-        <!-- ??? -->
+        <!-- 分割线 -->
         <div class="line"></div>
-        <!-- ?????? + ?? -->
+        <!-- 快捷功能 -->
         <div class="convenient-list">
-
+            <!-- 列表 -->
+            <div>
+                <home-cell v-for="(item,index) in dataList" :key="index" :item="item"/>
+            </div>
+            <!-- 快捷功能按钮 -->
+            <div class="bottom-button"></div>
         </div>
     </div>
 </template>
@@ -63,7 +68,51 @@
                    title:'待办事项',
                    subTitle:'-',
                    count:'-1'  
-                }
+                },
+                dataList:[
+                    {
+                        imageUrl:'/static/images/home/undone.png',
+                        title:'待办事项',
+                        subTitle:'-',
+                        count:'-1'  
+                    },
+                    {
+                        imageUrl:'/static/images/home/undone.png',
+                        title:'待办事项',
+                        subTitle:'-',
+                        count:'-1'  
+                    },
+                    {
+                        imageUrl:'/static/images/home/undone.png',
+                        title:'待办事项',
+                        subTitle:'-',
+                        count:'-1'  
+                    },
+                    {
+                        imageUrl:'/static/images/home/undone.png',
+                        title:'待办事项',
+                        subTitle:'-',
+                        count:'-1'  
+                    },
+                    {
+                        imageUrl:'/static/images/home/undone.png',
+                        title:'待办事项',
+                        subTitle:'-',
+                        count:'-1'  
+                    },
+                    {
+                        imageUrl:'/static/images/home/undone.png',
+                        title:'待办事项',
+                        subTitle:'-',
+                        count:'-1'  
+                    },
+                    {
+                        imageUrl:'/static/images/home/undone.png',
+                        title:'待办事项',
+                        subTitle:'-',
+                        count:'-1'  
+                    }
+                ]
             }
         },
         methods: {
@@ -94,9 +143,12 @@
     .warn-list{
         background-color: white;
     }
-    .warn-list 
-
     .convenient-list{
         background-color: antiquewhite;
+    }
+    .bottom-button{
+        background-color: red;
+        width: 100%;
+        height: 90rpx;
     }
 </style>
