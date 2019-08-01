@@ -48,6 +48,12 @@
 
 <script>
     import homeCell from './template/homeCell'
+    import { formatTime } from '@/utils/index'
+    import { test } from '@/pages/Tool/Tool'
+    // /pages/Tool/api/login/loginRequest.js 
+    import loginRequest from '@/pages/Tool/api/login/loginRequest'
+    
+    const Login_URL = 'https://jqapi.hao1bao.com/sys?op=Login&subname=gmi&username=10000&password=e10adc3949ba59abbe56e057f20f883e&push_channel=0dd9306d0fb2c32ad0ea36ad037183bc&appos=2&appver=1.8.0&_type=json';
     export default{
         components:{
             homeCell
@@ -165,6 +171,18 @@
                 console.log('点击了item');
             }
         },
+        beforeMount(){
+            this.$fly.get(Login_URL)
+            .then(function(response){
+                console.log(response.data);
+            })
+            .catch(function(error){
+                console.log(error);
+            });
+            // 测试外部方法
+            // test();
+            loginRequest.loginRequest();
+        }
     }
 </script>
 

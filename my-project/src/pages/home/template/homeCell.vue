@@ -45,8 +45,6 @@
 
         // 这个会被调用、这里判断是否需要展示副标题和数目
         beforeMount(){
-            console.log('beforeMount');
-            console.log(this.item.subTitle);
             // 是否隐藏副标题
             if (this.item.subTitle == '-') {
                 this.isHideSubTitle = true;
