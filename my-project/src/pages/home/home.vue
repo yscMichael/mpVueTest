@@ -169,8 +169,21 @@
         methods: {
             clickItem(){
                 console.log('点击了item');
+            },
+            showTitle(){
+                console.log('2秒以后');
+                wx.showToast({
+                    title: "网络请求失败",
+                });
             }
         },
+        created() {
+            wx.showLoading({
+                title: '正在登陆中....',
+            });
+            setTimeout(this.showTitle,2000);
+        },
+
         beforeMount(){
             this.$fly.get(Login_URL)
             .then(function(response){
@@ -182,7 +195,10 @@
             // 测试外部方法
             // test();
             loginRequest.loginRequest();
-        }
+        },
+        mounted() {
+            
+        },
     }
 </script>
 
