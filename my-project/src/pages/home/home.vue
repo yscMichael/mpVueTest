@@ -1,5 +1,6 @@
 <template>
     <div class="home">
+        <yyRefresh :isHeader="true"></yyRefresh>
         <!-- 轮播图 -->
         <div class="home-swiper-class">
             <swiper
@@ -43,20 +44,20 @@
                 <span>添加快捷功能</span>
             </div>
         </div>
+        <yyRefresh :isHeader="false"></yyRefresh>
     </div>
 </template>
 
 <script>
     import homeCell from './template/homeCell'
-    import { formatTime } from '@/utils/index'
-    import { test } from '@/pages/Tool/Tool'
-    // /pages/Tool/api/login/loginRequest.js 
+    import yyRefresh from '@/components/yyRefresh/yyRefresh'
     import loginRequest from '@/pages/Tool/api/login/loginRequest'
     
     const Login_URL = 'https://jqapi.hao1bao.com/sys?op=Login&subname=gmi&username=10000&password=e10adc3949ba59abbe56e057f20f883e&push_channel=0dd9306d0fb2c32ad0ea36ad037183bc&appos=2&appver=1.8.0&_type=json';
     export default{
         components:{
-            homeCell
+            homeCell,
+            yyRefresh
         },
         data() {
             return {
@@ -203,6 +204,13 @@
 </script>
 
 <style>
+    .home{
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
     .home-swiper-class{
         background-color: rgb(240, 16, 65)
     }
