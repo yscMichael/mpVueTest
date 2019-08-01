@@ -5,6 +5,8 @@
     "pages/drugStore/main",
     "pages/analysis/main",
     "pages/index/main",
+    "pages/menuDetail/main",
+
     "pages/logs/main",
     "pages/counter/main"
   ],

@@ -1,15 +1,15 @@
 <template>
-    <div class="container">
+    <div @click="goToDetail" class="container">
         <div class="content">
             <!-- 图片 -->
             <img :src="item.imageUrl" alt="">
             <!-- 文字 -->
             <div class="title-container">
                 <div>{{item.title}}</div>
-                <div :class="{'hideTitle':isHide}">{{item.subTitle}}</div>
+                <div :class="{'hideTitle':isHideSubTitle}">{{item.subTitle}}</div>
             </div>
             <!-- 数字(这里要添加一个padding类，保证圆角好用) -->
-            <div :class="['count',{'hideTitle':isHide}]">{{item.count}}</div>
+            <div :class="['count',{'hideTitle':isHideCount}]">{{item.count}}</div>
             <!-- 箭头 -->
             <img src="/static/images/home/moreButton.png" alt="">
         </div>
@@ -30,17 +30,34 @@
         },
         data () {
             return {
-                isHide: true
+                isHideSubTitle: true,
+                isHideCount:true
             };
         },
+        methods: {
+           goToDetail(){
+               console.log('进入详情界面');
+               wx.navigateTo({
+                   url:'/pages/menuDetail/main'
+               });
+           } 
+        },
+
         // 这个会被调用、这里判断是否需要展示副标题和数目
         beforeMount(){
             console.log('beforeMount');
             console.log(this.item.subTitle);
+            // 是否隐藏副标题
             if (this.item.subTitle == '-') {
-                this.isHide = true;
+                this.isHideSubTitle = true;
             }else{
-                this.isHide = false;
+                this.isHideSubTitle = false;
+            }
+            // 是否隐藏数字
+            if (this.item.count == '-1') {
+                this.isHideCount = true;
+            }else{
+                this.isHideCount = false;
             }
         },
         // 刚开始加载不会被调用
