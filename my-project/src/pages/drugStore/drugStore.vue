@@ -1,14 +1,16 @@
 <template>
-    <div>
-        <h3>这是药房</h3>
-    </div>
+    <h1>????</h1>
 </template>
 
 <script>
+export default {
+  data () {
+    return {
+    };
+  }
+}
 </script>
 
 <style>
-    div{
-        background-color: brown;
-    }
+
 </style>

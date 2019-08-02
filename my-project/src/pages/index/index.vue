@@ -36,8 +36,8 @@
         loginParam:{
             op: "Login",
             subname: "gmi",
-            username: '10000',
-            password: 'e10adc3949ba59abbe56e057f20f883e',
+            username: this.globalData.username,
+            password: this.globalData.password,
             push_channel: "",
             appos: "4",
         }
@@ -51,9 +51,21 @@
           this.$fly.get(Login_URL,this.loginParam)
             .then((response) => {
                 console.log(response.data);
+                var data = response.data;
+                if (data.code == '200') {
+                    wx.hideLoading();
+                    wx.switchTab({ url: '/pages/home/main'});
+                }else{
+                    wx.showToast({
+                      title: "登陆失败",
+                    });
+                }
             })
             .catch(function(error){
                 console.log(error);
+                wx.showToast({
+                  title: "登陆失败",
+                });
             });
       },
       dealData:function(){

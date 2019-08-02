@@ -181,10 +181,10 @@
             }
         },
         created() {
-            wx.showLoading({
-                title: '正在登陆中....',
-            });
-            setTimeout(this.showTitle,2000);
+            // wx.showLoading({
+            //     title: '正在登陆中....',
+            // });
+            // setTimeout(this.showTitle,2000);
         },
 
         beforeMount(){
