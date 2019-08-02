@@ -188,6 +188,11 @@
         },
 
         beforeMount(){
+            wx.showLoading({
+                title: '正在登陆中....',
+            });
+            setTimeout(this.showTitle,2000);
+
             this.$fly.get(Login_URL)
             .then(function(response){
                 console.log(response.data);

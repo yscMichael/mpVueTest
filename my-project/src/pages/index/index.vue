@@ -3,7 +3,6 @@
     <!-- 文字 -->
     <div class="title">您好,</div>
     <div class="sub-title">欢迎来到好医宝智慧云诊所</div>
-
     <!-- 用户名和密码 -->
     <input class="name-input" 
            placeholder-class="name-placeholder"
@@ -17,10 +16,8 @@
            value="123456" 
            type="password">
     <div class="line"></div>
-
     <!-- 登陆按钮 -->
     <div class="login-button" @click="clickLoginButton">点击登陆</div>
-
     <!-- 背景图片 -->
     <img class="background-image" src="/static/images/login/login_bottom.png" alt="">
   </div>
