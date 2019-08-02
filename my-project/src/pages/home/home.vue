@@ -1,6 +1,5 @@
 <template>
     <div class="home">
-        <yyRefresh :isHeader="true"></yyRefresh>
         <!-- 轮播图 -->
         <div class="home-swiper-class">
             <swiper
@@ -12,7 +11,7 @@
                 indicator-color="#FFFFFF"
                 indicator-active-color="#FFA439">
                 <swiper-item>
-                    <img @click="clickItem" src="/static/images/carousel/1.jpg" alt="">
+                    <img src="/static/images/carousel/1.jpg" alt="">
                 </swiper-item>
                 <swiper-item>
                     <img src="/static/images/carousel/2.jpg" alt="">                    
@@ -44,15 +43,14 @@
                 <span>添加快捷功能</span>
             </div>
         </div>
-        <yyRefresh :isHeader="false"></yyRefresh>
     </div>
 </template>
 
 <script>
     import homeCell from '@/pages/home/template/homeCell'
     import yyRefresh from '@/components/yyRefresh/yyRefresh'
-    
-    const Login_URL = 'https://jqapi.hao1bao.com/sys?op=Login&subname=gmi&username=10000&password=e10adc3949ba59abbe56e057f20f883e&push_channel=0dd9306d0fb2c32ad0ea36ad037183bc&appos=2&appver=1.8.0&_type=json';
+    import homeJs from '@/pages/Tool/api/home/homeJs'
+
     export default{
         components:{
             homeCell,
@@ -60,116 +58,13 @@
         },
         data() {
             return {
-                validity:{
-                   imageUrl:'/static/images/home/validity_warn.png',
-                   title:'有效期预警',
-                   subTitle:'共0条预警信息',
-                   count:'0'
-                },
-                inventory:{
-                   imageUrl:'/static/images/home/inventory.png',
-                   title:'库存预警',
-                   subTitle:'共0条预警信息',
-                   count:'0'  
-                },
-                undone:{
-                   imageUrl:'/static/images/home/undone.png',
-                   title:'待办事项',
-                   subTitle:'-',
-                   count:'-1'  
-                },
-                dataList:[
-                    {
-                        imageUrl:'/static/images/home/receiveList.png',
-                        title:'接诊列表',
-                        subTitle:'查看历史接诊记录',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/patientList.png',
-                        title:'患者列表',
-                        subTitle:'管理患者',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/chargeList.png',
-                        title:'收费列表',
-                        subTitle:'当前等待收费的患者',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/sendList.png',
-                        title:'发药列表',
-                        subTitle:'当前等待发药的患者',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/purchaseDrug.png',
-                        title:'采购入库',
-                        subTitle:'扫码直接入库',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/inventoryQuery.png',
-                        title:'库存查询',
-                        subTitle:'库存流水、有效期查询',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/drugInit.png',
-                        title:'药品初始化',
-                        subTitle:'初始化您的药品库',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/drugIncome.png',
-                        title:'处方收入分析',
-                        subTitle:'门诊金额、门诊毛利统计',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/diseaseAnalysis.png',
-                        title:'疾病数据分析',
-                        subTitle:'疾病类型比例、高频疾病统计',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/patientAnalysis.png',
-                        title:'患者分析',
-                        subTitle:'患者年龄、性别比例统计',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/inventoryAnalysis.png',
-                        title:'库存分析',
-                        subTitle:'有效期预警、库存预警药品统计',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/myNews.png',
-                        title:'我的消息',
-                        subTitle:'系统推送的消息',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/information.png',
-                        title:'资讯',
-                        subTitle:'系统推送的资讯',
-                        count:'-1'  
-                    },
-                    {
-                        imageUrl:'/static/images/home/accountSetting.png',
-                        title:'账号设置',
-                        subTitle:'管理诊所所有账号信息',
-                        count:'-1'  
-                    }
-                ]
+                validity:{},
+                inventory:{},
+                undone:{},
+                dataList:[]
             }
         },
         methods: {
-            clickItem(){
-                console.log('点击了item');
-            },
             showTitle(){
                 console.log('2秒以后');
                 wx.showToast({
@@ -180,26 +75,20 @@
                 console.log('点击testClick');
             }
         },
-
-        beforeCreate() {
-            console.log('beforeCreate');
-        },
-
-        onLoad(){
-            console.log('onLoad');
-        },
-
         created() {
             console.log('created');
-
+            // 初始化数据
+            this.validity = homeJs.getValidityInitData();
+            this.inventory = homeJs.getInventoryInitData();
+            this.undone = homeJs.getUndoneInitData();
+            this.dataList = homeJs.getFastListData();
         },
-
         beforeMount(){
-            console.log('beforeMount');
-            wx.showLoading({
-                 title: '正在登陆中....',
-             });
-            setTimeout(this.showTitle,2000);
+            // console.log('beforeMount');
+            // wx.showLoading({
+            //      title: '正在登陆中....',
+            //  });
+            // setTimeout(this.showTitle,2000);
 
             // wx.showLoading({
             //     title: '正在登陆中....',
