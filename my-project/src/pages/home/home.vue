@@ -26,7 +26,7 @@
         <div class="line"></div>
         <!-- 有效期预警、库存预警、待办事项 -->
         <div class="warn-list">
-            <home-cell :item="validity"></home-cell>
+            <home-cell @click="testClick" :item="validity"></home-cell>
             <home-cell :item="inventory"></home-cell>
             <home-cell :item="undone"></home-cell>
         </div>
@@ -176,6 +176,9 @@
                 wx.showToast({
                     title: "网络请求失败",
                 });
+            },
+            testClick(){
+                console.log('点击testClick');
             }
         },
         created() {

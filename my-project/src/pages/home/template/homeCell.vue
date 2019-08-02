@@ -1,5 +1,5 @@
 <template>
-    <div @click="goToDetail" class="container">
+    <div  @click="goToDetail" class="container">
         <div class="content">
             <!-- 图片 -->
             <img :src="item.imageUrl" alt="">
@@ -37,8 +37,9 @@
         methods: {
            goToDetail(){
                console.log('进入详情界面');
+               this.$emit('testClick')
                wx.navigateTo({
-                   url:'/pages/menuDetail/main'
+                   url:'/pages/home/menuDetail/main'
                });
            } 
         },

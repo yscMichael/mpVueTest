@@ -5,10 +5,7 @@
     "pages/drugStore/main",
     "pages/analysis/main",
     "pages/index/main",
-    "pages/menuDetail/main",
-
-    "pages/logs/main",
-    "pages/counter/main"
+    "pages/home/menuDetail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
