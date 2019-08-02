@@ -47,7 +47,6 @@
           });
           this.$fly.get(Login_URL,this.loginParam)
             .then((response) => {
-                console.log(response.data);
                 var data = response.data;
                 if (data.code == '200') {
                     wx.hideLoading();

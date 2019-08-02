@@ -180,33 +180,46 @@
                 console.log('点击testClick');
             }
         },
+
+        beforeCreate() {
+            console.log('beforeCreate');
+        },
+
+        onLoad(){
+            console.log('onLoad');
+        },
+
         created() {
+            console.log('created');
+
+        },
+
+        beforeMount(){
+            console.log('beforeMount');
+            wx.showLoading({
+                 title: '正在登陆中....',
+             });
+            setTimeout(this.showTitle,2000);
+
             // wx.showLoading({
             //     title: '正在登陆中....',
             // });
             // setTimeout(this.showTitle,2000);
-        },
 
-        beforeMount(){
-            wx.showLoading({
-                title: '正在登陆中....',
-            });
-            setTimeout(this.showTitle,2000);
-
-            this.$fly.get(Login_URL)
-            .then(function(response){
-                console.log(response.data);
-            })
-            .catch(function(error){
-                console.log(error);
-            });
+            // this.$fly.get(Login_URL)
+            // .then(function(response){
+            //     console.log(response.data);
+            // })
+            // .catch(function(error){
+            //     console.log(error);
+            // });
             // 测试外部方法
             // test();
             // loginRequest.loginRequest();
         },
         mounted() {
-            
-        },
+          console.log('mounted')  
+        }
     }
 </script>
 
