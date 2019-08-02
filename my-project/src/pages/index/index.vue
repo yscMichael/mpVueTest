@@ -28,11 +28,19 @@
 
 <script>
   import loginJs from '@/pages/Tool/api/login/loginJs.js'
+  const Login_URL = '/sys';
 
   export default {
     data () {
       return {
-
+        loginParam:{
+            op: "Login",
+            subname: "gmi",
+            username: '10000',
+            password: 'e10adc3949ba59abbe56e057f20f883e',
+            push_channel: "",
+            appos: "4",
+        }
       }
     },
     methods: {
@@ -40,10 +48,16 @@
           wx.showLoading({
             title: '正在登陆...',
           });
-          // 网络请求
-          loginJs.loginRequest();
-          // 跳转界面
-
+          this.$fly.get(Login_URL,this.loginParam)
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch(function(error){
+                console.log(error);
+            });
+      },
+      dealData:function(){
+        console.log('处理函数');
       }
     },
   }
