@@ -1,126 +1,139 @@
 <template>
-  <div @click="clickHandle">
+  <div class="container">
+    <!-- 文字 -->
+    <div class="title">您好,</div>
+    <div class="sub-title">欢迎来到好医宝智慧云诊所</div>
 
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <img class="userinfo-avatar" src="/static/images/user.png" background-size="cover" />
+    <!-- 用户名和密码 -->
+    <input class="name-input" 
+           placeholder-class="name-placeholder"
+           placeholder='请输入用户名/手机号/邮箱'
+           value="lxr001"
+           type="text">
+    <div class="line"></div>
+    <input class="password-input" 
+           placeholder-class="password-placeholder" 
+           placeholder='请输入密码'
+           value="123456" 
+           type="password">
+    <div class="line"></div>
 
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-      </div>
-    </div>
+    <!-- 登陆按钮 -->
+    <div class="login-button" @click="clickLoginButton">点击登陆</div>
 
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" :value="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
-
-    <div class="all">
-        <div class="left">
-        </div>
-        <div class="right">
-        </div>
-    </div>
+    <!-- 背景图片 -->
+    <img class="background-image" src="/static/images/login/login_bottom.png" alt="">
   </div>
 </template>
 
 <script>
-import card from '@/components/card'
+  import loginJs from '@/pages/Tool/api/login/loginJs.js'
 
-export default {
-  data () {
-    return {
-      motto: 'Hello miniprograme',
-      userInfo: {
-        nickName: 'mpvue',
-        avatarUrl: 'http://mpvue.com/assets/logo.png'
-      }
-    }
-  },
+  export default {
+    data () {
+      return {
 
-  components: {
-    card
-  },
-
-  methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
-      } else {
-        mpvue.navigateTo({ url })
       }
     },
-    clickHandle (ev) {
-      console.log('clickHandle:', ev)
-      // throw {message: 'custom test'}
-    }
-  },
+    methods: {
+      clickLoginButton(){
+          wx.showLoading({
+            title: '正在登陆...',
+          });
+          // 网络请求
+          loginJs.loginRequest();
+          // 跳转界面
 
-  created () {
-    // let app = getApp()
+      }
+    },
   }
-}
 </script>
 
-<style scoped>
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+<style>
+  Page{
+    width: 100%;
+    height: 100%;
+  }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
+  .container{
+    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
 
-.userinfo-nickname {
-  color: #aaa;
-}
+  .title{
+    color: #333333;
+    font-size: 36px;
+    margin-left: 32px;
+    margin-top: 60px;
+  }
 
-.usermotto {
-  margin-top: 150px;
-}
+  .sub-title{
+    color: #333333;
+    font-size: 18px;
+    margin-left: 32px;
+    margin-top: 17px;
+  }
 
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
-.all{
-  width:7.5rem;
-  height:1rem;
-  background-color:blue;
-}
-.all:after{
-  display:block;
-  content:'';
-  clear:both;
-}
-.left{
-  float:left;
-  width:3rem;
-  height:1rem;
-  background-color:red;
-}
+  .name-input{
+    color: #333333;
+    font-size: 18px;
+    height: 34px;
+    margin-left: 32px;
+    margin-right: 32px;
+    margin-top: 50px;
+  }
 
-.right{
-  float:left;
-  width:4.5rem;
-  height:1rem;
-  background-color:green;
-}
+  .name-placeholder{
+    color: #DDDDDD;
+    font-size: 18px;
+  }
+
+  .password-input{
+    color: #333333;
+    font-size: 18px;
+    height: 34px;
+    
+    margin-left: 32px;
+    margin-right: 32px;
+    margin-top: 21px;
+  }
+
+  .password-placeholder{
+    color: #DDDDDD;
+    font-size: 18px;
+  }
+
+  .line{
+    background-color:#EEEEEE;
+    height: 1px;
+    margin-left: 32px;
+    margin-right: 32px;
+    margin-top: 5px;
+  }
+
+  .login-button{
+    background-color: #1F91F2;
+    color: #FFFFFF;
+    font-size: 18px;
+    height: 44px;
+    text-align: center;
+    line-height: 44px;
+
+    margin-left: 32px;
+    margin-right: 32px;
+    margin-top: 32px;
+    border-radius: 5px;
+  }
+
+  .background-image{
+    width: 100%;
+    height: 130px;
+
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+  }
 </style>

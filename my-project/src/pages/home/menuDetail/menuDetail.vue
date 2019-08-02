@@ -1,6 +1,6 @@
 <template>  
     <div class="container">
-        <menu-cell></menu-cell>
+        <!-- <menu-cell></menu-cell> -->
 
         <!-- 门诊 -->
         <!-- <div class="content"> -->
@@ -34,11 +34,10 @@
 </template>
 
 <script>
-import menuCell from './template/menuCell'
+// import menuCell from '@/pages/home/menuDetail/template/menuCell'
 
 export default {
     components:{
-        menuCell
     },
     data () {
         return {

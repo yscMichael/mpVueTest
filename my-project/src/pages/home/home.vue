@@ -49,9 +49,8 @@
 </template>
 
 <script>
-    import homeCell from './template/homeCell'
+    import homeCell from '@/pages/home/template/homeCell'
     import yyRefresh from '@/components/yyRefresh/yyRefresh'
-    import loginRequest from '@/pages/Tool/api/login/loginRequest'
     
     const Login_URL = 'https://jqapi.hao1bao.com/sys?op=Login&subname=gmi&username=10000&password=e10adc3949ba59abbe56e057f20f883e&push_channel=0dd9306d0fb2c32ad0ea36ad037183bc&appos=2&appver=1.8.0&_type=json';
     export default{
@@ -198,7 +197,7 @@
             });
             // 测试外部方法
             // test();
-            loginRequest.loginRequest();
+            // loginRequest.loginRequest();
         },
         mounted() {
             
