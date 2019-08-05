@@ -1,15 +1,17 @@
 <template>
-    <div class="container">
-        <!-- 标题部分 -->
-        <div class="content">
-            <!-- 主标题 -->
-            <div class="title">接诊列表</div>
-            <!-- 副标题 -->
-            <div class="subTitle">查看历史接诊记录</div>
+    <div class="main-view">
+        <div class="container">
+            <!-- 标题部分 -->
+            <div class="content">
+                <!-- 主标题 -->
+                <div class="title">接诊列表</div>
+                <!-- 副标题 -->
+                <div class="subTitle">查看历史接诊记录</div>
+            </div>
+            <!-- 按钮部分 -->
+            <switch class="switch-button"></switch>
         </div>
-        <!-- 按钮部分 -->
-        <switch class="switch-button"></switch>
-        <!-- <div class="temp">我是</div> -->
+        <div class="line-view"></div>
     </div>
 </template>
 
@@ -23,13 +25,16 @@ export default {
 </script>
 
 <style scoped>
+    .main-view{
+        background-color: white;
+        padding: 10rpx 10rpx 0rpx 10rpx;
+    }
    .container{
-       background-color: red;
+       background-color: white;
        display: flex;
        align-items: center;
    } 
    .content{
-       background-color: greenyellow;
        flex-grow: 1;
    }
    .title{
@@ -43,10 +48,10 @@ export default {
        font-weight: 500;
    }
    .switch-button{
-       background-color: aqua;
+       background-color: white;
    }
-    .temp{
-        background-color: aquamarine;
-        flex: 0 0 100px;
+    .line-view{
+        background-color: black;
+        height: 2rpx;
     }
 </style>
