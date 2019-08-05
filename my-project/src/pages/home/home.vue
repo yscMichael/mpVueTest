@@ -1,5 +1,6 @@
 <template>
     <div class="home">
+        <yyRefresh :isHeader="true"></yyRefresh>
         <!-- 轮播图 -->
         <div class="home-swiper-class">
             <swiper
@@ -25,9 +26,9 @@
         <div class="line"></div>
         <!-- 有效期预警、库存预警、待办事项 -->
         <div class="warn-list">
-            <home-cell @click="testClick" :item="validity"></home-cell>
-            <home-cell :item="inventory"></home-cell>
-            <home-cell :item="undone"></home-cell>
+            <home-cell @clickCell="jumpCtrl" :item="validity"></home-cell>
+            <home-cell @clickCell="jumpCtrl" :item="inventory"></home-cell>
+            <home-cell @clickCell="jumpCtrl" :item="undone"></home-cell>
         </div>
         <!-- 分割线 -->
         <div class="line"></div>
@@ -35,7 +36,7 @@
         <div class="convenient-list">
             <!-- 列表 -->
             <div>
-                <home-cell v-for="(item,index) in dataList" :key="index" :item="item"/>
+                <home-cell @clickCell="clickListCell" v-for="(item,index) in dataList" :key="index" :item="item"/>
             </div>
             <!-- 快捷功能按钮 -->
             <div class="bottom-button">
@@ -65,18 +66,15 @@
             }
         },
         methods: {
-            showTitle(){
-                console.log('2秒以后');
-                wx.showToast({
-                    title: "网络请求失败",
-                });
+            jumpCtrl(data){
+                console.log('点击了jumpCtrl');
+                console.log(data);
             },
-            testClick(){
-                console.log('点击testClick');
+            clickListCell(data){
+                console.log('点击了listCell');
             }
         },
         created() {
-            console.log('created');
             // 初始化数据
             this.validity = homeJs.getValidityInitData();
             this.inventory = homeJs.getInventoryInitData();
@@ -84,30 +82,10 @@
             this.dataList = homeJs.getFastListData();
         },
         beforeMount(){
-            // console.log('beforeMount');
-            // wx.showLoading({
-            //      title: '正在登陆中....',
-            //  });
-            // setTimeout(this.showTitle,2000);
-
-            // wx.showLoading({
-            //     title: '正在登陆中....',
-            // });
-            // setTimeout(this.showTitle,2000);
-
-            // this.$fly.get(Login_URL)
-            // .then(function(response){
-            //     console.log(response.data);
-            // })
-            // .catch(function(error){
-            //     console.log(error);
-            // });
-            // 测试外部方法
-            // test();
-            // loginRequest.loginRequest();
+            //这里可以进行网络请求
         },
         mounted() {
-          console.log('mounted')  
+            //为了防止数据不统一，这里也可以进行网络请求
         }
     }
 </script>

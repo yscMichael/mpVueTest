@@ -37,10 +37,10 @@
         methods: {
            goToDetail(){
                console.log('进入详情界面');
-               this.$emit('testClick')
-               wx.navigateTo({
-                   url:'/pages/home/menuDetail/main'
-               });
+               this.$emit('clickCell', this.item);
+            //    wx.navigateTo({
+            //        url:'/pages/home/menuDetail/main'
+            //    });
            } 
         },
 
@@ -66,7 +66,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .container{
         background-color: white;
     }
