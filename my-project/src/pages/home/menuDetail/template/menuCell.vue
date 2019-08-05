@@ -4,12 +4,12 @@
             <!-- 标题部分 -->
             <div class="content">
                 <!-- 主标题 -->
-                <div class="title">接诊列表</div>
+                <div class="title">{{ titleText }}</div>
                 <!-- 副标题 -->
-                <div class="subTitle">查看历史接诊记录</div>
+                <div class="subTitle">{{ subTitleText }}</div>
             </div>
             <!-- 按钮部分 -->
-            <switch class="switch-button"></switch>
+            <switch></switch>
         </div>
         <div class="line-view"></div>
     </div>
@@ -17,20 +17,36 @@
 
 <script>
 export default {
-  data () {
-    return {
-    };
-  }
+    data () {
+        return {
+        };
+    },
+    props:{
+        titleText:{
+            type: String,
+            required:true,
+            default () {
+                return {}
+            }
+        },
+        subTitleText:{
+            type: String,
+            required:true,
+            default () {
+                return {}
+            }
+        }
+    },
 }
 </script>
 
 <style scoped>
     .main-view{
         background-color: white;
-        padding: 10rpx 10rpx 0rpx 10rpx;
     }
    .container{
        background-color: white;
+       padding: 15rpx 15rpx 0rpx 15rpx;
        display: flex;
        align-items: center;
    } 
@@ -39,19 +55,19 @@ export default {
    }
    .title{
        color: #333333;
-       font-size: 30rpx;
+       font-size: 32rpx;
        font-weight: bold;
    }
    .subTitle{
+       margin-top: 10rpx;
        color: #808080;
        font-size: 24rpx;
        font-weight: 500;
    }
-   .switch-button{
-       background-color: white;
-   }
     .line-view{
-        background-color: black;
+        background-color: #DDDDDD;
         height: 2rpx;
+        margin-top: 15rpx;
+        margin-left: 15rpx;
     }
 </style>
