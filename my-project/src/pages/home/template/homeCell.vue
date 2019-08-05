@@ -36,11 +36,7 @@
         },
         methods: {
            goToDetail(){
-               console.log('进入详情界面');
                this.$emit('clickCell', this.item);
-            //    wx.navigateTo({
-            //        url:'/pages/home/menuDetail/main'
-            //    });
            } 
         },
 

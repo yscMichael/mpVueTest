@@ -39,7 +39,7 @@
                 <home-cell @clickCell="clickListCell" v-for="(item,index) in dataList" :key="index" :item="item"/>
             </div>
             <!-- 快捷功能按钮 -->
-            <div class="bottom-button">
+            <div class="bottom-button" @click="clickBottomButton">
                 <img src="/static/images/home/functionAddButton.png" alt="">
                 <span>添加快捷功能</span>
             </div>
@@ -67,11 +67,31 @@
         },
         methods: {
             jumpCtrl(data){
-                console.log('点击了jumpCtrl');
-                console.log(data);
+                wx.showToast({
+                    title: '点击了' + data.title,
+                    icon: 'none',
+                    duration: 2000,
+                    mask: true,
+                });
             },
             clickListCell(data){
-                console.log('点击了listCell');
+                wx.showToast({
+                    title: '点击了' + data.title,
+                    icon: 'none',
+                    duration: 2000,
+                    mask: true,
+                });
+            },
+            clickBottomButton(){
+                console.log('点击底部按钮');
+                wx.navigateTo({
+                    url: '/pages/home/menuDetail/main',
+                    success: (result)=>{
+                        
+                    },
+                    fail: ()=>{},
+                    complete: ()=>{}
+                });
             }
         },
         created() {
