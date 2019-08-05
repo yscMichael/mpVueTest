@@ -72,13 +72,8 @@
 </script>
 
 <style>
-  Page{
-    width: 100%;
-    height: 100%;
-  }
-
   .container{
-    background-color: #fff;
+    background-color: white;
     width: 100%;
     height: 100%;
     position: relative;

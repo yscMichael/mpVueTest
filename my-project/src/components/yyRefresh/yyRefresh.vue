@@ -47,7 +47,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     .refrsh-container{
         background-color:#eee;
         width: 100%;
