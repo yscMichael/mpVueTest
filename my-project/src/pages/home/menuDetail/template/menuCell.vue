@@ -8,8 +8,8 @@
             <div class="subTitle">查看历史接诊记录</div>
         </div>
         <!-- 按钮部分 -->
-        <!-- <switch class="switch-button"></switch> -->
-        <div class="temp">我是</div>
+        <switch class="switch-button"></switch>
+        <!-- <div class="temp">我是</div> -->
     </div>
 </template>
 
