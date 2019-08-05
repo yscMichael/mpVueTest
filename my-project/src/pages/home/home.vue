@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <yyRefresh :isHeader="true"></yyRefresh>
+        <yy-refresh :isHeader="true"></yy-refresh>
         <!-- 轮播图 -->
         <div class="home-swiper-class">
             <swiper
