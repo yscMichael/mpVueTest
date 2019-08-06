@@ -1,9 +1,10 @@
 {
   "pages": [
+    "pages/drugStore/main",
     "pages/index/main",
     "pages/home/main",
     "pages/clinic/main",
-    "pages/drugStore/main",
+    
     "pages/analysis/main",
     
     "pages/home/menuDetail/main"

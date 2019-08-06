@@ -1,16 +1,27 @@
 <template>
-    <div class="list-container">
-        <img class="list-img" src="/static/images/drugstore/drugInit.png" alt="">   
-        <!-- <img class="list-img" src="/static/images/drugstore/drugInit.png" alt="">   
-        <div class="list-content">
-            <div class="list-title">主标题</div>
-            <div class="list-subTitle">副标题</div>
-        </div> -->
+    <div class="main-view"> 
+        <div class="list-container">
+            <img class="list-img" :src="item.imageUrl" alt="">   
+            <div class="list-content">
+                <div class="list-title">{{item.title}}</div>
+                <div class="list-subTitle">{{item.subTitle}}</div>
+            </div>   
+        </div> 
+        <div class="line-view"></div>
     </div>
 </template>
 
 <script>
 export default {
+    props:{
+        item:{
+            type: Object,
+            required:true,
+            default () {
+                return {}
+            }
+        }
+    },
   data () {
     return {
     };
@@ -22,21 +33,29 @@ export default {
     .list-container{
         display: flex;
         align-items: center;
+        background-color: white;
         border: 1rpx solid white;
-        width: 100%;
-        height: 100rpx;
+        border-radius: 5px;
     }
     .list-img{
-        width: 80rpx;
-        height: 80rpx;
+        width: 160rpx;
+        height: 160rpx;
     }
     .list-content{
         flex-grow: 1;
+        margin-left: 20rpx;
     }
     .list-title{
-        background-color: green;
+        font-size: 34rpx;
+        color: #333333;
     }
     .list-subTitle{
-        background-color: blue;
+        margin-top: 10rpx;
+        font-size: 26rpx;
+        color: #666666;
+    }
+    .line-view{
+        background-color: #F1F0F5;
+        height: 20rpx;
     }
 </style>
