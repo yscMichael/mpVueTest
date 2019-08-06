@@ -41,7 +41,11 @@
             <img src="/static/images/drugstore/drugInit/shop.png" alt="">
             <div>已添加(种)：</div>
             <div>368</div>
-            <div>继续添加</div>
+            <picker mode="selector"
+                    @change="bindSelectInitDrugType" 
+                    :range="initDrugTypeArr">
+              <div class="add-button">继续添加</div>
+            </picker>
         </div>
     </div>
 </template>
@@ -65,8 +69,13 @@ export default {
       buttonArray:[
         {id:0, title:'西药'},
         {id:1, title:'中成药'},
-        {id:0, title:'中药'},
-        {id:0, title:'医疗器械'}
+        {id:2, title:'中药'},
+        {id:3, title:'医疗器械'}
+      ],
+      initDrugTypeArr:[
+        '扫码添加', 
+        '搜索添加', 
+        '自定义添加'
       ]
     };
   },
@@ -76,6 +85,9 @@ export default {
     },
     scrollViewChange(e){
       this.selectIndex = e.mp.detail.current;
+    },
+    bindSelectInitDrugType(e){
+      console.log(e.mp.detail.value);
     }
   },
 }
@@ -144,15 +156,14 @@ export default {
     color: #2A94EF;
     font-weight: bold;
   }
-  .bottom-button > div:last-child{
+  .add-button{
     background-color: #1DA4FC;
     flex: 0 0 200rpx;
+    width: 200rpx;
     text-align: center;
     font-size: 36rpx;
     color: white;
     height: 60px;
     line-height: 60px;
   }
-
-
 </style>
