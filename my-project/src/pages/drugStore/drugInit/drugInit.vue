@@ -4,7 +4,8 @@
         <div class="toolBar">
             <div :class="['toolBarItem',(selectIndex == i)?'toolBarActive':'']" 
                  v-for="(item,i) in buttonArray" 
-                 :key="i">
+                 :key="i"
+                 @click="clickBarItem(i)">
               {{item.title}}
             </div>
         </div>
@@ -23,7 +24,14 @@ export default {
         {id:0, title:'医疗器械'}
       ]
     };
-  }
+  },
+  methods: {
+    clickBarItem(data){
+      console.log('clickBarItem');
+      console.log(data);
+      this.selectIndex = data;
+    }
+  },
 }
 </script>
 
