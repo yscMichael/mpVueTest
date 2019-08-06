@@ -9,6 +9,29 @@
               {{item.title}}
             </div>
         </div>
+        <!-- 四个列表界面 -->
+        <div class="containerListView">
+            <swiper class="swiper-scrollView"
+                    :current="selectIndex"
+                    @change="scrollViewChange">
+                <!-- 西药 -->
+                <swiper-item>
+                  <div>西药</div>
+                </swiper-item>
+                <!-- 中成药 -->
+                <swiper-item>
+                  <div>中成药</div>
+                </swiper-item>
+                <!-- 中药 -->
+                <swiper-item>
+                  <div>中药</div>
+                </swiper-item>
+                <!-- 医疗器械 -->
+                <swiper-item>
+                  <div>医疗器械</div>
+                </swiper-item>
+            </swiper>
+        </div>
     </div>
 </template>
 
@@ -27,9 +50,10 @@ export default {
   },
   methods: {
     clickBarItem(data){
-      console.log('clickBarItem');
-      console.log(data);
       this.selectIndex = data;
+    },
+    scrollViewChange(e){
+      this.selectIndex = e.mp.detail.current;
     }
   },
 }
@@ -60,5 +84,17 @@ export default {
   .toolBarActive{
       border-bottom: 2px solid #1F91F2;
       color: #1F91F2;
+  }
+  .containerListView{
+      position: fixed;
+      left: 0px;
+      right: 0px;
+      top: 40px;
+      bottom: 60px;
+  }
+  .swiper-scrollView{
+        width: 100%; 
+        height: 100%;
+        overflow: hidden;
   }
 </style>
