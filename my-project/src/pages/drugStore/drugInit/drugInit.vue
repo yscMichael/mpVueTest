@@ -16,19 +16,23 @@
                     @change="scrollViewChange">
                 <!-- 西药 -->
                 <swiper-item>
-                  <div>西药</div>
+                  <!-- <div>西药</div> -->
+                  <west-drug-list></west-drug-list>
                 </swiper-item>
                 <!-- 中成药 -->
                 <swiper-item>
-                  <div>中成药</div>
+                  <!-- <div>中成药</div> -->
+                  <special-drug-list></special-drug-list>
                 </swiper-item>
                 <!-- 中药 -->
                 <swiper-item>
-                  <div>中药</div>
+                  <!-- <div>中药</div> -->
+                  <chinese-drug-list></chinese-drug-list>
                 </swiper-item>
                 <!-- 医疗器械 -->
                 <swiper-item>
-                  <div>医疗器械</div>
+                  <!-- <div>医疗器械</div> -->
+                  <instrument-list></instrument-list>
                 </swiper-item>
             </swiper>
         </div>
