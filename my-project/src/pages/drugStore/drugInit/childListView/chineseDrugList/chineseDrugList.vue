@@ -1,6 +1,8 @@
 <template>
-    <scroll-view class="west-main"
+    <scroll-view class="main-scroll"
                  scroll-y="true">
+        <div class="main-view">
+        </div>                 
         <initdrug-list-cell @clickCell="clickDrugListCell" 
                             v-for="(item,index) in dataSource" 
                             :key="index" 
@@ -29,7 +31,7 @@ export default {
 </script>
 
 <style scoped>
-  .west-main{
+  .main-scroll{
       background-color: #eee;
       width: 100%;
       height: 100%;
