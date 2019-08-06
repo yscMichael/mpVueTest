@@ -1,14 +1,14 @@
 <template>
     <div class="west-main">
-        <h3>??????</h3>
+        <initdrug-list-cell></initdrug-list-cell>
     </div>
 </template>
 
 <script>
-import initdruglistCell from '@/pages/drugStore/drugInit/childListView/cellTemplate/initdruglistCell'
+import initdrugListCell from '@/pages/drugStore/drugInit/childListView/cellTemplate/initdrugListCell'
 export default {
   components:{
-    initdruglistCell
+    initdrugListCell
   },
   data () {
     return {
