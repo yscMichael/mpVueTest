@@ -1,6 +1,6 @@
 <template>
     <div class="main-view"> 
-        <div class="list-container">
+        <div class="list-container" @click="goToDetail">
             <img class="list-img" :src="item.imageUrl" alt="">   
             <div class="list-content">
                 <div class="list-title">{{item.title}}</div>
@@ -25,7 +25,12 @@ export default {
   data () {
     return {
     };
-  }
+  },
+  methods: {
+    goToDetail(){
+        this.$emit('clickListCell', this.item);
+    } 
+  },
 }
 </script>
 

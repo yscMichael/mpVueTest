@@ -2,9 +2,9 @@
     <div class="container">
       <img src="/static/images/drugStore/yaofang_head.png" alt="">
       <div class="content-list">
-        <yy-list-cell :item="purchase"></yy-list-cell>
-        <yy-list-cell :item="inventory"></yy-list-cell>
-        <yy-list-cell :item="drugInit"></yy-list-cell>
+        <yy-list-cell @clickListCell="jumpCtrl" :item="purchase"></yy-list-cell>
+        <yy-list-cell @clickListCell="jumpCtrl" :item="inventory"></yy-list-cell>
+        <yy-list-cell @clickListCell="jumpCtrl" :item="drugInit"></yy-list-cell>
       </div>
     </div>
 </template>
@@ -21,19 +21,35 @@ export default {
         purchase:{
           title:'采购入库',
           subTitle:'扫码直接入库',
-          imageUrl:'/static/images/drugstore/purchase.png'
+          imageUrl:'/static/images/drugstore/purchase.png',
+          pathUrl:'/pages/drugStore/purchase/main'
         },
         inventory:{
           title:'库存盘点',
           subTitle:'盘点药品库存',
-          imageUrl:'/static/images/drugstore/inventory.png'
+          imageUrl:'/static/images/drugstore/inventory.png',
+          pathUrl:'/pages/drugStore/inventory/main'
         },
         drugInit:{
           title:'药品初始化',
           subTitle:'初始化您的药品库',
-          imageUrl:'/static/images/drugstore/drugInit.png'
+          imageUrl:'/static/images/drugstore/drugInit.png',
+          pathUrl:'/pages/drugStore/drugInit/main'
         },
     };
+  },
+  methods: {
+    jumpCtrl(data){
+      console.log(data.pathUrl)
+      wx.navigateTo({
+        url: data.pathUrl,
+        success: (result)=>{
+          
+        },
+        fail: ()=>{},
+        complete: ()=>{}
+      });
+    },
   },
 
 }
