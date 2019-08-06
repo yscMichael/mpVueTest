@@ -92,6 +92,7 @@ export default {
   .third-title > div{
     color: #5A5A5A;
     font-size: 20rpx;
+    margin-right: 2px;
   }
   .forth-title{
     display: flex;
@@ -102,6 +103,12 @@ export default {
   .forth-title > div{
     color: #5A5A5A;
     font-size: 20rpx;
+  }
+  .forth-title > div:last-child{
+    color: #5A5A5A;
+    font-size: 20rpx;
+    flex-grow: 1;
+    text-align: right;
   }
   .top-view > img:last-child{
     width: 93rpx;
