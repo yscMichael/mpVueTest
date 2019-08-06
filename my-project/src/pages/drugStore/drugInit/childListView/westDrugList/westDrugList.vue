@@ -1,7 +1,12 @@
 <template>
-    <div class="west-main">
-        <initdrug-list-cell></initdrug-list-cell>
-    </div>
+     <scroll-view class="west-main"
+                  scroll-y="true">
+        <initdrug-list-cell @clickCell="clickDrugListCell" 
+                            v-for="(item,index) in dataSource" 
+                            :key="index" 
+                            :item="item">
+        </initdrug-list-cell>
+     </scroll-view>
 </template>
 
 <script>
@@ -12,16 +17,22 @@ export default {
   },
   data () {
     return {
-      westDataSource:[
-
-      ]
+      dataSource:[1,2,3,4,5,6,7,8,9,10,11,12,13,14]
     };
-  }
+  },
+  methods: {
+    clickDrugListCell(){
+      console.log('??cell');
+    }
+  },
 }
 </script>
 
 <style scoped>
   .west-main{
-    background-color: white;
+      background-color: #eee;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
   }
 </style>
