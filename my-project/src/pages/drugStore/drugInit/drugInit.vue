@@ -36,6 +36,13 @@
                 </swiper-item>
             </swiper>
         </div>
+        <!-- 底部添加界面 -->
+        <div class="bottom-button">
+            <img src="/static/images/drugstore/drugInit/shop.png" alt="">
+            <div>已添加(种)：</div>
+            <div>368</div>
+            <div>继续添加</div>
+        </div>
     </div>
 </template>
 
@@ -108,8 +115,44 @@ export default {
       bottom: 60px;
   }
   .swiper-scrollView{
-        width: 100%; 
-        height: 100%;
-        overflow: hidden;
+      width: 100%; 
+      height: 100%;
+      overflow: hidden;
   }
+  .bottom-button{
+      width: 100%;
+      position: fixed;
+      display: flex;
+      height: 60px;
+      bottom: 0;
+      z-index: 9999;
+      align-items: center;
+      background-color: white;
+  }
+  .bottom-button > img{
+    width: 30rpx;
+    height: 30rpx;
+    margin-left: 15rpx;
+  }
+  .bottom-button > div:nth-child(2){
+    font-size: 30rpx;
+    color: #333333;
+    margin-left: 15rpx;
+  }
+  .bottom-button > div:nth-child(3){
+    flex-grow: 1;
+    color: #2A94EF;
+    font-weight: bold;
+  }
+  .bottom-button > div:last-child{
+    background-color: #1DA4FC;
+    flex: 0 0 200rpx;
+    text-align: center;
+    font-size: 36rpx;
+    color: white;
+    height: 60px;
+    line-height: 60px;
+  }
+
+
 </style>
