@@ -36,7 +36,18 @@
 </template>
 
 <script>
+import westDrugList from '@/pages/drugStore/drugInit/childListView/westDrugList/westDrugList'
+import specialDrugList from '@/pages/drugStore/drugInit/childListView/specialDrugList/specialDrugList'
+import chineseDrugList from '@/pages/drugStore/drugInit/childListView/chineseDrugList/chineseDrugList'
+import instrumentList from '@/pages/drugStore/drugInit/childListView/instrumentList/instrumentList'
+
 export default {
+  components:{
+    westDrugList,
+    specialDrugList,
+    chineseDrugList,
+    instrumentList
+  },
   data () {
     return {
       selectIndex:0,
