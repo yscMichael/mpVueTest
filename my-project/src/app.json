@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/drugStore/drugInit/inventoryFlow/main",
     "pages/drugStore/drugInit/batchListDetail/main",
     "pages/index/main",
     "pages/home/main",
