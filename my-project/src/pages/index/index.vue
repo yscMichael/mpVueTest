@@ -50,6 +50,9 @@
                 var data = response.data;
                 if (data.code == '200') {
                     wx.hideLoading();
+                    //保存userid
+                    var useId = data.data.id;
+                    this.globalData.userid = useId;
                     wx.switchTab({ url: '/pages/home/main'});
                 }else{
                     wx.showToast({

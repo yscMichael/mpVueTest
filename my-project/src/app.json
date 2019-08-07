@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/drugStore/drugInit/main",
+    
     
     "pages/index/main",
     "pages/home/main",
@@ -8,7 +8,7 @@
     "pages/analysis/main",
     "pages/drugStore/main",
     "pages/home/menuDetail/main",
-
+    "pages/drugStore/drugInit/main",
     "pages/drugStore/purchase/main",
     "pages/drugStore/inventory/main"
     
