@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/drugStore/drugInit/batchListDetail/main",
     "pages/index/main",
     "pages/home/main",
     "pages/clinic/main",
@@ -8,8 +9,7 @@
     "pages/home/menuDetail/main",
     "pages/drugStore/drugInit/main",
     "pages/drugStore/purchase/main",
-    "pages/drugStore/inventory/main",
-    "/pages/drugStore/drugInit/batchListDetail/main"
+    "pages/drugStore/inventory/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
