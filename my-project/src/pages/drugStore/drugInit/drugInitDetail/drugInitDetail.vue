@@ -70,7 +70,7 @@
         </div>
         <div class="line-small"></div>
         <!-- 剂型 -->
-        <div class='common-view'>
+        <div class='common-view' @click="clickFormCell">
           <div class='title'>剂型</div>
           <div class="right-title">我是剂型</div>
           <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
@@ -131,7 +131,20 @@ export default {
   data () {
     return {
     };
-  }
+  },
+  methods: {
+    clickFormCell(){
+      console.log('clickFormCell');
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/chooseForm/main',
+        success: (result)=>{
+          
+        },
+        fail: ()=>{},
+        complete: ()=>{}
+      });
+    }
+  },
 }
 </script>
 
