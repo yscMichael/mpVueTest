@@ -28,31 +28,11 @@ export default {
     return {
         flag:false,
         dataSource:[
-            {
-                title:'药品',
-                isDelete: false,
-                isSelect:false
-            },
-            {
-                title:'我也是药品',
-                isDelete: false,
-                isSelect:false
-            },
-            {
-                title:'奥美制药',
-                isDelete: false,
-                isSelect:false
-            },
-            {
-                title:'感冒药',
-                isDelete: false,
-                isSelect:false
-            },
-            {
-                title:'发烧药发烧药发烧药发烧药发烧药发烧药发烧药发烧药发烧药',
-                isDelete: false,
-                isSelect:false
-            } 
+            {title:'药品',isDelete: false,isSelect:false},
+            {title:'我也是药品',isDelete: false,isSelect:false},
+            {title:'奥美制药',isDelete: false,isSelect:false},
+            {title:'感冒药',isDelete: false,isSelect:false},
+            {title:'发烧药发',isDelete: false,isSelect:false} 
         ],
     };
   },

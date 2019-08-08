@@ -8,7 +8,11 @@
             <div>口服</div>
         </div>
         <div class="usage-frequency-view">
-
+            <div v-for="(item,index) in usageDataSource" :key="index"  
+                 class="content-view">
+                <div :class="['content-title', item.isSelect?'select-cell':'']"
+                    @tap="clickUsageCell(item)">{{ item.title}}</div>
+            </div>
         </div>
         <!-- 频率 -->
         <div class="common-view">
@@ -16,7 +20,11 @@
             <div>一日3次</div>
         </div>
         <div class="usage-frequency-view">
-
+            <div v-for="(item,index) in frequencyDataSource" :key="index"  
+                 class="content-view">
+                <div :class="['content-title', item.isSelect?'select-cell':'']"
+                    @tap="clickFrequencyCell(item)">{{ item.title}}</div>
+            </div>
         </div>
         <div class="line-big"></div>
         <!-- 单次用量 -->
@@ -45,10 +53,46 @@ export default {
   data () {
     return {
         headTitle:'口服；一日3次；每次5片；用药3天',
-        usageDataSource:[],
-        frequencyDataSource:[]
+        usageDataSource:[
+            {title:'tomato2',isSelect:false},
+            {title:'beaf',isSelect:false},
+            {title:'aaaa',isSelect:false},
+            {title:'阿萨达',isSelect:false},
+            {title:'餐前口服',isSelect:false},
+            {title:'餐后口服',isSelect:false},
+            {title:'睡前口服',isSelect:false},
+            {title:'皮下注射',isSelect:false},
+            {title:'肌肉注射',isSelect:false},
+            {title:'静脉注射',isSelect:false},
+            {title:'静脉滴注',isSelect:false},
+            {title:'鞘内注射',isSelect:false}
+        ],
+        frequencyDataSource:[
+            {title:'一日1次(QD)',isSelect:false},
+            {title:'一日2次(BID)',isSelect:false},
+            {title:'一日3次(TID)',isSelect:false},
+            {title:'一日4次(QID)',isSelect:false},
+            {title:'每二小时1次(Q2H)',isSelect:false},
+            {title:'每四小时1次(Q4H)',isSelect:false},
+            {title:'每六小时1次(Q6H)',isSelect:false},
+            {title:'每八小时1次(Q8H)',isSelect:false},
+            {title:'隔日1次(QOD)',isSelect:false},
+            {title:'隔三日1次(Q3D)',isSelect:false},
+            {title:'每晚1次(QN)',isSelect:false},
+            {title:'必要时(PRN)',isSelect:false}
+        ]
     };
-  }
+  },
+  methods: {
+      clickUsageCell(data){
+          console.log('clickUsageCell');
+          data.isSelect = true;
+      },
+      clickFrequencyCell(data){
+          console.log('clickFrequencyCell');
+          data.isSelect = true;
+      }
+  },
 }
 </script>
 
@@ -83,8 +127,13 @@ export default {
         font-weight:bold;
     }
     .usage-frequency-view{
-        background-color: white;
         height: 170px;
+
+        background-color: white;
+        padding: 1px 1px 12px 12px;
+        display: flex;
+        flex-wrap: wrap;
+        overflow: scroll;  
     }
     .single-view{
         height: 66px;
@@ -153,6 +202,36 @@ export default {
         height: 13px;
         border: 1px #8E8E8E solid;
         margin-right:6px;
+    }
+    .content-view{
+        margin: 10px 10px 0px 0px;
+        display: flex;
+        align-items: center;
+        border: 1px solid red;
+        /* 超出部分隐藏 */
+        overflow: hidden;
+    }
+    .content-title{
+        padding: 0px 10px 0px 10px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 20px;
+        color: #000000;
+        font-size: 16px;
+
+        /* 超出部分隐藏 */
+        overflow: hidden;
+        /* 内容不换行 */
+        white-space: nowrap;
+        /* 超出部分用省略号 */
+        text-overflow: ellipsis;
+        text-align: center;
+        background-color: #F2F3F7;
+    }
+    .select-cell{
+       border: 1px #4D81EE solid; 
+       background-color: white;
+       color: #4D81EE;
     }
     /* 向上的箭头 */
     .arrow-top {
