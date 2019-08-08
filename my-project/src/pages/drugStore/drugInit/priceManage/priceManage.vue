@@ -30,6 +30,12 @@
             <input type="text">
             <div>元/袋</div>
         </div>
+        <!-- 提示信息 -->
+        <div class="subTitle-view">
+            <div>用于</div>
+            <div>门诊-新增接诊</div>
+            <div>模块的药品价格</div>
+        </div>
         <!-- 零售价 -->
         <div class="head-title-view margin-top-10">
             <div></div>
@@ -48,7 +54,12 @@
             <input type="text">
             <div>元/袋</div>
         </div>
-
+        <!-- 提示信息 -->
+        <div class="subTitle-view">
+            <div>用于</div>
+            <div>药房-零售卖药</div>
+            <div>模块的药品价格</div>
+        </div>
     </div>
 </template>
 
@@ -62,6 +73,9 @@ export default {
 </script>
 
 <style>
+    page{
+        background-color: #F1F2F4;
+    }       
     .head-title-view{
         height:36px;
         line-height:36px;
@@ -117,6 +131,23 @@ export default {
         margin-top:10px;
     }
     .subTitle-view{
-
+        margin-left:12px;
+        margin-top:6px;
+        display: flex;
+        align-items: center;
     }
+    .subTitle-view > div:first-child, .subTitle-view > div:last-child{
+        color: #888888;
+        font-size:12px;
+    }
+    .subTitle-view > div:nth-child(2){
+        color:#22438A;
+        font-size:12px;
+    }
+    .subTitle-view > div:first-child::before{
+        content:'*';
+        color: #888888;
+        font-size:12px;
+    }
+
 </style>
