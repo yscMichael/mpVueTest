@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/drugStore/drugInit/usageAndDosage/main",
     "pages/drugStore/drugInit/chooseForm/main",
     "pages/drugStore/drugInit/drugInitDetail/main",
     "pages/drugStore/drugInit/searchAdd/main",
