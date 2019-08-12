@@ -6,29 +6,11 @@
             <div>{{validityData}}</div>
         </div>
         <div class="validity-list">
-            <div class="flex-item">
-                <div class="grow-flex"></div>
-                <div :class="['flex-item-title',listArray[0].selected?'ative-item':'']"
-                     @click="clickItem(listArray[0].index)">{{listArray[0].title}}</div>
-                <div class="grow-flex"></div>
-                <div :class="['flex-item-title',listArray[1].selected?'ative-item':'']"
-                     @click="clickItem(listArray[1].index)">{{listArray[1].title}}</div>
-                <div class="grow-flex"></div>
-                <div :class="['flex-item-title',listArray[2].selected?'ative-item':'']"
-                     @click="clickItem(listArray[2].index)">{{listArray[2].title}}</div>
-                <div class="grow-flex"></div>
-            </div>
-            <div class="flex-item">
-                <div class="grow-flex"></div>
-                <div :class="['flex-item-title',listArray[3].selected?'ative-item':'']"
-                     @click="clickItem(listArray[3].index)">{{listArray[3].title}}</div>
-                <div class="grow-flex"></div>
-                <div :class="['flex-item-title',listArray[4].selected?'ative-item':'']"
-                     @click="clickItem(listArray[4].index)">{{listArray[4].title}}</div>
-                <div class="grow-flex"></div>
-                <div :class="['flex-item-title',listArray[5].selected?'ative-item':'']"
-                     @click="clickItem(listArray[5].index)">{{listArray[5].title}}</div>
-                <div class="grow-flex"></div>     
+            <div class="float-item" v-for="(item,index) in listArray" :key="index">
+                <div class="float-content">
+                    <div :class="['float-item-title',item.selected?'ative-item':'']"
+                         @click="clickItem(item)">{{item.title}}</div>
+                </div>
             </div>
         </div>
         <!-- 库存安全范围 -->
@@ -83,17 +65,15 @@ export default {
     };
   },
   methods: {
-      clickItem(data){
+      clickItem(item){
         //将之前选中全部清除
         for (let index = 0; index < this.listArray.length; index++) {
             const element = this.listArray[index];
             element.selected = false;
         }
         //将当前的选中
-        const currentEl = this.listArray[data];
-        currentEl.selected = true;
-        this.validityData = currentEl.title;
-        console.log(data);
+        item.selected = true;
+        this.validityData = item.title;
       }
   },
 }
@@ -126,21 +106,30 @@ export default {
         height: 120px;
         margin-top: 1px;
     }
-    .flex-item{
+    .float-item{
         height: 60px;
+        width: 33.3%;
         background-color: white;
+        float: left;
+    }
+    .float-content{
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
         display: flex;
         align-items: center;
+        justify-content: center;
     }
-    .flex-item-title{
+    .float-item-title{
         background-color: #F2F3F7;
         color: #000000;
         font-size: 16px;
         height: 39px;
         line-height: 39px;
+        border-radius: 39px;
+        text-align: center;
         padding-left: 20px;
         padding-right: 20px;
-        border-radius: 39px;
     }
     .ative-item{
         background-color: white;
