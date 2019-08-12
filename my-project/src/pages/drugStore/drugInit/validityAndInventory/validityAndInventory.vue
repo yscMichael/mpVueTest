@@ -8,25 +8,25 @@
         <div class="validity-list">
             <div class="flex-item">
                 <div class="grow-flex"></div>
-                <div :class="['flex-item-title',listArray[0].selected?ative-item:'']"
+                <div :class="['flex-item-title',listArray[0].selected?'ative-item':'']"
                      @click="clickItem(listArray[0].index)">{{listArray[0].title}}</div>
                 <div class="grow-flex"></div>
-                <div :class="['flex-item-title',listArray[1].selected?ative-item:'']"
+                <div :class="['flex-item-title',listArray[1].selected?'ative-item':'']"
                      @click="clickItem(listArray[1].index)">{{listArray[1].title}}</div>
                 <div class="grow-flex"></div>
-                <div :class="['flex-item-title',listArray[2].selected?ative-item:'']"
-                     @click="clickItem(listArray[1].index)">{{listArray[2].title}}</div>
+                <div :class="['flex-item-title',listArray[2].selected?'ative-item':'']"
+                     @click="clickItem(listArray[2].index)">{{listArray[2].title}}</div>
                 <div class="grow-flex"></div>
             </div>
             <div class="flex-item">
                 <div class="grow-flex"></div>
-                <div :class="['flex-item-title',listArray[3].selected?ative-item:'']"
+                <div :class="['flex-item-title',listArray[3].selected?'ative-item':'']"
                      @click="clickItem(listArray[3].index)">{{listArray[3].title}}</div>
                 <div class="grow-flex"></div>
-                <div :class="['flex-item-title',listArray[4].selected?ative-item:'']"
+                <div :class="['flex-item-title',listArray[4].selected?'ative-item':'']"
                      @click="clickItem(listArray[4].index)">{{listArray[4].title}}</div>
                 <div class="grow-flex"></div>
-                <div :class="['flex-item-title',listArray[5].selected?ative-item:'']"
+                <div :class="['flex-item-title',listArray[5].selected?'ative-item':'']"
                      @click="clickItem(listArray[5].index)">{{listArray[5].title}}</div>
                 <div class="grow-flex"></div>     
             </div>
