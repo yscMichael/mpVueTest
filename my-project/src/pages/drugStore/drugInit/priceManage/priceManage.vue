@@ -123,6 +123,7 @@ export default {
         height:30px;
         margin-right: 5px;
         background-color: #ECECEC;
+        text-align: center;
     }
     .grow-div{
         flex-grow: 1;
