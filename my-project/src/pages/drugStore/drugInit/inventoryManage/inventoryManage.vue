@@ -25,7 +25,7 @@
         </div>
         <!-- 列表信息 -->
         <div class="list-view">
-            <manage-stock-cell></manage-stock-cell>
+            <manage-stock-cell v-for="(item, index) in listArray" :key="index"></manage-stock-cell>
         </div>
     </div>
 </template>
@@ -38,6 +38,7 @@ export default {
   },  
   data () {
     return {
+        listArray:[1,2,3,4,5,6,7,8,9,0]
     };
   }
 }

@@ -34,9 +34,9 @@
                 <div class="red-title">库存数量</div>
                 <div class="grow-flex"></div>
                 <div class="input-view">
-                    <div class="">-</div>
-                    <div>120</div>
-                    <div>+</div>
+                    <div class="minus-plus-view">-</div>
+                    <div class="count-view">120</div>
+                    <div class="minus-plus-view">+</div>
                 </div>
                 <div>盒</div>
             </div> 
@@ -146,9 +146,19 @@ export default {
         display: flex;
         align-items: center;
     }
-
-
-
+    .minus-plus-view{
+        width: 25px;
+        height: 30px;
+        line-height:30px;
+        color: #9C9C9C;
+        text-align: center;
+    }
+    .count-view{
+        flex-grow: 1;
+        height: 30px;
+        text-align: center;
+        line-height:30px;
+    }
     .arrow-image{
         width: 6px;
         height: 11px;
