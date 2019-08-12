@@ -3,25 +3,31 @@
         <!-- 有效期预警 -->
         <div class="validity-title">
             <div>有效期预警</div>
-            <div>5个月</div>
+            <div>{{validityData}}</div>
         </div>
         <div class="validity-list">
             <div class="flex-item">
                 <div class="grow-flex"></div>
-                <div class="flex-item-title">1个月</div>
+                <div :class="['flex-item-title',listArray[0].selected?ative-item:'']"
+                     @click="clickItem(listArray[0].index)">{{listArray[0].title}}</div>
                 <div class="grow-flex"></div>
-                <div class="flex-item-title">2个月</div>
+                <div :class="['flex-item-title',listArray[1].selected?ative-item:'']"
+                     @click="clickItem(listArray[1].index)">{{listArray[1].title}}</div>
                 <div class="grow-flex"></div>
-                <div class="flex-item-title">3个月</div>
+                <div :class="['flex-item-title',listArray[2].selected?ative-item:'']"
+                     @click="clickItem(listArray[1].index)">{{listArray[2].title}}</div>
                 <div class="grow-flex"></div>
             </div>
             <div class="flex-item">
                 <div class="grow-flex"></div>
-                <div class="flex-item-title">4个月</div>
+                <div :class="['flex-item-title',listArray[3].selected?ative-item:'']"
+                     @click="clickItem(listArray[3].index)">{{listArray[3].title}}</div>
                 <div class="grow-flex"></div>
-                <div class="flex-item-title">5个月</div>
+                <div :class="['flex-item-title',listArray[4].selected?ative-item:'']"
+                     @click="clickItem(listArray[4].index)">{{listArray[4].title}}</div>
                 <div class="grow-flex"></div>
-                <div class="flex-item-title">6个月</div>
+                <div :class="['flex-item-title',listArray[5].selected?ative-item:'']"
+                     @click="clickItem(listArray[5].index)">{{listArray[5].title}}</div>
                 <div class="grow-flex"></div>     
             </div>
         </div>
@@ -41,8 +47,55 @@
 export default {
   data () {
     return {
+        validityData:'5个月',
+        listArray:[
+            {
+                title:'1个月',
+                selected:false,
+                index:0
+            },
+            {
+                title:'2个月',
+                selected:false,
+                index:1
+            },
+            {
+                title:'3个月',
+                selected:false,
+                index:2
+            },
+            {
+                title:'4个月',
+                selected:false,
+                index:3
+            },
+            {
+                title:'5个月',
+                selected:false,
+                index:4
+            },
+            {
+                title:'6个月',
+                selected:false,
+                index:5
+            }
+        ]
     };
-  }
+  },
+  methods: {
+      clickItem(data){
+        //将之前选中全部清除
+        for (let index = 0; index < this.listArray.length; index++) {
+            const element = this.listArray[index];
+            element.selected = false;
+        }
+        //将当前的选中
+        const currentEl = this.listArray[data];
+        currentEl.selected = true;
+        this.validityData = currentEl.title;
+        console.log(data);
+      }
+  },
 }
 </script>
 
@@ -88,6 +141,10 @@ export default {
         padding-left: 20px;
         padding-right: 20px;
         border-radius: 39px;
+    }
+    .ative-item{
+        background-color: white;
+        border: 1px #4D81EE solid;
     }
     .inventory-title{
         margin-top: 10px;
