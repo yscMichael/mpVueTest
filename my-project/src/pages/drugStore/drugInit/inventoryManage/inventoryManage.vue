@@ -27,6 +27,11 @@
         <div class="list-view">
             <manage-stock-cell v-for="(item, index) in listArray" :key="index"></manage-stock-cell>
         </div>
+        <!-- 添加批次 -->
+        <div class="add-batch">
+            <div>+</div>
+            <div>添加批次</div>
+        </div>
     </div>
 </template>
 
@@ -83,5 +88,25 @@ export default {
         height: 1px;
         margin-left: 12px;
     }
-
+    .list-view{
+        margin-bottom: 44px;
+    }
+    .add-batch{
+        background-color: #1F91F2;
+        height: 44px;
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .add-batch > div{
+        color: #FFFFFF;
+        font-size: 18px;
+    }
+    .add-batch > div:first-child{
+        margin-right: 8px;
+    }
 </style>
