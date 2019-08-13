@@ -1,43 +1,47 @@
 <template>
     <div class="main-view">
-        <!-- 操作指引 -->
-        <div class="operation-view">
-          <div>操作指引</div>
-          <img src="/static/images/drugstore/drugInit/question.png" alt="">
+        <!-- 1、头部固定区域 -->
+        <div class="head-position-view">
+          <!-- 1.1、操作指引 -->
+          <div class="operation-view">
+            <div>操作指引</div>
+            <img src="/static/images/drugstore/drugInit/question.png" alt="">
+          </div>
+          <!-- 1.2、规格 -->
+          <div class="spec-view">
+            <div>规格：</div>
+            <input type="text" value="/盒">
+          </div>
+          <!-- 1.3、规格详情 -->
+          <!-- scroll-view滚动方式 -->
+          <scroll-view class="spec-detail-scroll"
+                      scroll-x="true">
+              <div class="spec-detail-text margin-left-12 margin-right-4">每</div>
+              <div class="spec-detail-input">盒</div>
+              <div class="spec-detail-text">有</div>
+              <div class="spec-detail-input">12</div>
+              <div class="spec-detail-input">颗</div>
+              <div class="spec-detail-text margin-right-8">;</div>
+              <div class="spec-detail-text">每</div>
+              <div class="spec-detail-text max-width-67">拆</div>
+              <div class="spec-detail-text margin-right-4">有</div>
+              <div class="spec-detail-input margin-right-12">剂量</div>
+          </scroll-view>
         </div>
-        <!-- 规格 -->
-        <div class="spec-view">
-          <div>规格：</div>
-          <input type="text" value="/盒">
-        </div>
-        <!-- 规格详情 -->
-        <!-- scroll-view滚动方式 -->
-        <scroll-view class="spec-detail-scroll"
-                     scroll-x="true">
-            <div class="spec-detail-text margin-left-12 margin-right-4">每</div>
-            <div class="spec-detail-input">盒</div>
-            <div class="spec-detail-text">有</div>
-            <div class="spec-detail-input">12</div>
-            <div class="spec-detail-input">颗</div>
-            <div class="spec-detail-text margin-right-8">;</div>
-            <div class="spec-detail-text">每</div>
-            <div class="spec-detail-text max-width-67">拆</div>
-            <div class="spec-detail-text margin-right-4">有</div>
-            <div class="spec-detail-input margin-right-12">剂量</div>
-        </scroll-view>
-        <!-- 单位轮播界面 -->
-        <div class="home-swiper-class">
-            <swiper>
-                <swiper-item>
-                    <img src="/static/images/carousel/1.jpg" alt="">
-                </swiper-item>
-                <swiper-item>
-                    <img src="/static/images/carousel/2.jpg" alt="">                    
-                </swiper-item>
-                <swiper-item>
-                    <img src="/static/images/carousel/3.jpg" alt="">
-                </swiper-item>
-            </swiper>
+        <!-- 2、底部固定区域 -->
+        <div class="bottom-position-view">
+          <!-- 单位轮播界面 -->
+          <!-- <swiper>
+              <swiper-item>
+                  <img src="/static/images/carousel/1.jpg" alt="">
+              </swiper-item>
+              <swiper-item>
+                  <img src="/static/images/carousel/2.jpg" alt="">                    
+              </swiper-item>
+              <swiper-item>
+                  <img src="/static/images/carousel/3.jpg" alt="">
+              </swiper-item>
+          </swiper> -->
         </div>
     </div>
 </template>
@@ -54,6 +58,26 @@ export default {
 <style scoped>
     .main-view{
       background-color: red;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+    }
+    .head-position-view{
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      height: 124px;
+    }
+    .bottom-position-view{
+      position: absolute;
+      top: 124px;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      background-color: aqua;
     }
     .operation-view{
       background-color: #F1F1F4;
@@ -95,11 +119,11 @@ export default {
     .spec-detail-scroll{
       /* 这里设置100%是为了自动适应子类 */
       width: 100%;
-      height: 100%;
+      height: 40px;
       box-sizing: border-box;
       border: 1px solid blue;
       white-space: nowrap;
-      background-color: antiquewhite;
+      background-color: white;
     }
     .spec-detail-text{
       display: inline-block;
@@ -113,6 +137,10 @@ export default {
         margin-right: 4px;
         background-color: #F2F4F5;
         display: inline-block;
+    }
+    .spec-swiper-class{
+        border: 1px solid green;
+        box-sizing: border-box;
     }
     .margin-left-12{
         margin-left: 12px;
