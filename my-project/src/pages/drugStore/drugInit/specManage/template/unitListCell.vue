@@ -25,7 +25,11 @@
         </div>
         <!-- 2、中间列表区域 -->
         <div class="unit-list-view">
-
+            <div v-for="(item,index) in unitArray" :key="index"  
+                 class="content-view">
+                <div :class="['content-title', item.isSelect?'select-cell':'']"
+                    @tap="clickUsageCell(item)">{{ item.title}}</div>
+            </div>
         </div>
         <!-- 3、新增单位 -->
         <div class="bottom-add-view">
@@ -44,6 +48,30 @@
 export default {
   data () {
     return {
+        unitArray:[
+            {title:'tomato2',isSelect:false},
+            {title:'beaf',isSelect:false},
+            {title:'aaaa',isSelect:false},
+            {title:'阿萨达',isSelect:false},
+            {title:'餐前口服',isSelect:false},
+            {title:'餐后口服',isSelect:false},
+            {title:'睡前口服',isSelect:false},
+            {title:'皮下注射',isSelect:false},
+            {title:'肌肉注射',isSelect:false},
+            {title:'静脉注射',isSelect:false},
+            {title:'静脉滴注',isSelect:false},
+            {title:'鞘内注射',isSelect:false},
+            {title:'皮下注射',isSelect:false},
+            {title:'肌肉注射',isSelect:false},
+            {title:'静脉注射',isSelect:false},
+            {title:'静脉滴注',isSelect:false},
+            {title:'鞘内注射',isSelect:false},
+            {title:'鞘内注射',isSelect:false},
+            {title:'鞘内注射',isSelect:false},
+            {title:'鞘内注射',isSelect:false},
+            {title:'鞘内注射',isSelect:false},
+            {title:'鞘内注射',isSelect:false}
+        ],
     };
   }
 }
@@ -71,7 +99,42 @@ export default {
         left: 0px;
         right: 0px;
         bottom: 90px;
-        background-color: red;
+
+        background-color: white;
+        padding: 1px 1px 12px 12px;
+        display: flex;
+        flex-wrap: wrap;
+        overflow: scroll;  
+    }
+    .content-view{
+        margin: 10px 10px 0px 0px;
+        display: flex;
+        align-items: center;
+        border: 1px solid red;
+        /* 超出部分隐藏 */
+        overflow: hidden;
+    }
+    .content-title{
+        padding: 0px 10px 0px 10px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 20px;
+        color: #000000;
+        font-size: 16px;
+
+        /* 超出部分隐藏 */
+        overflow: hidden;
+        /* 内容不换行 */
+        white-space: nowrap;
+        /* 超出部分用省略号 */
+        text-overflow: ellipsis;
+        text-align: center;
+        background-color: #F2F3F7;
+    }
+    .select-cell{
+       border: 1px #4D81EE solid; 
+       background-color: white;
+       color: #4D81EE;
     }
     .bottom-add-view{
         position: absolute;
