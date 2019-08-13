@@ -105,25 +105,23 @@ export default {
     }
     .bottom-add-view{
         background-color: white;
+        border: 1px solid white;
         height: (72px + 10px + 14px + 14px);
     }
     .bottom-input-view{
         height: 44px;
         border: 1px #7885A0 solid;
-        margin-left: 12px;
-        margin-right: 12px;
-        margin-top: 14px;
+        margin: 14px 12px 0px 12px;
         display: flex;
         align-items: center;
     }
     .bottom-input-view > input{
         color: #7885A0;
         font-size: 16px;
-        background-color: antiquewhite;
-        flex-grow: 1;
-        margin-left: 12px;
-        margin-right: 12px;
         height: 100%;
+        flex-grow: 1;
+        margin: 0px 12px 0px 12px;
+        background-color: antiquewhite;
     }
     .bottom-input-view > div{
         background-color: #7885A0;
@@ -136,10 +134,7 @@ export default {
     }
     .bottom-tip-view{
         color: #999999;
-        font-size: 12px;
-        margin-left: 12px;
-        margin-right: 12px;
-        margin-bottom: 10px;
-        margin-top: 14px;
+        font-size: 10px;
+        margin: 14px 12px 12px 10px;
     }
 </style>
