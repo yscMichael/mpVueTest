@@ -27,22 +27,38 @@
         <div class="bottom-keyboard-view">
             <div class="section-view">
                 <div>1</div>
+            </div>
+            <div class="section-view">
                 <div>2</div>
+            </div>
+            <div class="section-view">
                 <div>3</div>
             </div>
             <div class="section-view">
                 <div>4</div>
+            </div>
+            <div class="section-view">
                 <div>5</div>
+            </div>
+            <div class="section-view">
                 <div>6</div>
             </div>
             <div class="section-view">
                 <div>7</div>
+            </div>
+            <div class="section-view">
                 <div>8</div>
+            </div>
+            <div class="section-view">
                 <div>9</div>
             </div>
             <div class="section-view">
                 <div>.</div>
+            </div>
+            <div class="section-view">
                 <div>0</div>
+            </div>
+            <div class="section-view">
                 <img class="keyboard-img" src="/static/images/drugstore/drugInit/icon_del.png" alt="">
             </div>
         </div>
@@ -147,13 +163,26 @@ export default {
         font-size: 13px;
         margin-right: 5px;
     }
-    .bottom-keyboard-view > div{
-        width: 100%;
+    .section-view{
+        width: 33.3%;
         height: 25%;
+        float: left;
+        padding: 3px;
+        box-sizing: border-box;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .section-view > div{
-        float: left;
-        width: 33.3%;
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+        background-color: white;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .keyboard-img{
         width: 35px;
