@@ -1,9 +1,11 @@
 <template>
-    <div class="refrsh-container">
-        <!-- 图片 -->
-        <img class="refrsh-loading" :src="srcImage" alt="">
-        <!-- 文字 -->
-        <div>{{ srcTitle }}</div>
+    <div v-show="isShow">
+        <div class="refrsh-container">
+            <!-- 图片 -->
+            <img class="refrsh-loading" :src="srcImage" alt="">
+            <!-- 文字 -->
+            <div>{{ srcTitle }}</div>
+        </div>
     </div>
 </template>
 
@@ -23,14 +25,13 @@ export default {
                     return {}
                 }
         },
-        isHide:{
+        isShow:{
             type: Boolean,
             required: true,
             default () {
                     return {}
                 }
         },
-
   },
   created() {
      // 图片和文字设置  

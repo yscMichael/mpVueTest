@@ -2,7 +2,7 @@
      <scroll-view class="main-scroll"
                   scroll-y="true">
         <!-- 下拉刷新 -->
-        <yy-refresh></yy-refresh>          
+        <yy-refresh :isHeader="true" :isShow="isRefresh"></yy-refresh>          
         <!-- 列表 -->
         <initdrug-list-cell @clickCell="clickDrugListCell" 
                             v-for="(item,index) in dataSource" 
@@ -14,7 +14,7 @@
           <img src="/static/images/drugstore/drugInit/noData.png" alt="">
         </div>
         <!-- 上拉加载-->
-        <yy-refresh></yy-refresh>   
+        <yy-refresh :isHeader="false" :isShow="isLoadMore"></yy-refresh>   
      </scroll-view>
 </template>
 
@@ -31,6 +31,8 @@ export default {
     return {
       dataSource:[1,2,3,4,5,6,7,8,9,10,11,12,13,14],
       isHiddenNoData:true,
+      isRefresh:true,
+      isLoadMore:false,
       param:{
         op:'Page',
         cloud:'drug',

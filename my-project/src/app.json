@@ -1,5 +1,15 @@
 {
   "pages": [
+    "pages/index/main",
+
+    "pages/home/main",
+    "pages/clinic/main",
+    "pages/analysis/main",
+    "pages/drugStore/main",
+    "pages/home/menuDetail/main",
+    "pages/drugStore/drugInit/main",
+    "pages/drugStore/purchase/main",
+    "pages/drugStore/inventory/main",
     "pages/drugStore/drugInit/specManage/main",
     "pages/drugStore/drugInit/inventoryManage/main",
     "pages/drugStore/drugInit/validityAndInventory/main",
@@ -9,16 +19,7 @@
     "pages/drugStore/drugInit/drugInitDetail/main",
     "pages/drugStore/drugInit/searchAdd/main",
     "pages/drugStore/drugInit/inventoryFlow/main",
-    "pages/drugStore/drugInit/batchListDetail/main",
-    "pages/index/main",
-    "pages/home/main",
-    "pages/clinic/main",
-    "pages/analysis/main",
-    "pages/drugStore/main",
-    "pages/home/menuDetail/main",
-    "pages/drugStore/drugInit/main",
-    "pages/drugStore/purchase/main",
-    "pages/drugStore/inventory/main"
+    "pages/drugStore/drugInit/batchListDetail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
