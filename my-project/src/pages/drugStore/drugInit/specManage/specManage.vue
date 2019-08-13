@@ -22,6 +22,7 @@
             <div style="max-width: 67px;">拆</div>
             <div style="margin-right:4px">有</div>
             <div class="spec-detail-input">剂量</div>
+            <div class="last-input"></div>
         </div>
         <!-- 单位轮播界面 -->
         <div class="home-swiper-class">
@@ -90,11 +91,11 @@ export default {
       height: 100%;
     }
     .spec-detail-view{
+        margin-top: 5px;
+        height: 72px;
         background-color: white;
         border: 1px solid red;
         box-sizing: border-box;
-        height: 72px;
-        margin-top: 5px;
         /* 水平排列 */
         display: flex;
         align-items: center;
@@ -106,16 +107,16 @@ export default {
     .spec-detail-view > div{
       /* 防止缩放 */
       flex-shrink:0;
+      flex-grow: 0;
     }
     .spec-detail-input{
-        background-color: #F2F4F5;
         width: 67px;
         height: 40px;
         line-height: 40px;
-        background-color: #F2F4F5;
         text-align: center;
         margin-left: 4px;
         margin-right: 4px;
+        background-color: #F2F4F5;
     }
     /*隐藏滚动条*/
     ::-webkit-scrollbar {
@@ -124,6 +125,10 @@ export default {
       color: transparent;
     }
     .last-input{
-      margin-right: 12px !important;
+      margin-left: 8px;
+      margin-right: 10px;
+      background-color: white;
+      width: 1px;
+      height: 100%;
     }
 </style>
