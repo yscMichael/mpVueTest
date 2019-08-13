@@ -11,34 +11,20 @@
           <input type="text" value="/盒">
         </div>
         <!-- 规格详情 -->
+        <!-- scroll-view滚动方式 -->
         <scroll-view class="spec-detail-scroll"
                      scroll-x="true">
-            <div style="margin-left:12px;margin-right:4px" class="inline-block-view">每</div>
-            <div class="spec-detail-input inline-block-view">盒</div>
-            <div class="inline-block-view">有</div>
-            <div class="spec-detail-input inline-block-view">12</div>
-            <div class="spec-detail-input inline-block-view">颗</div>
-            <div style="margin-right:8px" class="inline-block-view">;</div>
-            <div class="inline-block-view">每</div>
-            <div style="max-width: 67px;" class="inline-block-view">拆</div>
-            <div style="margin-right:4px" class="inline-block-view">有</div>
-            <div class="spec-detail-input inline-block-view last-input">剂量</div>
-            <div class="last-input inline-block-view"></div>
-        </scroll-view>
-
-        <!-- <div class="spec-detail-view">
-            <div style="margin-left:12px;margin-right:4px">每</div>
+            <div class="spec-detail-text margin-left-12 margin-right-4">每</div>
             <div class="spec-detail-input">盒</div>
-            <div>有</div>
+            <div class="spec-detail-text">有</div>
             <div class="spec-detail-input">12</div>
             <div class="spec-detail-input">颗</div>
-            <div style="margin-right:8px">;</div>
-            <div>每</div>
-            <div style="max-width: 67px;">拆</div>
-            <div style="margin-right:4px">有</div>
-            <div class="spec-detail-input">剂量</div>
-            <div class="last-input"></div>
-        </div> -->
+            <div class="spec-detail-text margin-right-8">;</div>
+            <div class="spec-detail-text">每</div>
+            <div class="spec-detail-text max-width-67">拆</div>
+            <div class="spec-detail-text margin-right-4">有</div>
+            <div class="spec-detail-input margin-right-12">剂量</div>
+        </scroll-view>
         <!-- 单位轮播界面 -->
         <div class="home-swiper-class">
             <swiper>
@@ -105,42 +91,18 @@ export default {
       flex-grow: 1;
       height: 100%;
     }
-    .temp-scroll-view{
-      width: 100%;
-      height: 72px;
-    }
-
+    /* 以下是规格详情滚动区域 */
     .spec-detail-scroll{
-      border: 1px solid blue;
-      box-sizing: border-box;
+      /* 这里设置100%是为了自动适应子类 */
       width: 100%;
       height: 100%;
+      box-sizing: border-box;
+      border: 1px solid blue;
+      white-space: nowrap;
       background-color: antiquewhite;
-      white-space:nowrap;
-      display: flex;
-      align-items: center;
     }
-    .spec-detail-scroll > div{
+    .spec-detail-text{
       display: inline-block;
-    }
-    .spec-detail-view{
-        margin-top: 5px;
-        height: 72px;
-        background-color: white;
-        border: 1px solid red;
-        box-sizing: border-box;
-        /* 水平排列 */
-        display: flex;
-        align-items: center;
-        /* 可以滚动的条件 */
-        overflow-x:scroll;
-        overflow-y: hidden;
-        white-space: nowrap;
-    }
-    .spec-detail-view > div{
-      /* 防止缩放 */
-      flex-shrink:0;
-      flex-grow: 0;
     }
     .spec-detail-input{
         width: 67px;
@@ -152,20 +114,19 @@ export default {
         background-color: #F2F4F5;
         display: inline-block;
     }
-    /*隐藏滚动条*/
-    ::-webkit-scrollbar {
-      width: 0;
-      height: 0;
-      color: transparent;
+    .margin-left-12{
+        margin-left: 12px;
     }
-    .last-input{
-      /* margin-left: 8px; */
-      margin-right: 10px;
-      /* background-color: blue;
-      width: 10px;
-      height: 10px; */
-    }
-    .inline-block-view{
-      display: inline-block;
+    .margin-right-4{
+        margin-right: 4px;
+    } 
+    .margin-right-8{
+        margin-right: 8px;
+    } 
+    .margin-right-12{
+        margin-right: 12px;
+    } 
+    .max-width-67{
+        max-width: 67px;
     }
 </style>
