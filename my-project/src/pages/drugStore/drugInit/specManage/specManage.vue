@@ -32,14 +32,25 @@
         <div class="bottom-position-view">
           <!-- 单位轮播界面 -->
           <swiper>
+              <!-- 包装单位 -->
               <swiper-item>
-                  <img src="/static/images/carousel/1.jpg" alt="">
+                <unit-list-cell></unit-list-cell>
               </swiper-item>
+              <!-- 包装与拆零单位换算 -->
               <swiper-item>
-                  <img src="/static/images/carousel/2.jpg" alt="">                    
+                <change-count-cell></change-count-cell>              
               </swiper-item>
+              <!-- 拆零单位 -->
               <swiper-item>
-                  <img src="/static/images/carousel/3.jpg" alt="">
+                <unit-list-cell></unit-list-cell> 
+              </swiper-item>
+              <!-- 拆零单位与剂量单位换算 -->
+              <swiper-item>
+                <change-count-cell></change-count-cell>              
+              </swiper-item>
+              <!-- 剂量单位 -->
+              <swiper-item>
+                <unit-list-cell></unit-list-cell>           
               </swiper-item>
           </swiper>
         </div>
@@ -47,7 +58,13 @@
 </template>
 
 <script>
+import unitListCell from '@/pages/drugStore/drugInit/specManage/template/unitListCell'
+import changeCountCell from '@/pages/drugStore/drugInit/specManage/template/changeCountCell'
 export default {
+  components:{
+    unitListCell,
+    changeCountCell
+  },
   data () {
     return {
     };
@@ -79,6 +96,12 @@ export default {
       bottom: 0px;
       background-color: aqua;
     }
+    .bottom-position-view swiper{
+      width: 100%;
+      height: 100%;
+      background-color: #888888;
+    }
+
     .operation-view{
       background-color: #F1F1F4;
       height: 30px;
