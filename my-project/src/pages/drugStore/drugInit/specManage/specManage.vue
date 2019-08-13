@@ -31,7 +31,7 @@
         <!-- 2、底部固定区域 -->
         <div class="bottom-position-view">
           <!-- 单位轮播界面 -->
-          <!-- <swiper>
+          <swiper>
               <swiper-item>
                   <img src="/static/images/carousel/1.jpg" alt="">
               </swiper-item>
@@ -41,7 +41,7 @@
               <swiper-item>
                   <img src="/static/images/carousel/3.jpg" alt="">
               </swiper-item>
-          </swiper> -->
+          </swiper>
         </div>
     </div>
 </template>
