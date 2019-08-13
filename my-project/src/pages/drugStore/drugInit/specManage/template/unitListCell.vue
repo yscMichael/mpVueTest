@@ -1,29 +1,40 @@
 <template>
     <div class="main-view">
-        <!-- 1、序号和名称 -->
-        <div class="number-view">
-            <div>1</div>
-            <div>盒</div>
+        <!-- 1、顶部固定区域 -->
+        <div class="head-position-view">
+            <!-- 1.1、序号和名称 -->
+            <div class="number-view">
+                <div>1</div>
+                <div>盒</div>
+            </div>
+            <!-- 1.2、副标题 -->
+            <div class="subTitle-view">（包装单位）</div>
+            <!-- 1.3、按钮区域 -->
+            <div class="button-view">
+                <!-- 上一步 -->
+                <div class="up-button">
+                    <div class="arrow-left"></div>
+                    <div>上一步</div>
+                </div>
+                <!-- 下一步 -->
+                <div class="next-button">
+                    <div>下一步</div>
+                    <div class="arrow-right"></div>
+                </div>
+            </div>
         </div>
-        <!-- 2、副标题 -->
-        <div class="subTitle-view">（包装单位）</div>
-        <!-- 3、按钮区域 -->
-        <div class="button-view">
-            <div>上一步</div>    
-            <div>下一步</div>
-        </div>
-        <!-- 4、列表 -->
+        <!-- 2、中间列表区域 -->
         <div class="unit-list-view">
 
         </div>
-        <!-- 5、新增单位 -->
+        <!-- 3、新增单位 -->
         <div class="bottom-add-view">
-            <!-- 输入框 -->
+            <!--3.1、输入框 -->
             <div class="bottom-input-view">
                 <input type="text" placeholder="输入新增单位">
                 <div>确定</div>
             </div>
-            <!-- 提示语 -->
+            <!--3.2、提示语 -->
             <div class="bottom-tip-view">提示：新增的单位可在个人中心-自定义设置-药品单位模块里面删除</div>
         </div>
     </div>
@@ -41,16 +52,42 @@ export default {
 <style scoped>
     .main-view{
         background-color: white;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+    }
+    .head-position-view{
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        height: 77px;
+    }
+    .unit-list-view{
+        position: absolute;
+        top: 77px;
+        left: 0px;
+        right: 0px;
+        bottom: 90px;
+        background-color: red;
+    }
+    .bottom-add-view{
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        border: 1px solid white;
+        height: 90px;
     }
     .number-view{
         height: 28px;
-        background-color: antiquewhite;
         display: flex;
         align-items: center;
         justify-content: center;
     }
     .number-view > div:first-child{
-        background-color: #7885A0;
         color: white;
         font-size: 16px;
         font-weight: 500;
@@ -59,13 +96,13 @@ export default {
         line-height: 19px;
         text-align: center;
         border-radius: 50%;
+        background-color: #7885A0;
     }
     .number-view > div:last-child{
         color: #7885A0;
         margin-left: 5px;
     }
-    .subTitle-view{
-        background-color: aqua;
+    .subTitle-view{        
         height: 18px;
         line-height: 18px;
         font-size: 13px;
@@ -73,45 +110,45 @@ export default {
         text-align: center;
     }
     .button-view{
-        background-color: antiquewhite;
         height: 31px;
         position: relative;
-        padding: 10px;
     }
-    .button-view > div:first-child{
-        border: 1px solid #7885A0;
-        color: #7885A0;
-        font-size: 13px;
+    .up-button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         width: 68px;
         height: 31px;
-        line-height: 31px;
-        text-align: center;
         float: left;
-        margin-left: 2px;
+        margin-left: 12px;
+        border: 1px solid #7885A0;   
     }
-    .button-view > div:last-child{
-        border: 1px solid #7885A0;
+    .up-button > div:last-child{
         color: #7885A0;
         font-size: 13px;
+        margin-left: 5px;
+    }
+    .next-button{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         width: 68px;
         height: 31px;
-        line-height: 31px;
-        text-align: center;
         float: right;
-        margin-right: 2px;
+        margin-right: 12px;
+        border: 1px solid #7885A0;  
     }
-    .unit-list-view{
-        background-color: red;
-    }
-    .bottom-add-view{
-        background-color: white;
-        border: 1px solid white;
-        height: (72px + 10px + 14px + 14px);
+    .next-button > div:first-child{
+        color: #7885A0;
+        font-size: 13px;
+        margin-right: 5px;
     }
     .bottom-input-view{
         height: 44px;
         border: 1px #7885A0 solid;
-        margin: 14px 12px 0px 12px;
+        margin: 10px 12px 0px 12px;
         display: flex;
         align-items: center;
     }
@@ -121,20 +158,43 @@ export default {
         height: 100%;
         flex-grow: 1;
         margin: 0px 12px 0px 12px;
-        background-color: antiquewhite;
     }
     .bottom-input-view > div{
-        background-color: #7885A0;
         height: 44px;
         line-height:44px;
         text-align: center; 
         width: 84px;
         color: #FFFFFF;
         font-size: 16px;
+        background-color: #7885A0;
     }
     .bottom-tip-view{
         color: #999999;
         font-size: 10px;
-        margin: 14px 12px 12px 10px;
+        margin: 10px 12px 10px 10px;
+    }
+    /* 向右的箭头 */
+    .arrow-right {
+        font-size: 0;
+        line-height: 0;
+        border-width: 8px;
+        border-color: #7885A0;
+        border-right-width: 0;
+        border-style: dashed;
+        border-left-style: solid;
+        border-top-color: transparent;
+        border-bottom-color: transparent;
+    } 
+    /* 向左的箭头 */
+    .arrow-left {
+        font-size: 0;
+        line-height: 0;
+        border-width: 8px;
+        border-color: #7885A0;
+        border-left-width: 0;
+        border-style: dashed;
+        border-right-style: solid;
+        border-top-color: transparent;
+        border-bottom-color: transparent;
     }
 </style>
