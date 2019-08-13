@@ -11,7 +11,22 @@
           <input type="text" value="/盒">
         </div>
         <!-- 规格详情 -->
-        <div class="spec-detail-view">
+        <scroll-view class="spec-detail-scroll"
+                     scroll-x="true">
+            <div style="margin-left:12px;margin-right:4px" class="inline-block-view">每</div>
+            <div class="spec-detail-input inline-block-view">盒</div>
+            <div class="inline-block-view">有</div>
+            <div class="spec-detail-input inline-block-view">12</div>
+            <div class="spec-detail-input inline-block-view">颗</div>
+            <div style="margin-right:8px" class="inline-block-view">;</div>
+            <div class="inline-block-view">每</div>
+            <div style="max-width: 67px;" class="inline-block-view">拆</div>
+            <div style="margin-right:4px" class="inline-block-view">有</div>
+            <div class="spec-detail-input inline-block-view last-input">剂量</div>
+            <div class="last-input inline-block-view"></div>
+        </scroll-view>
+
+        <!-- <div class="spec-detail-view">
             <div style="margin-left:12px;margin-right:4px">每</div>
             <div class="spec-detail-input">盒</div>
             <div>有</div>
@@ -23,7 +38,7 @@
             <div style="margin-right:4px">有</div>
             <div class="spec-detail-input">剂量</div>
             <div class="last-input"></div>
-        </div>
+        </div> -->
         <!-- 单位轮播界面 -->
         <div class="home-swiper-class">
             <swiper>
@@ -90,6 +105,24 @@ export default {
       flex-grow: 1;
       height: 100%;
     }
+    .temp-scroll-view{
+      width: 100%;
+      height: 72px;
+    }
+
+    .spec-detail-scroll{
+      border: 1px solid blue;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      background-color: antiquewhite;
+      white-space:nowrap;
+      display: flex;
+      align-items: center;
+    }
+    .spec-detail-scroll > div{
+      display: inline-block;
+    }
     .spec-detail-view{
         margin-top: 5px;
         height: 72px;
@@ -117,6 +150,7 @@ export default {
         margin-left: 4px;
         margin-right: 4px;
         background-color: #F2F4F5;
+        display: inline-block;
     }
     /*隐藏滚动条*/
     ::-webkit-scrollbar {
@@ -125,10 +159,13 @@ export default {
       color: transparent;
     }
     .last-input{
-      margin-left: 8px;
+      /* margin-left: 8px; */
       margin-right: 10px;
-      background-color: white;
-      width: 1px;
-      height: 100%;
+      /* background-color: blue;
+      width: 10px;
+      height: 10px; */
+    }
+    .inline-block-view{
+      display: inline-block;
     }
 </style>
