@@ -21,12 +21,7 @@
             <div>每</div>
             <div style="max-width: 67px;">拆</div>
             <div style="margin-right:4px">有</div>
-            <div class="spec-detail-input last-input">剂量</div>
-            <div class="spec-detail-input last-input">剂量</div>
-            <div class="spec-detail-input last-input">剂量</div>
-            <div class="spec-detail-input last-input">剂量</div>
-            <div class="spec-detail-input last-input">剂量</div>
-            <div class="spec-detail-input last-input">剂量</div>
+            <div class="spec-detail-input">剂量</div>
         </div>
         <!-- 单位轮播界面 -->
         <div class="home-swiper-class">
@@ -95,14 +90,22 @@ export default {
       height: 100%;
     }
     .spec-detail-view{
-        /* background-color: white; */
-        background-color: antiquewhite;
-        width: 100%;
+        background-color: white;
+        border: 1px solid red;
+        box-sizing: border-box;
         height: 72px;
         margin-top: 5px;
+        /* 水平排列 */
         display: flex;
         align-items: center;
-        overflow-x: auto;
+        /* 可以滚动的条件 */
+        overflow-x:scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
+    .spec-detail-view > div{
+      /* 防止缩放 */
+      flex-shrink:0;
     }
     .spec-detail-input{
         background-color: #F2F4F5;
@@ -114,8 +117,13 @@ export default {
         margin-left: 4px;
         margin-right: 4px;
     }
-    .last-input{
-      margin-right: 12px;
+    /*隐藏滚动条*/
+    ::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      color: transparent;
     }
-
+    .last-input{
+      margin-right: 12px !important;
+    }
 </style>
