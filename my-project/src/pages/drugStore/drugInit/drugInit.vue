@@ -17,22 +17,22 @@
                 <!-- 西药 -->
                 <swiper-item>
                   <!-- <div>西药</div> -->
-                  <west-drug-list></west-drug-list>
+                  <west-drug-list ref="westdrug"></west-drug-list>
                 </swiper-item>
                 <!-- 中成药 -->
                 <swiper-item>
                   <!-- <div>中成药</div> -->
-                  <special-drug-list></special-drug-list>
+                  <special-drug-list ref="specialdrug"></special-drug-list>
                 </swiper-item>
                 <!-- 中药 -->
                 <swiper-item>
                   <!-- <div>中药</div> -->
-                  <chinese-drug-list></chinese-drug-list>
+                  <chinese-drug-list ref="chinesedrug"></chinese-drug-list>
                 </swiper-item>
                 <!-- 医疗器械 -->
                 <swiper-item>
                   <!-- <div>医疗器械</div> -->
-                  <instrument-list></instrument-list>
+                  <instrument-list ref="instrument"></instrument-list>
                 </swiper-item>
             </swiper>
         </div>
@@ -90,6 +90,19 @@ export default {
       console.log(e.mp.detail.value);
     }
   },
+  created() {
+    // 这个全局只执行一次
+    console.log('主界面---created');
+  },
+  mounted() {
+    // 这个每次进来会执行多次
+    console.log('主界面-----mounted');
+    // 刷新各个列表数据
+    this.$refs.westdrug.refreshData();
+    this.$refs.specialdrug.refreshData();
+    this.$refs.chinesedrug.refreshData();
+    this.$refs.instrument.refreshData();
+  }
 }
 </script>
 

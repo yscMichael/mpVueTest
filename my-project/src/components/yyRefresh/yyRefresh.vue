@@ -70,7 +70,7 @@ export default {
 
     .refrsh-loading{
         display: inline-block;
-        animation: viewlinear 1.0s linear infinite;
+        animation: viewlinear 0.5s linear infinite;
     }
 
     @keyframes viewlinear {

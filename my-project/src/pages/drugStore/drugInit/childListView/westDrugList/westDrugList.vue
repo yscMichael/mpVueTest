@@ -1,8 +1,10 @@
 <template>
      <scroll-view class="main-scroll"
-                  scroll-y="true">
+                  scroll-y="true"
+                  @scrolltoupper="refreshData"
+                  @scrolltolower="loadMoreData">
         <!-- 下拉刷新 -->
-        <yy-refresh :isHeader="true" :isShow="isRefresh"></yy-refresh>          
+        <yy-refresh :isHeader="true" :isShow="isRefresh"></yy-refresh>
         <!-- 列表 -->
         <initdrug-list-cell @clickCell="clickDrugListCell" 
                             v-for="(item,index) in dataSource" 
@@ -29,10 +31,17 @@ export default {
   },
   data () {
     return {
-      dataSource:[1,2,3,4,5,6,7,8,9,10,11,12,13,14],
-      isHiddenNoData:true,
-      isRefresh:true,
+      //数据源
+      dataSource:[],
+      //是否隐藏无数据
+      isHiddenNoData:false,
+      //是否在下拉刷新
+      isRefresh:false,
+      //是否正在上拉加载
       isLoadMore:false,
+      //总数
+      totalCount:0,
+      //参数
       param:{
         op:'Page',
         cloud:'drug',
@@ -51,22 +60,60 @@ export default {
   },
   methods: {
     clickDrugListCell(){
-      console.log('??cell');
+      console.log('cell');
     },
     refreshData(){
+      // 1、判断当前是否进行下拉刷新和上拉加载、不能重复加载
+      if (this.isRefresh || this.isLoadMore) {
+          return;
+      }
+      // 2、显示加载框
+      wx.showLoading({
+        title: '正在拼命加载...',
+        mask: false,
+      });
+      //3、开始网络请求(参数重置)
+      this.isRefresh = true;
       this.param.page = 1;
       this.dataSource = [];
-      this.loadData();
     },
     loadMoreData(){
-      this.param.page ++;
-      this.loadData();
+      // 1、不能重复加载
+      if (this.isRefresh || this.isLoadMore) {
+          return;
+      }
+      // 2、显示加载框(要判断是否有更多数据)
+      if (this.totalCount <= this.dataSource.length) {
+          wx.showLoading({
+            title: '无更多数据加载...',
+            mask: false,
+          });
+          // 隐藏动画
+          this.isLoadMore = false;
+      }else{
+          // 3、开始网络请求
+          this.isLoadMore = true;
+          this.param.page ++;
+          this.loadData();
+      }
     },
     loadData(){
       this.$fly.get(West_Drug_URL,this.param)
         .then((response) => {
-           console.log('西药列表');
-           console.log(response.data.rows);
+          console.log('西药列表');
+          console.log(response.data.rows);
+          console.log(response.data.total);
+          // 1、处理动画(延时执行)
+          setTimeout(() => {
+            this.isRefresh = this.isRefresh ? !this.isRefresh : '';
+            this.isLoadMore = this.isLoadMore ? !this.isLoadMore : '';
+             wx.hideLoading();
+          }, 2000);
+          // 2、数据添加到数据源
+
+          // 3、处理无数据情况
+
+          // 4、改变父组件底部数据
         })
         .catch(function(error){
           console.log(error);
@@ -74,13 +121,16 @@ export default {
             title: "登陆失败",
           });
         });
+    },
+    dealNoData(){
+      console.log('dealNoDatadealNoData');
+      if (this.dataSource.length == 0) {
+        this.isHiddenNoData = false;
+      }else{
+        this.isHiddenNoData = true;
+      }
     }
-  },
-  created() {
-    console.log('网络请求数据');
-    this.refreshData();
-  },
-
+  }
 }
 </script>
 
