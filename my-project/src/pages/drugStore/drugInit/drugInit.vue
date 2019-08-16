@@ -25,17 +25,26 @@
                 <!-- 中成药 -->
                 <swiper-item>
                   <!-- <div>中成药</div> -->
-                  <special-drug-list @func="getSpecialTotalFromSon" ref="specialdrug"></special-drug-list>
+                  <special-drug-list @func="getSpecialTotalFromSon" 
+                                     ref="specialdrug"
+                                     :screenWidth="screenWidth"
+                                     :screenHeight="screenHeight"></special-drug-list>
                 </swiper-item>
                 <!-- 中药 -->
                 <swiper-item>
                   <!-- <div>中药</div> -->
-                  <chinese-drug-list @func="getChineseTotalFromSon" ref="chinesedrug"></chinese-drug-list>
+                  <chinese-drug-list @func="getChineseTotalFromSon" 
+                                     ref="chinesedrug"
+                                     :screenWidth="screenWidth"
+                                     :screenHeight="screenHeight"></chinese-drug-list>
                 </swiper-item>
                 <!-- 医疗器械 -->
                 <swiper-item>
                   <!-- <div>医疗器械</div> -->
-                  <instrument-list @func="getInstrumentTotalFromSon" ref="instrument"></instrument-list>
+                  <instrument-list @func="getInstrumentTotalFromSon" 
+                                   ref="instrument"
+                                   :screenWidth="screenWidth"
+                                   :screenHeight="screenHeight"></instrument-list>
                 </swiper-item>
             </swiper>
         </div>
@@ -150,7 +159,7 @@ export default {
   created() {
     // 这个全局只执行一次(获取屏幕和宽)
     this.screenWidth = wx.getSystemInfoSync().windowWidth;
-    this.screenHeight = wx.getSystemInfoSync().windowHeight;
+    this.screenHeight = wx.getSystemInfoSync().windowHeight - 100;
     console.log('这个全局只执行一次(获取屏幕和宽)');
     console.log(this.screenWidth);
     console.log(this.screenHeight);

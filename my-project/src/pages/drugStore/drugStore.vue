@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <img src="/static/images/drugStore/yaofang_head.png" alt="">
+      <img src="/static/images/drugstore/yaofang.png" alt="">
       <div class="content-list">
         <yy-list-cell @clickListCell="jumpCtrl" :item="purchase"></yy-list-cell>
         <yy-list-cell @clickListCell="jumpCtrl" :item="inventory"></yy-list-cell>
