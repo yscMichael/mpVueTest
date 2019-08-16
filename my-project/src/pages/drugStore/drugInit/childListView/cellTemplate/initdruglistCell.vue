@@ -4,19 +4,19 @@
        <div class="top-view">
          <img src="/static/images/drugstore/drugInit/img_default.png" alt="">
          <div class="top-content">
-             <div class="first-title">注射用奥美拉唑钠</div>
+             <div class="first-title">{{item.common_name}}</div>
              <div class="second-title">
-                <div>北京悦康药业有限公司</div>
-                <div>德瑞克</div>
+                <div>{{item.manufacturer.key_name}}</div>
+                <div>{{item.key_name}}</div>
              </div>
              <div class="third-title">
-               <div>进货价¥0.0000/盒</div>
+               <div>进货价¥{{item.cost}}/{{item.min_unit.key_name}}</div>
                <div>|</div>
-               <div>处方价¥0.0000/盒</div>
+               <div>处方价¥{{item.min_price}}/{{item.min_unit.key_name}}</div>
              </div>
              <div class="forth-title">
-               <div>库存：0瓶</div>
-               <div>40mg/瓶,1瓶/盒</div>
+               <div>库存：{{item.local_count}}{{item.rx_unit.key_name}}</div>
+               <div v-show="isShowSpec">{{item.spec}}</div>
              </div>
          </div>
          <img src="/static/images/drugstore/drugInit/forbidden.png" alt="">
@@ -33,6 +33,22 @@
 
 <script>
 export default {
+  props:{
+      item:{
+          type: Object,
+          required:true,
+          default () {
+              return {}
+          }
+      },
+      isShowSpec:{
+          type: Boolean,
+          required:true,
+          default () {
+              return {}
+          }
+      }
+  },
   data () {
     return {
     };
@@ -80,10 +96,13 @@ export default {
     font-size: 20rpx;
     background-color: #EEF6FD;
     border: 1rpx solid #1F91F2;
+    min-width: 50px;
+    text-align: center;
   }
   .second-title > div:last-child{
     color: #5A5A5A;
     font-size: 20rpx;
+    margin-left: 5px;
   }
   .third-title{
     display: flex;
@@ -109,7 +128,7 @@ export default {
     color: #5A5A5A;
     font-size: 20rpx;
     flex-grow: 1;
-    text-align: right;
+    text-align: center;
   }
   .top-view > img:last-child{
     width: 93rpx;

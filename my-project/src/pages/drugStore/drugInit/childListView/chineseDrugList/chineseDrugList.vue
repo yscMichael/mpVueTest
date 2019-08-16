@@ -8,7 +8,8 @@
         <!-- 列表 -->
         <initdrug-list-cell @clickCell="clickDrugListCell" 
                             v-for="(item,index) in dataSource" 
-                            :key="index" 
+                            :key="index"
+                            :isShowSpec="false" 
                             :item="item">
         </initdrug-list-cell>
         <!-- 无数据 -->
