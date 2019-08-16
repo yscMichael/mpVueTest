@@ -21,6 +21,7 @@
 </template>
 
 <script>
+const Special_Drug_URL = '/app';
 import initdrugListCell from '@/pages/drugStore/drugInit/childListView/cellTemplate/initdrugListCell'
 import yyRefresh from '@/components/yyRefresh/yyRefresh'
 export default {
@@ -44,7 +45,7 @@ export default {
       param:{
         op:'Page',
         cloud:'drug',
-        dug_type:'1',
+        dug_type:'2',
         key_word:'',
         page:1,
         rows:10,
@@ -59,7 +60,6 @@ export default {
   },
   methods: {
     clickDrugListCell(){
-      console.log('点击cell');
     },
     refreshData(){
       // 1、判断当前是否进行下拉刷新和上拉加载、不能重复加载
@@ -75,6 +75,7 @@ export default {
       this.isRefresh = true;
       this.param.page = 1;
       this.dataSource = [];
+      this.loadData();
     },
     loadMoreData(){
       // 1、不能重复加载
@@ -97,33 +98,28 @@ export default {
       }
     },
     loadData(){
-      this.$fly.get(West_Drug_URL,this.param)
+      this.$fly.get(Special_Drug_URL,this.param)
         .then((response) => {
-          console.log('西药列表');
-          console.log(response.data.rows);
-          console.log(response.data.total);
           // 1、处理动画(延时执行)
           setTimeout(() => {
             this.isRefresh = this.isRefresh ? !this.isRefresh : '';
             this.isLoadMore = this.isLoadMore ? !this.isLoadMore : '';
             wx.hideLoading();
           }, 2000);
-          // 2、数据添加到数据源
-
+          // 2、数据添加到数据源、更新底部数据
+          this.dataSource = this.dataSource.concat(response.data.rows);
+          this.totalCount = response.data.total;
+          this.$emit('func',this.totalCount);
           // 3、处理无数据情况
-
-          // 4、改变父组件底部数据
-
+          this.dealNoData();
         })
         .catch(function(error){
-          console.log(error);
           wx.showToast({
-            title: "登陆失败",
+            title: "请求失败",
           });
         });
     },
     dealNoData(){
-      console.log('dealNoDatadealNoData');
       if (this.dataSource.length == 0) {
         this.isHiddenNoData = false;
       }else{

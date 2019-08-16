@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     clickDrugListCell(){
-      console.log('cell');
+
     },
     refreshData(){
       // 1、判断当前是否进行下拉刷新和上拉加载、不能重复加载
@@ -101,9 +101,6 @@ export default {
     loadData(){
       this.$fly.get(West_Drug_URL,this.param)
         .then((response) => {
-          console.log('西药列表');
-          console.log(response.data.rows);
-          console.log(response.data.total);
           // 1、处理动画(延时执行)
           setTimeout(() => {
             this.isRefresh = this.isRefresh ? !this.isRefresh : '';
@@ -111,24 +108,19 @@ export default {
              wx.hideLoading();
           }, 2000);
           // 2、数据添加到数据源、并更新底部数据
-          this.dataSource = this.dataSource.concat(response.data.rows);
-          console.log('----------');
-          console.log(this.dataSource);          
+          this.dataSource = this.dataSource.concat(response.data.rows);    
           this.totalCount = response.data.total;
           this.$emit('func',this.totalCount);
           // 3、处理无数据情况
           this.dealNoData();
-          // 4、改变父组件底部数据
         })
         .catch(function(error){
-          console.log(error);
           wx.showToast({
-            title: "登陆失败",
+            title: "请求失败",
           });
         });
     },
     dealNoData(){
-      console.log('dealNoDatadealNoData');
       if (this.dataSource.length == 0) {
         this.isHiddenNoData = false;
       }else{

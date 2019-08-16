@@ -36,11 +36,9 @@ export default {
   created() {
      // 图片和文字设置  
     if (this.isHeader) {
-        console.log('true');
         this.srcImage = '/static/images/refresh/refresh.png';
         this.srcTitle = '正在下拉刷新...';
     }else{
-        console.log('false');
         this.srcImage = '/static/images/refresh/Loading.png';
         this.srcTitle = '正在努力加载中...';
     }

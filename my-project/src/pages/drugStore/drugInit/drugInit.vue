@@ -17,22 +17,22 @@
                 <!-- 西药 -->
                 <swiper-item>
                   <!-- <div>西药</div> -->
-                  <west-drug-list @func="getTotalFromSon" ref="westdrug"></west-drug-list>
+                  <west-drug-list @func="getWestTotalFromSon" ref="westdrug"></west-drug-list>
                 </swiper-item>
                 <!-- 中成药 -->
                 <swiper-item>
                   <!-- <div>中成药</div> -->
-                  <special-drug-list ref="specialdrug"></special-drug-list>
+                  <special-drug-list @func="getSpecialTotalFromSon" ref="specialdrug"></special-drug-list>
                 </swiper-item>
                 <!-- 中药 -->
                 <swiper-item>
                   <!-- <div>中药</div> -->
-                  <chinese-drug-list ref="chinesedrug"></chinese-drug-list>
+                  <chinese-drug-list @func="getChineseTotalFromSon" ref="chinesedrug"></chinese-drug-list>
                 </swiper-item>
                 <!-- 医疗器械 -->
                 <swiper-item>
                   <!-- <div>医疗器械</div> -->
-                  <instrument-list ref="instrument"></instrument-list>
+                  <instrument-list @func="getInstrumentTotalFromSon" ref="instrument"></instrument-list>
                 </swiper-item>
             </swiper>
         </div>
@@ -67,6 +67,10 @@ export default {
     return {
       selectIndex:0,
       parentTotalCount:0,
+      westTotalCount:0,
+      specialTotalCount:0,
+      chineseTotalCount:0,
+      instrumentTotalCount:0,
       buttonArray:[
         {id:0, title:'西药'},
         {id:1, title:'中成药'},
@@ -81,33 +85,73 @@ export default {
     };
   },
   methods: {
+    //顶部切换条
     clickBarItem(data){
       this.selectIndex = data;
+      switch (data) {
+        case 0:
+          this.parentTotalCount = this.westTotalCount;
+          break;
+        case 1:
+          this.parentTotalCount = this.specialTotalCount;
+          break;
+        case 2:
+          this.parentTotalCount = this.chineseTotalCount;
+          break;
+        case 3:
+          this.parentTotalCount = this.instrumentTotalCount;
+          break;
+        default:
+          break;
+      }
     },
+    // scroll滚动事件
     scrollViewChange(e){
       this.selectIndex = e.mp.detail.current;
     },
+    // 继续添加弹出框
     bindSelectInitDrugType(e){
       console.log(e.mp.detail.value);
     },
-    getTotalFromSon(data){
-      console.log('-----------------');
-      console.log(data);
-      this.parentTotalCount = data;
+    // 西药网络请求totalCount更新
+    getWestTotalFromSon(data){
+      this.westTotalCount = data;
+      if (this.selectIndex == 0) {
+         this.parentTotalCount = this.westTotalCount;
+      }
+    },
+    // 中成药网络请求totalCount更新
+    getSpecialTotalFromSon(data){
+      this.specialTotalCount = data;
+      if (this.selectIndex == 1) {
+         this.parentTotalCount = this.specialTotalCount;
+      }
+    },
+    // 中药网络请求totalCount更新
+    getChineseTotalFromSon(data){
+      this.chineseTotalCount = data; 
+      if (this.selectIndex == 2) {
+         this.parentTotalCount = this.chineseTotalCount;
+      }
+    },
+    // 医疗器械网络请求totalCount更新
+    getInstrumentTotalFromSon(data){
+      this.instrumentTotalCount = data;
+      if (this.selectIndex == 3) {
+         this.parentTotalCount = this.instrumentTotalCount;
+      }
     }
   },
   created() {
     // 这个全局只执行一次
-    console.log('主界面---created');
   },
   mounted() {
     // 这个每次进来会执行多次
-    console.log('主界面-----mounted');
-    // 刷新各个列表数据
+    //首先加载西药列表
     this.$refs.westdrug.refreshData();
-    // this.$refs.specialdrug.refreshData();
-    // this.$refs.chinesedrug.refreshData();
-    // this.$refs.instrument.refreshData();
+    this.$refs.specialdrug.refreshData();
+    this.$refs.chinesedrug.refreshData();
+    this.$refs.instrument.refreshData();
   }
 }
 </script>
@@ -159,6 +203,7 @@ export default {
       z-index: 9999;
       align-items: center;
       background-color: white;
+      border-top: 1px solid #E5E5E5;
   }
   .bottom-button > img{
     width: 30rpx;
