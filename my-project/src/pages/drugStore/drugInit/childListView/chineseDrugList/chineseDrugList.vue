@@ -2,7 +2,8 @@
     <scroll-view class="main-scroll"
                  scroll-y="true"
                  @scrolltoupper="refreshData"
-                 @scrolltolower="loadMoreData">
+                 @scrolltolower="loadMoreData"
+                 :style="{width:screenWidth + 'px',height:screenHeight + 'px'}">
         <!-- 下拉刷新 -->
         <yy-refresh :isHeader="true" :isShow="isRefresh"></yy-refresh>
         <!-- 列表 -->
@@ -30,6 +31,7 @@ export default {
     initdrugListCell,
     yyRefresh
   },
+  props:['screenWidth','screenHeight'],
   data () {
     return {
       //数据源
@@ -106,7 +108,7 @@ export default {
             this.isRefresh = this.isRefresh ? !this.isRefresh : '';
             this.isLoadMore = this.isLoadMore ? !this.isLoadMore : '';
              wx.hideLoading();
-          }, 2000);
+          }, 1500);
           // 2、数据添加到数据源
           this.dataSource = this.dataSource.concat(response.data.rows);    
           this.totalCount = response.data.total;

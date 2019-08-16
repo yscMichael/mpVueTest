@@ -17,7 +17,10 @@
                 <!-- 西药 -->
                 <swiper-item>
                   <!-- <div>西药</div> -->
-                  <west-drug-list @func="getWestTotalFromSon" ref="westdrug"></west-drug-list>
+                  <west-drug-list @func="getWestTotalFromSon" 
+                                  ref="westdrug"
+                                  :screenWidth="screenWidth"
+                                  :screenHeight="screenHeight"></west-drug-list>
                 </swiper-item>
                 <!-- 中成药 -->
                 <swiper-item>
@@ -71,6 +74,8 @@ export default {
       specialTotalCount:0,
       chineseTotalCount:0,
       instrumentTotalCount:0,
+      screenWidth:'0',
+      screenHeight:'0',
       buttonArray:[
         {id:0, title:'西药'},
         {id:1, title:'中成药'},
@@ -143,7 +148,12 @@ export default {
     }
   },
   created() {
-    // 这个全局只执行一次
+    // 这个全局只执行一次(获取屏幕和宽)
+    this.screenWidth = wx.getSystemInfoSync().windowWidth;
+    this.screenHeight = wx.getSystemInfoSync().windowHeight;
+    console.log('这个全局只执行一次(获取屏幕和宽)');
+    console.log(this.screenWidth);
+    console.log(this.screenHeight);
   },
   mounted() {
     // 这个每次进来会执行多次
