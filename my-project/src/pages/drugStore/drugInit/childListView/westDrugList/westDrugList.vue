@@ -76,6 +76,7 @@ export default {
       this.isRefresh = true;
       this.param.page = 1;
       this.dataSource = [];
+      this.loadData();
     },
     loadMoreData(){
       // 1、不能重复加载
@@ -109,10 +110,14 @@ export default {
             this.isLoadMore = this.isLoadMore ? !this.isLoadMore : '';
              wx.hideLoading();
           }, 2000);
-          // 2、数据添加到数据源
-
+          // 2、数据添加到数据源、并更新底部数据
+          this.dataSource = this.dataSource.concat(response.data.rows);
+          console.log('----------');
+          console.log(this.dataSource);          
+          this.totalCount = response.data.total;
+          this.$emit('func',this.totalCount);
           // 3、处理无数据情况
-
+          this.dealNoData();
           // 4、改变父组件底部数据
         })
         .catch(function(error){

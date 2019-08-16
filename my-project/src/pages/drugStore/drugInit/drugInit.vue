@@ -17,7 +17,7 @@
                 <!-- 西药 -->
                 <swiper-item>
                   <!-- <div>西药</div> -->
-                  <west-drug-list ref="westdrug"></west-drug-list>
+                  <west-drug-list @func="getTotalFromSon" ref="westdrug"></west-drug-list>
                 </swiper-item>
                 <!-- 中成药 -->
                 <swiper-item>
@@ -40,7 +40,7 @@
         <div class="bottom-button">
             <img src="/static/images/drugstore/drugInit/shop.png" alt="">
             <div>已添加(种)：</div>
-            <div>368</div>
+            <div>{{parentTotalCount}}</div>
             <picker mode="selector"
                     @change="bindSelectInitDrugType" 
                     :range="initDrugTypeArr">
@@ -66,6 +66,7 @@ export default {
   data () {
     return {
       selectIndex:0,
+      parentTotalCount:0,
       buttonArray:[
         {id:0, title:'西药'},
         {id:1, title:'中成药'},
@@ -88,6 +89,11 @@ export default {
     },
     bindSelectInitDrugType(e){
       console.log(e.mp.detail.value);
+    },
+    getTotalFromSon(data){
+      console.log('-----------------');
+      console.log(data);
+      this.parentTotalCount = data;
     }
   },
   created() {
@@ -99,9 +105,9 @@ export default {
     console.log('主界面-----mounted');
     // 刷新各个列表数据
     this.$refs.westdrug.refreshData();
-    this.$refs.specialdrug.refreshData();
-    this.$refs.chinesedrug.refreshData();
-    this.$refs.instrument.refreshData();
+    // this.$refs.specialdrug.refreshData();
+    // this.$refs.chinesedrug.refreshData();
+    // this.$refs.instrument.refreshData();
   }
 }
 </script>

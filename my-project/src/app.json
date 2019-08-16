@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/index/main",
-
     "pages/home/main",
     "pages/clinic/main",
     "pages/analysis/main",
