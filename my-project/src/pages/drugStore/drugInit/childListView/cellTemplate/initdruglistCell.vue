@@ -1,5 +1,5 @@
 <template>
-    <div class="main-view">
+    <div class="main-view" @click="goToDetail">
       <!-- 药品信息 -->
        <div class="top-view">
          <img src="/static/images/drugstore/drugInit/img_default.png" alt="">
@@ -23,8 +23,8 @@
        </div>
        <!-- 批次和库存流水 -->
        <div class="bottom-view">
-            <div>批次</div>
-            <div>库存流水</div>
+            <div @click.stop="clickBatchButton">批次</div>
+            <div @click.stop="clickInventoryButton">库存流水</div>
        </div>
        <!-- 底部分割线 -->
        <div class="line-view"></div>
@@ -52,7 +52,18 @@ export default {
   data () {
     return {
     };
-  }
+  },
+  methods: {
+    goToDetail(){
+      this.$emit('clickDrugListCell', this.item.id);
+    },
+    clickBatchButton(){
+      this.$emit('clickBatchDetail',this.item.id);
+    },
+    clickInventoryButton(){
+      this.$emit('clickInventoryFlow',this.item.id);
+    }
+  },
 }
 </script>
 

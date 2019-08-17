@@ -7,7 +7,9 @@
         <!-- 下拉刷新 -->
         <yy-refresh :isHeader="true" :isShow="isRefresh"></yy-refresh>
         <!-- 列表 -->
-        <initdrug-list-cell @clickCell="clickDrugListCell" 
+        <initdrug-list-cell @clickDrugListCell="clickDrugListCell"
+                            @clickBatchDetail="clickBatchDetail" 
+                            @clickInventoryFlow="clickInventoryFlow"
                             v-for="(item,index) in dataSource" 
                             :key="index" 
                             :isShowSpec="true"
@@ -66,8 +68,23 @@ export default {
     };
   },
   methods: {
-    clickDrugListCell(){
-
+    // 点击西药cell
+    clickDrugListCell(drugId){
+      console.log('点击cell' + drugId);
+    },
+    // 点击批次
+    clickBatchDetail(drugId){
+      console.log('点击批次');
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/batchListDetail/main?id=' + drugId,
+      });
+    },
+    // 点击库存流水
+    clickInventoryFlow(drugId){
+      console.log('点击库存流水');
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/inventoryFlow/main?id=' + drugId,
+      });
     },
     refreshData(){
       // 1、判断当前是否进行下拉刷新和上拉加载、不能重复加载
