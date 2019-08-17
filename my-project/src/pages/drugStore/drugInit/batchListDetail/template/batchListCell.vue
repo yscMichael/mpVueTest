@@ -1,6 +1,7 @@
 <template>
     <div class="main-view">
         <div class="line-view"></div>
+        <img class="flag-image-view" src="/static/images/drugstore/drugInit/expire_date.png" alt="">
         <div class="content margin-top-10">
             <div>仓库：</div>
             <div>{{item.warehouse_id.key_name}}</div>
@@ -58,10 +59,18 @@ export default {
     .main-view{
         background-color: white;
         border: 1rpx solid white;
+        position: relative;
     }
     .line-view{
         background-color: #F1F0F5;
         height: 10px;
+    }
+    .flag-image-view{
+        width: 60px;
+        height: 55px;
+        position: absolute;
+        top: 0px;
+        left: 80px;
     }
     .content{
         display: flex;

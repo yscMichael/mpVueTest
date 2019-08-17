@@ -30,7 +30,7 @@
         </div>
         <div class="content margin-top-5">
             <div>入库量：</div>
-            <div>-------</div>
+            <div>{{fullname}}</div>
         </div>
         <div class="content margin-top-5 text-bold">
             <div>剩余量：</div>
@@ -57,7 +57,12 @@ export default {
     data () {
         return {
         };
-    }
+    },
+    computed: {
+        fullname(){
+            return 'test-name' + this.item.pw_number;
+        }
+    },
 }
 </script>
 
