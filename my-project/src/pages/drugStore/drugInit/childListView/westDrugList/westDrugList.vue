@@ -25,7 +25,6 @@
 </template>
 
 <script>
-const West_Drug_URL = '/app';
 import initdrugListCell from '@/pages/drugStore/drugInit/childListView/cellTemplate/initdrugListCell'
 import yyRefresh from '@/components/yyRefresh/yyRefresh'
 export default {
@@ -70,18 +69,18 @@ export default {
   methods: {
     // 点击西药cell
     clickDrugListCell(drugId){
-      console.log('点击cell' + drugId);
+      console.log('点击cell----' + drugId);
     },
     // 点击批次
     clickBatchDetail(drugId){
-      console.log('点击批次');
+      console.log('点击批次-----' + drugId);
       wx.navigateTo({
         url: '/pages/drugStore/drugInit/batchListDetail/main?id=' + drugId,
       });
     },
     // 点击库存流水
     clickInventoryFlow(drugId){
-      console.log('点击库存流水');
+      console.log('点击库存流水-----' + drugId);
       wx.navigateTo({
         url: '/pages/drugStore/drugInit/inventoryFlow/main?id=' + drugId,
       });
@@ -123,7 +122,7 @@ export default {
       }
     },
     loadData(){
-      this.$fly.get(West_Drug_URL,this.param)
+      this.$fly.get('/app',this.param)
         .then((response) => {
           // 1、处理动画(延时执行)
           setTimeout(() => {

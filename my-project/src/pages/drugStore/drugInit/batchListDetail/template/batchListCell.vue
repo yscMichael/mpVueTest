@@ -3,45 +3,54 @@
         <div class="line-view"></div>
         <div class="content margin-top-10">
             <div>仓库：</div>
-            <div>默认仓库</div>
+            <div>{{item.warehouse_id.key_name}}</div>
         </div>
         <div class="content margin-top-5">
             <div>供应商：</div>
-            <div>默认供应商</div>
+            <div>{{item.vendor_id.key_name}}</div>
         </div>
         <div class="content margin-top-5">
             <div>入库单号：</div>
-            <div>CG-897890000012</div>
+            <div>{{item.pw_number}}</div>
         </div>
         <div class="content margin-top-5">
             <div>入库日期：</div>
-            <div>2018-12-24</div>
+            <div>{{item.in_date}}</div>
         </div>
         <div class="content margin-top-5">
             <div>失效日期：</div>
-            <div>2019-12-24</div>
+            <div>{{item.expire_date}}</div>
         </div>
         <div class="content margin-top-5">
             <div>批号：</div>
-            <div>100000</div>
+            <div>{{item.batch_no}}</div>
         </div>
         <div class="content margin-top-5">
             <div>进货单价：</div>
-            <div>12元</div>
+            <div>{{item.packing_price?item.packing_price:'0'}}元</div>
         </div>
         <div class="content margin-top-5 margin-bottom-10">
             <div>数量：</div>
-            <div>12.4盒</div>
+            <div>{{item.count}}{{item.rx_unit.key_name}}</div>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-    };
-  }
+    props:{
+        item:{
+            type: Object,
+            required:true,
+            default () {
+                return {}
+            }
+        }
+    },
+    data () {
+        return {
+        };
+    }
 }
 </script>
 
