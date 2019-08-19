@@ -2,20 +2,21 @@
     <div class="main-view" @click="goToDetail">
       <!-- 药品信息 -->
        <div class="top-view">
-         <img src="/static/images/drugstore/drugInit/img_default.png" alt="">
+         <img :src="titleImage"
+              @error="loadimage">
          <div class="top-content">
-             <div class="first-title">{{item.common_name}}</div>
+             <div class="first-title">{{item.common_name?item.common_name:''}}</div>
              <div class="second-title">
-                <div>{{item.manufacturer.key_name}}</div>
-                <div>{{item.key_name}}</div>
+                <div>{{item.manufacturer?item.manufacturer.key_name:'暂无厂商信息'}}</div>
+                <div>{{item.key_name?item.key_name:''}}</div>
              </div>
              <div class="third-title">
-               <div>进货价¥{{item.cost}}/{{item.min_unit.key_name}}</div>
+               <div>进货价¥{{item.cost?item.cost:'0'}}/{{item.min_unit?item.min_unit.key_name:''}}</div>
                <div>|</div>
-               <div>处方价¥{{item.min_price}}/{{item.min_unit.key_name}}</div>
+               <div>处方价¥{{item.min_price?item.min_price:'0'}}/{{item.min_unit?item.min_unit.key_name:''}}</div>
              </div>
              <div class="forth-title">
-               <div>库存：{{item.local_count}}{{item.rx_unit.key_name}}</div>
+               <div>库存：{{item.local_count?item.local_count:'0'}}{{item.rx_unit.key_name}}</div>
                <div v-show="isShowSpec">{{item.spec}}</div>
              </div>
          </div>
@@ -62,6 +63,22 @@ export default {
     },
     clickInventoryButton(){
       this.$emit('clickInventoryFlow',this.item.id);
+    }
+  },
+  computed: {
+    titleImage(){
+      if (this.item.image) {
+        if (this.item.image.length > 0) {
+          var firstObject = this.item.image[0];
+          console.log('--------');
+          console.log(firstObject);
+          return firstObject.url;
+        } else {
+          return '/static/images/drugstore/drugInit/img_default.png';  
+        }
+      }else{
+        return '/static/images/drugstore/drugInit/img_default.png';
+      }
     }
   },
 }
