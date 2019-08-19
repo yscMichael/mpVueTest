@@ -63,6 +63,7 @@ export default {
   }
   .container > img{
     width: 100%;
+    height: 189px;
     display:block;
   }
   .content-list{

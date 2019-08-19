@@ -105,10 +105,10 @@ export default {
         .then((response) => {
           // 1、处理动画(延时执行)
           setTimeout(() => {
-            this.isRefresh = this.isRefresh ? !this.isRefresh : '';
-            this.isLoadMore = this.isLoadMore ? !this.isLoadMore : '';
+            this.isRefresh = false;
+            this.isLoadMore = false;
              wx.hideLoading();
-          }, 1500);
+          }, 1000);
           // 2、数据添加到数据源
           this.dataSource = this.dataSource.concat(response.data.rows);    
           this.totalCount = response.data.total;
@@ -138,6 +138,7 @@ export default {
       background-color: #eee;
       width: 100%;
       height: 100%;
+      border: 2px solid red;
       box-sizing: border-box;
   }
   .noData-view{
