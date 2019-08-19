@@ -16,7 +16,7 @@
                <div>处方价¥{{item.min_price?item.min_price:'0'}}/{{item.min_unit?item.min_unit.key_name:''}}</div>
              </div>
              <div class="forth-title">
-               <div>库存：{{item.local_count?item.local_count:'0'}}{{item.rx_unit.key_name}}</div>
+               <div>库存：{{stockString}}</div>
                <div v-show="isShowSpec">{{item.spec}}</div>
              </div>
          </div>
@@ -66,12 +66,11 @@ export default {
     }
   },
   computed: {
+    // 图片
     titleImage(){
       if (this.item.image) {
         if (this.item.image.length > 0) {
           var firstObject = this.item.image[0];
-          console.log('--------');
-          console.log(firstObject);
           return firstObject.url;
         } else {
           return '/static/images/drugstore/drugInit/img_default.png';  
@@ -79,6 +78,31 @@ export default {
       }else{
         return '/static/images/drugstore/drugInit/img_default.png';
       }
+    },
+    // 库存
+    stockString(){
+      // 1、包装数量和单位
+      var minCount = parseFloat(this.item.local_count?this.item.local_count:'0') / parseInt(this.item.change_count?this.item.change_count:'1');
+      var minUnit = this.item.min_unit ? this.item.min_unit.key_name:'';
+      // 2、拆零数量和单位
+      var rxCount = parseFloat(this.item.local_count?this.item.local_count:'0') - minCount * parseInt(this.item.change_count?this.item.change_count:'1');
+      var rxUnit = this.item.rx_unit ? this.item.rx_unit.key_name:'';
+      // 3、判断库存是否为0
+      var tempStockString = '';
+      if ((minCount == 0) && (rxCount == 0)) {//都为0
+        tempStockString = rxCount + rxUnit;
+      }else if(minCount == 0){//包装单位为0
+        tempStockString = minCount + rxUnit;
+      }else if(rxCount == 0){//拆零单位为0
+        tempStockString = rxCount + rxUnit;
+      }else{
+        tempStockString = rxCount + rxUnit;
+      }
+      //4、判断单位是否相同
+      if (minUnit == rxUnit) {
+        tempStockString = rxCount + rxUnit;
+      } 
+      return tempStockString;
     }
   },
 }
