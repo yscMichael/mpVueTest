@@ -1,14 +1,14 @@
 <template>
     <div class="main-view">
         <div class="line-view"></div>
-        <img class="flag-image-view" src="/static/images/drugstore/drugInit/expire_date.png" alt="">
+        <img :class="['flag-image-view',hiddenImage?'hiddenExpireImage':'']" src="/static/images/drugstore/drugInit/expire_date.png" alt="">
         <div class="content margin-top-10">
             <div>仓库：</div>
-            <div>{{item.warehouse_id.key_name}}</div>
+            <div>{{item.warehouse_id?item.warehouse_id.key_name:''}}</div>
         </div>
         <div class="content margin-top-5">
             <div>供应商：</div>
-            <div>{{item.vendor_id.key_name}}</div>
+            <div>{{item.vendor_id?item.vendor_id.key_name:''}}</div>
         </div>
         <div class="content margin-top-5">
             <div>入库单号：</div>
@@ -32,7 +32,7 @@
         </div>
         <div class="content margin-top-5 margin-bottom-10">
             <div>数量：</div>
-            <div>{{item.count}}{{item.rx_unit.key_name}}</div>
+            <div>{{countString}}</div>
         </div>
     </div>
 </template>
@@ -51,7 +51,48 @@ export default {
     data () {
         return {
         };
-    }
+    },
+    computed: {
+        // 是否隐藏过期图片
+        hiddenImage(){
+            console.log('---------');  
+            // 当前时间戳
+            var timestamp = parseInt(new Date().getTime()/1000);
+            // 目标时间戳
+            var currentDate = this.item.expire_date.replace(/-/g,'/'); 
+            var currentTimestamp = parseInt(new Date(currentDate).getTime()/1000);
+            if (currentTimestamp < timestamp) {
+                return false
+            }else{
+                return true;
+            }
+            console.log(currentTimestamp);
+        },
+        countString(){
+            // 1、包装数量和单位
+            var minCount = parseFloat(this.item.count?this.item.count:'0') / parseInt(this.item.change_count?this.item.change_count:'1');
+            var minUnit = this.item.min_unit ? this.item.min_unit.key_name:'';
+            // 2、拆零数量和单位
+            var rxCount = parseFloat(this.item.count?this.item.count:'0') - minCount * parseInt(this.item.change_count?this.item.change_count:'1');
+            var rxUnit = this.item.rx_unit ? this.item.rx_unit.key_name:'';
+            // 3、判断库存是否为0
+            var tempStockString = '';
+            if ((minCount == 0) && (rxCount == 0)) {//都为0
+                tempStockString = rxCount + rxUnit;
+            }else if(minCount == 0){//包装单位为0
+                tempStockString = rxCount + rxUnit;
+            }else if(rxCount == 0){//拆零单位为0
+                tempStockString = minCount + minUnit;
+            }else{
+                tempStockString = minCount + minUnit + rxCount + rxUnit;
+            }
+            //4、判断单位是否相同
+            if (minUnit == rxUnit) {
+                tempStockString = rxCount + rxUnit;
+            } 
+            return tempStockString;
+        }
+    },
 }
 </script>
 
@@ -97,5 +138,8 @@ export default {
     }
     .margin-bottom-10{
         margin-bottom: 10px;
+    }
+    .hiddenExpireImage{
+        display: none;
     }
 </style>

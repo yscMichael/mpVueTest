@@ -1,15 +1,5 @@
 <template>
     <div class="main-view">
-        <!--筛选界面 -->
-        <div class="filter-view">
-          <img src="/static/images/drugstore/drugInit/filter.png" alt="">
-        </div>
-        <!-- 筛选列表 -->
-        <div v-show="isShowFeedBack" class="filter-list-view">
-            <div class="filter-container">
-
-            </div>
-        </div>
         <!-- 列表 -->
         <batch-list-cell v-for="(item,index) in dataSource" 
                          :key="index"
@@ -164,34 +154,6 @@ export default {
       width: 100%;
       height: 100%;
       box-sizing: border-box;
-  }
-  .filter-view{
-    background-color: #2591F8;
-    position: fixed;
-    top: 0px;
-    right: 0px;
-    width: 30px;
-    height: 30px;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .filter-view > img{
-    width: 18px;
-    height: 18px;
-  }
-  .filter-list-view{
-    background-color: rgba(0,0,0,.5);
-    position: fixed;
-    z-index: 1000;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-  }
-  .filter-container{
-    
   }
   .noData-view{
       width: 100%;

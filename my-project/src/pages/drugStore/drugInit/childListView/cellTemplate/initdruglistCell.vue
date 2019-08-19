@@ -92,11 +92,11 @@ export default {
       if ((minCount == 0) && (rxCount == 0)) {//都为0
         tempStockString = rxCount + rxUnit;
       }else if(minCount == 0){//包装单位为0
-        tempStockString = minCount + rxUnit;
+        tempStockString = rxCount + rxUnit;
       }else if(rxCount == 0){//拆零单位为0
-        tempStockString = rxCount + rxUnit;
+        tempStockString = minCount + minUnit;
       }else{
-        tempStockString = rxCount + rxUnit;
+        tempStockString = minCount + minUnit + rxCount + rxUnit;
       }
       //4、判断单位是否相同
       if (minUnit == rxUnit) {
@@ -107,10 +107,12 @@ export default {
     hiddenImage(){
       var review_state = this.item.review_state ? parseInt(this.item.review_state) : 0;
       if (review_state == 0) {
-        console.log('review_state == 0');
+        console.log('falsefalsefalsefalse');
+        // 显示 禁用图片
         return false;
       }else{
-        console.log('review_state !!!!!! 0');
+        console.log('truetruetruetrue');
+        // 不显示 禁用图片
         return true;
       }
     }
@@ -123,7 +125,7 @@ export default {
     background-color: white;
   }
   .main-background-color{
-    background-color: #F1F0F5;
+    background-color: #F1F0F5 !important;
   }
   .top-view{
     display: flex;
