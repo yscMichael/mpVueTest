@@ -101,12 +101,9 @@ export default {
         },
         bigFontSzie(){
             var typeString = this.item.type ? this.item.type.key_name : '';
-            console.log(typeString);
             if (typeString.length > 2) {
-                console.log('truetruetruetrue');
                 return false;  
             }else{
-                console.log('falsefalsefalsefalse');
                 return true;
             }
         }
