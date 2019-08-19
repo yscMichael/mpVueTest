@@ -80,8 +80,9 @@ export default {
       }
       // 2、显示加载框(要判断是否有更多数据)
       if (this.totalCount <= this.dataSource.length) {
-          wx.showLoading({
+          wx.showToast({
             title: '无更多数据加载...',
+            duration: 1500,
             mask: false,
           });
           // 隐藏动画
