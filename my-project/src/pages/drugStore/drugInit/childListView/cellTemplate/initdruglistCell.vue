@@ -1,5 +1,5 @@
 <template>
-    <div class="main-view" @click="goToDetail">
+    <div :class="['main-view',hiddenImage?'':'main-background-color']" @click="goToDetail">
       <!-- 药品信息 -->
        <div class="top-view">
          <img :src="titleImage"
@@ -20,7 +20,7 @@
                <div v-show="isShowSpec">{{item.spec}}</div>
              </div>
          </div>
-         <img src="/static/images/drugstore/drugInit/forbidden.png" alt="">
+         <img :class="[hiddenImage?'hiddenForbiddenImage':'']" src="/static/images/drugstore/drugInit/forbidden.png">
        </div>
        <!-- 批次和库存流水 -->
        <div class="bottom-view">
@@ -103,6 +103,16 @@ export default {
         tempStockString = rxCount + rxUnit;
       } 
       return tempStockString;
+    },
+    hiddenImage(){
+      var review_state = this.item.review_state ? parseInt(this.item.review_state) : 0;
+      if (review_state == 0) {
+        console.log('review_state == 0');
+        return false;
+      }else{
+        console.log('review_state !!!!!! 0');
+        return true;
+      }
     }
   },
 }
@@ -112,12 +122,13 @@ export default {
   .main-view{
     background-color: white;
   }
+  .main-background-color{
+    background-color: #F1F0F5;
+  }
   .top-view{
-    border: 1rpx solid white;
     display: flex;
   }
   .bottom-view{
-    border: 1px white solid;
     padding: 5px;
     display: flex;
     align-items: center;
@@ -130,7 +141,6 @@ export default {
   }  
   .top-content{
     flex-grow: 1;
-    border: 1px white solid;
   }
   .first-title{
     color: #323232;
@@ -207,5 +217,8 @@ export default {
   .line-view{
     background-color: #E5E5E5;
     height: 2rpx;
+  }
+  .hiddenForbiddenImage{
+    display: none;
   }
 </style>
