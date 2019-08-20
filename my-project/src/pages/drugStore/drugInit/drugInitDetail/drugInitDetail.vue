@@ -1,12 +1,15 @@
 <template>
     <div class="main-view">
-        <!-- 1、国药准字 -->
-        <div class="chinese-medicine"></div>
+        <!-- 1、国药准字(只有自定义添加才显示<drug_id=0> -->
+        <div :class="['chinese-medicine',(itemModel.id == 0) ?'show-chinese-medicine':'hide-chinese-medicine']">
+
+        </div>
         <div class="line-big"></div>
         <!-- 2、药品图片 -->
-        <div class="drug-image-view">
+        <div class="drug-image-view"
+             @click="clickChooseImage">
           <div>药品图片</div>
-          <img src="/static/images/drugstore/drugInit/img_default.png" alt="">
+          <img :src="selectImage" alt="">
           <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">
         </div>
         <div class="line-big"></div>
@@ -130,21 +133,45 @@
 export default {
   data () {
     return {
+      // 模型
+      itemModel:'',
+      // 选择照片
+      selectImage:'/static/images/drugstore/drugInit/img_default.png'
     };
   },
   methods: {
+    // 选择照片
+    clickChooseImage(){
+      wx.chooseImage({
+        count: 1,
+        sizeType: ['original','compressed'],
+        sourceType: ['album','camera'],
+        success: (result)=>{
+          //tempFilePath可以作为img标签的src属性显示图片
+          var imageArray = result.tempFilePaths;
+          if(imageArray.length > 0){//取出第一个
+            this.selectImage = imageArray[0];
+          }
+        }
+      });
+    },
     clickFormCell(){
       console.log('clickFormCell');
       wx.navigateTo({
         url: '/pages/drugStore/drugInit/chooseForm/main',
-        success: (result)=>{
-          
-        },
-        fail: ()=>{},
-        complete: ()=>{}
       });
     }
   },
+  mounted() {
+    // 1、参数解析(图片解码)
+    this.itemModel = JSON.parse(this.$root.$mp.query.item);
+    this.itemModel.image = decodeURIComponent(this.itemModel.image);
+    // 2、图片赋值
+    // 2.1、判断是否存在
+    if (!(this.itemModel.image == 'undefined')) {
+      this.selectImage = this.itemModel.image;
+    }
+  }
 }
 </script>
 
@@ -162,7 +189,7 @@ export default {
     height: 63px;
     display: flex;
     align-items: center;
-    background-color: lightblue;
+    background-color: white;
   }
   .drug-image-view > div{
     color: #333333;
@@ -242,5 +269,11 @@ export default {
     width: 100%;
     height: 1px;
     margin-left: 12px;
+  }
+  .show-chinese-medicine{
+    display: none;
+  }
+  .hide-chinese-medicine{
+    display: none;
   }
 </style>

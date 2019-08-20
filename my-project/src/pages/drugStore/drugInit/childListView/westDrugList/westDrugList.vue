@@ -68,8 +68,18 @@ export default {
   },
   methods: {
     // 点击西药cell
-    clickDrugListCell(drugId){
-      console.log('点击cell----' + drugId);
+    clickDrugListCell(drugItem){
+      console.log('点击cell----');
+      console.log(drugItem);
+      //1、这里要对image进行特殊编码(防止出现特殊字符、解析失败)
+      if (drugItem.image) {//编码
+        drugItem.image = drugItem.image[0].url;
+        drugItem.image = encodeURIComponent(drugItem.image);
+      }
+      //2、界面传值
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/drugInitDetail/main?item=' + JSON.stringify(drugItem),
+      });
     },
     // 点击批次
     clickBatchDetail(drugId){

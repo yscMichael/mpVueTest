@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     goToDetail(){
-      this.$emit('clickDrugListCell', this.item.id);
+      this.$emit('clickDrugListCell', this.item);
     },
     clickBatchButton(){
       this.$emit('clickBatchDetail',this.item.id);
