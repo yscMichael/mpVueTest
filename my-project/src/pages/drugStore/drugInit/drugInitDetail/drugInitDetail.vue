@@ -47,7 +47,8 @@
         <!-- 批准文号 -->
         <div class='common-view'>
           <div class='title'>批准文号</div>
-          <input class='right-input'
+          <div class="flex-grow-view">国药准字</div>
+          <input class='right-input max-width-100'
                   placeholder='字母+8位数字'
                   type="text"
                   @input='commonNameInput'
@@ -272,6 +273,11 @@ export default {
 </script>
 
 <style>
+  .test-input{
+    background-color: red;
+    width: 100%;
+    height: 50px;
+  }
   .main-view{
     background-color: white;
     padding: 1rpx;
@@ -374,6 +380,7 @@ export default {
   }
   .max-width-100{
     width: 100px;
+    flex-grow: 0 !important;
   }
   .line-feed{
     /* 超出部分隐藏 */
@@ -382,5 +389,9 @@ export default {
     white-space: nowrap;
     /* 超出部分用省略号 */
     text-overflow: ellipsis;
+  }
+  .flex-grow-view{
+    flex-grow: 1;
+    text-align: right;
   }
 </style>
