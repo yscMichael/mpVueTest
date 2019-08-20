@@ -136,11 +136,9 @@ export default {
       this.$fly.get('/app',this.param)
         .then((response) => {
           // 1、处理动画(延时执行)
-          setTimeout(() => {
-            this.isRefresh = false;
-            this.isLoadMore = false;
-            wx.hideLoading();
-          }, 1000);
+          this.isRefresh = false;
+          this.isLoadMore = false;
+          wx.hideLoading();
           // 2、数据添加到数据源、并更新底部数据
           this.dataSource = this.dataSource.concat(response.data.rows);    
           this.totalCount = response.data.total;
