@@ -21,9 +21,8 @@
           <div class='title'>通用名</div>
           <input class='right-input'
                   placeholder='请输入药品名称'
-                  type="text"
                   @input='commonNameInput'
-                  :value="item.common_name">
+                  v-model.lazy="item.common_name">
         </div>
         <div class="line-small"></div>
         <!-- 商品名 -->
@@ -31,9 +30,8 @@
           <div class='title-none'>商品名</div>
           <input class='right-input'
                   placeholder='请输入商品名'
-                  type="text"
                   @input='commonNameInput'
-                  :value="item.key_name">    
+                  v-model.lazy="item.key_name">    
         </div>
         <div class="line-small"></div>
         <!-- 生产厂家 -->
@@ -43,7 +41,7 @@
                   placeholder='请输入生产厂家'
                   type="text"
                   @input='commonNameInput'
-                  :value="item.manufacturer?item.manufacturer.key_name:''">    
+                  v-model.lazy="item.manufacturer.key_name">    
         </div>
         <div class="line-small"></div>
         <!-- 批准文号 -->
@@ -54,7 +52,7 @@
                   placeholder='字母+8位数字'
                   type="text"
                   @input='commonNameInput'
-                  :value="item.drug_word">    
+                  v-model.lazy="item.drug_word">    
         </div>
         <div class="line-small"></div>
         <!-- 条形码 -->
@@ -64,15 +62,19 @@
                   placeholder='请输入或扫描药品条码'
                   type="text"
                   @input='commonNameInput'
-                  :value="item.uuid">
+                  v-model.lazy="item.uuid">
           <img class="scanButton" src="/static/images/drugstore/drugInit/scan.png" alt="">                      
         </div>
         <div class="line-small"></div>
         <!-- 药品类型 -->
-        <div class='common-view'>
-          <div class='title'>药品类型</div>
-          <div class="right-title">{{item.dug_type?item.dug_type.key_name:''}}</div>
-          <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
+        <div class='common-view'
+            @click="clickDrugType">
+            <div class='title'>药品类型</div>
+            <!-- testName -->
+            <!-- <div class="right-title">{{testName}}</div> -->
+            <!-- <div class="right-title">{{item.dug_type?item.dug_type.key_name:''}}</div> -->
+            <div class="right-title">{{testModel.dug_type.key_name}}</div>
+            <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
         </div>
         <div class="line-small"></div>
         <!-- 剂型 -->
@@ -136,22 +138,65 @@
         <div class="delete-view" v-show="!isAddNewDrug">删除</div>
         <div class="line-big"></div>
       </div>    
+      <!-- 9、底部弹出 -->
+      <div class="main-back-view" v-show="showPicker">
+        <div class="main-picker-view">
+          <!-- 标题 -->
+          <div class="picker-title">选择药品类型</div>
+          <!-- 选择内容 -->
+          <div class="choose-view" 
+               v-for="(item,index) in drugTypeArr" 
+               :key="index"
+               @click="clickChooseItem(index)">{{item}}</div>
+          <!-- 底部取消按钮 -->
+          <div class="picker-cancel">取消</div>
+        </div>
+      </div>
       <!-- 2、保存按钮 -->
       <div class="bottom-button"
            @click="saveDrugInfo">保存</div>
     </div>
 </template>
-
+ 
 <script>
+const Check_Drug_URL = '/gmi/drug';
 export default {
   data () {
     return {
       // 模型
-      item:'',
+      item:{
+          type: Object,
+          required:true,
+          default () {
+              return {}
+          }
+      },
       // 选择照片
       selectImage:'/static/images/drugstore/drugInit/img_default.png',
       // 是否是新增药品
-      isAddNewDrug:false
+      isAddNewDrug:false,
+      // 是否是模版数据
+      isPrescriptionDrug:false,
+      // 参数
+      param:{
+        op:'checkUse',
+        _type:'json',
+        _password:this.globalData.password,
+        _userid:this.globalData.userid,
+        drug_id:''
+      },
+      drugTypeArr:['西药','中成药','中药','医疗器械'],
+      //是否显示picker
+      showPicker:false,
+      // 测试名称
+      testName:'',
+      // 测试模型
+      testModel:{
+        'dug_type':{
+          'key_name':'test',
+          'id':1
+        }
+      }
     };
   },
   methods: {
@@ -169,6 +214,72 @@ export default {
           }
         }
       });
+    },
+    // 点击药品类型
+    clickDrugType(){
+      console.log('点击药品类型');
+      if (this.isPrescriptionDrug) 
+      {//提示不可以修改药品类型
+        wx.showToast({
+          title: '药品已开处方，不可修改药品类型',
+          icon: 'none',
+          duration: 1500,
+          mask: false,
+        });
+        this.showPicker = false;
+      }
+      else
+      {//提示谨慎修改
+         wx.showModal({
+           title: '提示',
+           content: '修改药品类型后,某些字段需要重新录入,是否修改?',
+           showCancel: true,
+           cancelText: '取消',
+           cancelColor: '#000000',
+           confirmText: '确定',
+           confirmColor: '#3CC51F',
+           success: (result) => {
+             if(result.confirm){
+               this.showPicker = true;
+             }
+           }
+         }); 
+      }
+    },
+    // 点击某个药品类型
+    clickChooseItem(index){
+      console.log('点击某个药品类型');
+      console.log(index);
+      // 1、关闭弹出框
+      this.showPicker = false;
+      // 2、药品类型赋值
+      switch (index) {
+        case 0:
+          this.testName = '西药';
+          // this.item.dug_type.key_name = '1111111';
+          this.testModel.dug_type.key_name = '我是测试模型';
+
+          // this.$set( this.item.dug_type ,"key_name", '12333333');
+          // this.item.dug_type = {"id":1,"key_name":'西药'};
+          // this.$forceUpdate();
+          break;
+        case 1:
+          this.testName = '中成药';
+          this.item.dug_type = {"id":2,"key_name":'中成药'};
+          break;
+        case 2:
+          this.testName = '中药';
+          this.item.dug_type = {"id":3,"key_name":'中药'};
+          break;
+        case 3:
+          this.testName = '医疗器械';
+          this.item.dug_type = {"id":4,"key_name":'医疗器械'};
+          break;
+        default:
+          break;
+      }
+      console.log(this.item.dug_type);
+      console.log(this.testName);
     },
     // 点击剂型
     clickFormCell(){
@@ -189,12 +300,12 @@ export default {
     saveDrugInfo(){
       console.log('点击保存按钮');
       // 1、校验参数
-      if (this.judgeParamiSLegal) {
+      // if (this.judgeParamiSLegal) {
         // 2、有图片，保存图片
-        this.poatImageData()
+        // this.poatImageData()
         // 3、保存其它信息,发起网络请求
-        this.postDrugData();
-      }
+        // this.postDrugData();
+      // }
     },
     // 校验参数
     judgeParamiSLegal(){
@@ -450,7 +561,6 @@ export default {
   },
 
   onLoad: function (options) {
-    console.log('optionsoptionsoptions');
     // 1、参数解析(图片解码)
     this.item = JSON.parse(options.item);
     this.item.image = decodeURIComponent(this.item.image);
@@ -462,7 +572,23 @@ export default {
     // 3、判断是不是新增(只有字符串才能用length!!!)
     var idString = this.item.id + '';
     this.isAddNewDrug = (idString.length > 0) ? false:true;
-    console.log(this.isAddNewDrug);
+    // 4、检查是否是模版数据
+    this.param.drug_id = this.item.id;
+    this.param._userid = this.globalData.userid;
+    this.param._password = this.globalData.password;
+    // 网络请求
+    this.$fly.get(Check_Drug_URL,this.param)
+    .then((response) => {
+      var code = parseInt(response.data.code);
+      if (code == 311) {
+        this.isPrescriptionDrug = true;
+      }else{
+        this.isPrescriptionDrug = false;
+      }
+    })
+    .catch(function(error){
+      this.isPrescriptionDrug = false;
+    });
   },
   mounted() {
     // 1、参数解析(图片解码)
@@ -473,16 +599,19 @@ export default {
     // if (!(this.item.image == 'undefined')) {
       // this.selectImage = this.item.image;
     // }
-  }
+  },
+  beforeUpdate() {
+    console.log('beforeUpdatebeforeUpdatebeforeUpdate');
+    console.log(this.item.dug_type);
+  },
+  updated(){
+    console.log('updatedupdatedupdatedupdated');
+    console.log(this.item.dug_type);
+  },
 }
 </script>
 
 <style>
-  .test-input{
-    background-color: red;
-    width: 100%;
-    height: 50px;
-  }
   .main-view{
     background-color: white;
     padding: 1rpx;
@@ -617,5 +746,47 @@ export default {
     color: white;
     font-size: 16px;
     z-index: 999;
+  }
+  .main-back-view{
+    background-color: rgba(0,0,0,.5);
+    position: fixed;
+    top:0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 9999;
+  }
+  .main-picker-view{
+    background-color: #F2F4F6;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+  }
+  .picker-title{
+    color: #7B7B7C;
+    font-size: 12px;
+    background-color: #F2F4F6;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+  }
+  .choose-view{
+    color: #343434;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    margin-bottom: 1px;
+    background-color: white;
+  }
+  .picker-cancel{
+    color: #343434;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background-color: white;
+    margin-top: 5px;
   }
 </style>
