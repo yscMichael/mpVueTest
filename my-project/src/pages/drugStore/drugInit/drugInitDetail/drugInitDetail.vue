@@ -1,5 +1,7 @@
 <template>
     <div class="main-view">
+      <!-- 1、内容 -->
+      <div class="content-view">
         <!-- 1、国药准字(只有自定义添加才显示<drug_id=0> -->
         <div :class="['chinese-medicine',(item.id == 0) ?'show-chinese-medicine':'hide-chinese-medicine']">
 
@@ -57,7 +59,7 @@
         <div class="line-small"></div>
         <!-- 条形码 -->
         <div class='common-view'>
-          <div class='title-none'>条形码</div>
+          <div class='title'>条形码</div>
           <input class='right-input'
                   placeholder='请输入或扫描药品条码'
                   type="text"
@@ -133,6 +135,10 @@
         <!-- 8、删除 -->
         <div class="delete-view" v-show="!isAddNewDrug">删除</div>
         <div class="line-big"></div>
+      </div>    
+      <!-- 2、保存按钮 -->
+      <div class="bottom-button"
+           @click="saveDrugInfo">保存</div>
     </div>
 </template>
 
@@ -178,6 +184,110 @@ export default {
       }else{
         return false;
       }
+    },
+    // 点击保存按钮
+    saveDrugInfo(){
+      console.log('点击保存按钮');
+      // 1、校验参数
+      if (this.judgeParamiSLegal) {
+        // 2、有图片，保存图片
+
+        // 3、保存其它信息        
+      }
+    },
+    // 校验参数
+    judgeParamiSLegal(){
+      // 1、通用名
+      if (this.isEmpty(this.item.common_name)) {
+        wx.showToast({
+          title: '请输入药品通用名',
+          duration: 1500,
+          mask: false,
+        });
+        return false;
+      }
+      // 2、生产厂家
+      if (this.isEmpty(this.item.manufacturer.key_name)) {
+        wx.showToast({
+          title: '请输入生产厂家',
+          duration: 1500,
+          mask: false,
+        });
+        return false;
+      }
+      // 3、国药准字和条形码------(西药和中成药)
+      // 新增：国药准字必须，条形码非必须
+      // 修改：二者有一个填写就可以了
+      var dugType = this.item.dug_type?parseInt(this.item.dug_type.id):0;
+      if (this.isAddNewDrug) 
+      {//新增药品
+        if ((dugType == 1) || (dugType == 2)) {
+          if (this.isEmpty(this.item.drug_word)) 
+          {
+            wx.showToast({
+              title: '请输入国药准字',
+              duration: 1500,
+              mask: false,
+            });
+            return false;
+          } 
+        }
+      }
+      else
+      {//修改药品
+        if ((dugType == 1) || (dugType == 2)) 
+        {
+          if (this.isEmpty(this.item.drug_word) && this.isEmpty(this.item.uuid)) 
+          {
+            wx.showToast({
+              title: '国药准字和条形码不能同时为空',
+              duration: 1500,
+              mask: false,
+            });
+            return false;
+          }
+        }
+      }
+      // 4、药品类型
+      if (dugType == 0) {
+        wx.showToast({
+          title: '请选择药品类型',
+          duration: 1500,
+          mask: false,
+        });
+        return false;
+      }
+      // 5、剂型(医疗器械不用判断)
+      if (dugType != 4) {
+        if (this.isEmpty(this.item.drug_forms.key_name)) {
+          wx.showToast({
+            title: '请选择剂型',
+            duration: 1500,
+            mask: false,
+          });
+          return false;
+        }
+      }
+      // 6、规格管理
+      // 6.1、包装单位
+
+      // 6.2、包装单位与拆零单位换算
+
+      // 6.3、拆零单位
+
+      // 6.4、拆零单位与剂量单位换算(不能是医疗器械)
+
+      // 6.5、剂量单位(不能是医疗器械)
+      
+
+    },
+    // 上传图片
+    poatImageData(){
+
+    },
+    // 拼接药品网络参数
+    makeDrugParam(){
+
     }
   },
   computed: {
@@ -281,6 +391,11 @@ export default {
   .main-view{
     background-color: white;
     padding: 1rpx;
+    width: 100%;
+    height: 100%;
+  }
+  .content-view{
+    margin-bottom: 45px;
   }
   .chinese-medicine{
     background-color: aqua;
@@ -360,6 +475,7 @@ export default {
     height: 45px;
     text-align: center;
     line-height: 45px;
+    background-color: white;
   }
   .line-big{
     background-color: #F1F0F5;
@@ -393,5 +509,18 @@ export default {
   .flex-grow-view{
     flex-grow: 1;
     text-align: right;
+  }
+  .bottom-button{
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 45px;
+    text-align: center;
+    line-height: 45px;
+    background-color: #2993EF;
+    color: white;
+    font-size: 16px;
+    z-index: 999;
   }
 </style>
