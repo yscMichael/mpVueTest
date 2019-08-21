@@ -191,8 +191,9 @@ export default {
       // 1、校验参数
       if (this.judgeParamiSLegal) {
         // 2、有图片，保存图片
-
-        // 3、保存其它信息        
+        this.poatImageData()
+        // 3、保存其它信息,发起网络请求
+        this.postDrugData();
       }
     },
     // 校验参数
@@ -270,23 +271,117 @@ export default {
       }
       // 6、规格管理
       // 6.1、包装单位
-
+      var min_name = this.item.min_unit?this.item.min_unit.key_name:'';
+      if (this.isEmpty(min_name)) {
+        wx.showToast({
+          title: '请完善规格管理内容',
+          duration: 1500,
+          mask: false,
+        });
+        return false;
+      }      
       // 6.2、包装单位与拆零单位换算
-
+      var change_count = this.item.change_count;
+      if (this.isEmpty(change_count)) {
+        wx.showToast({
+          title: '请完善规格管理内容',
+          duration: 1500,
+          mask: false,
+        });
+        return false;
+      }
       // 6.3、拆零单位
-
+      var rx_name = this.item.rx_unit?this.item.rx_unit.key_name:'';
+      if (this.isEmpty(rx_name)) {
+        wx.showToast({
+          title: '请完善规格管理内容',
+          duration: 1500,
+          mask: false,
+        });
+        return false;
+      }
       // 6.4、拆零单位与剂量单位换算(不能是医疗器械)
-
+      var taking_count = this.item.taking_count;
+      if (dugType != 4) {
+        if (this.isEmpty(taking_count)) {
+          wx.showToast({
+            title: '请完善规格管理内容',
+            duration: 1500,
+            mask: false,
+          });
+          return false;
+        }
+      }
       // 6.5、剂量单位(不能是医疗器械)
-      
-
+      var single_name = this.item.single_unit?this.item.single_unit.key_name:'';
+      if (dugType != 4) {
+        if (this.isEmpty(single_name)) {
+          wx.showToast({
+            title: '请完善规格管理内容',
+            duration: 1500,
+            mask: false,
+          });
+          return false;
+        }
+      }
+      // 7、上述条件都满足，返回true
+      return true;
     },
-    // 上传图片
+    // 上传图片(暂定)
     poatImageData(){
-
+      
+    },
+    // 发起保存网络请求
+    postDrugData(){
+      
     },
     // 拼接药品网络参数
     makeDrugParam(){
+      // 1、图片(暂时不考虑)
+
+      // 2、id
+
+      // 3、名称
+
+      // 4、厂家
+
+      // 5、药品类型
+
+      // 6、国药准字
+
+      // 7、条形码
+
+      // 8、剂型
+
+      // 9、三个单位以及换算比例
+
+      // 10、价格
+
+      // 11、进货价
+
+      // 12、零售价
+
+      // 13、用法用量
+
+      // 14、仓库和供应商
+
+      // 15、入库时间
+
+      // 16、库存批次
+
+      // 17、是否是基础库
+
+
+      // 18、规格
+
+
+      // 19、库存预警时间
+
+
+      // 20、库存安全范围
+
+
+      // 21、启用(0:禁用，1:启用)
 
     }
   },
