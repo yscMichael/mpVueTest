@@ -41,7 +41,7 @@
                   placeholder='请输入生产厂家'
                   type="text"
                   @input='commonNameInput'
-                  v-model.lazy="item.manufacturer.key_name">    
+                  v-model.lazy="item.manufacturer_name">    
         </div>
         <div class="line-small"></div>
         <!-- 批准文号 -->
@@ -70,17 +70,14 @@
         <div class='common-view'
             @click="clickDrugType">
             <div class='title'>药品类型</div>
-            <!-- testName -->
-            <!-- <div class="right-title">{{testName}}</div> -->
-            <!-- <div class="right-title">{{item.dug_type?item.dug_type.key_name:''}}</div> -->
-            <div class="right-title">{{testModel.dug_type.key_name}}</div>
+            <div class="right-title">{{item.dug_type_name}}</div>
             <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
         </div>
         <div class="line-small"></div>
         <!-- 剂型 -->
         <div class='common-view' @click="clickFormCell">
           <div class='title'>剂型</div>
-          <div class="right-title">{{item.drug_forms?item.drug_forms.key_name:''}}</div>
+          <div class="right-title">{{item.drug_forms_name}}</div>
           <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
         </div>
         <div class="line-big"></div>
@@ -163,13 +160,45 @@ const Check_Drug_URL = '/gmi/drug';
 export default {
   data () {
     return {
-      // 模型
+      // 模型(未防止渲染出错，层级不要太多)
       item:{
-          type: Object,
-          required:true,
-          default () {
-              return {}
-          }
+        'id':'',//药品id
+        'is_basic_id':'',//是否是基础库
+        'image':'',//图片
+        'common_name':'',//通用名
+        'key_name':'',//商品名
+        'manufacturer_name':'',//生产厂家
+        'drug_word':'',//国药准字
+        'uuid':'',//条形码
+        'dug_type_name':'',//药品类型
+        'dug_type_id':'',//药品类型id
+        'drug_forms_name':'',//剂型
+        'spec':'',//规格
+        'min_name':'',//包装单位
+        'change_count':'',//包装单位与拆零单位换算
+        'rx_name':'',//拆零单位
+        'taking_count':'',//拆零单位与剂量单位换算
+        'single_name':'',//剂量单位
+        'instruction_zh_name':'',//中药用法名称
+        'instruction_en_name':'',//西药用法名称
+        'common_frequency_name':'',//频率名称
+        'common_frequency_id':'',//频率id
+        'common_count':'',//单次用量
+        'common_days':'',//用药天数
+        'warning_time':'',//有效期预警时间
+        'warning_time_id':'',//有效期预警时间id
+        'range_low':'',//库存安全下限
+        'range_up':'',//库存安全上限
+        'min_price':'',//进货价
+        'cost':'',//处方价(包装单位)
+        'sale_price':'',//处方价(拆零单位)
+        'retail_min_price':'',//零售价(包装单位)
+        'retail_sale_price':'',//处方价(拆零单位)
+        'begin_json':'',//库存
+        'begin_count':'',//库存
+        'local_count':'',//库存
+        'review_state_id':''//药品状态
+
       },
       // 选择照片
       selectImage:'/static/images/drugstore/drugInit/img_default.png',
@@ -187,19 +216,84 @@ export default {
       },
       drugTypeArr:['西药','中成药','中药','医疗器械'],
       //是否显示picker
-      showPicker:false,
-      // 测试名称
-      testName:'',
-      // 测试模型
-      testModel:{
-        'dug_type':{
-          'key_name':'test',
-          'id':1
-        }
-      }
+      showPicker:false
     };
   },
   methods: {
+    // 转换模型
+    changeItemModle(tempModel){
+      //药品id
+      this.item.id = tempModel.id;
+      //是否是基础库
+      this.item.is_basic_id = tempModel.is_basic?tempModel.is_basic.id:0;
+      //图片
+      this.item.image = tempModel.image;
+      //通用名
+      this.item.common_name = tempModel.common_name?tempModel.common_name:'';
+      //商品名
+      this.item.key_name = tempModel.key_name?tempModel.key_name:'';
+      //生产厂家
+      this.item.manufacturer_name = tempModel.manufacturer?tempModel.manufacturer.key_name:'';
+      //国药准字
+      this.item.drug_word = tempModel.drug_word?tempModel.drug_word:'';
+      //条形码
+      this.item.uuid  = tempModel.uuid?tempModel.uuid:'';
+      //药品类型
+      this.item.dug_type_name = tempModel.dug_type?tempModel.dug_type.key_name:'';
+      //药品类型id
+      this.item.dug_type_id = tempModel.dug_type?tempModel.dug_type.id:'0';
+      //剂型
+      this.item.drug_forms_name = tempModel.drug_forms?tempModel.drug_forms.key_name:'';
+      //规格
+      this.item.spec = tempModel.spec?tempModel.spec:'';
+      //包装单位
+      this.item.min_name = tempModel.min_unit?tempModel.min_unit.key_name:'';
+      //包装单位与拆零单位换算
+      this.item.change_count = tempModel.change_count?tempModel.change_count:'1';
+      //拆零单位
+      this.item.rx_name = tempModel.rx_unit?tempModel.rx_unit.key_name:'';
+      //拆零单位与剂量单位换算
+      this.item.taking_count = tempModel.taking_count?tempModel.taking_count:'1';
+      //剂量单位
+      this.item.single_name = tempModel.single_unit?tempModel.single_unit.key_name:'';
+      //中药用法
+      this.item.instruction_zh_name = tempModel.instruction_zh?tempModel.instruction_zh.key_name:'';
+      //西药用法
+      this.item.instruction_en_name = tempModel.instruction_en?tempModel.instruction_en.key_name:'';
+      //频率
+      this.item.common_frequency_name = tempModel.common_frequency?tempModel.common_frequency.key_name:'';
+      //频率id
+      this.item.common_frequency_id = tempModel.common_frequency?tempModel.common_frequency.id:'';
+      //单次用量
+      this.item.common_count = tempModel.common_count?tempModel.common_count:'0';
+      //用药天数
+      this.item.common_days = tempModel.common_days?tempModel.common_days:'0';
+      //有效期预警时间
+      this.item.warning_time = tempModel.warning_time?tempModel.warning_time.key_name:'2个月';
+      //有效期预警时间id
+      this.item.warning_time_id = tempModel.warning_time?tempModel.warning_time.id:'2';
+      //库存安全下限
+      this.item.range_low = tempModel.range_low?tempModel.range_low:'0';
+      //库存安全上限
+      this.item.range_up = tempModel.range_up?tempModel.range_up:'0';
+      //进货价
+      this.item.min_price = tempModel.min_price?tempModel.min_price:'0';
+      //处方价(包装单位)
+      this.item.cost = tempModel.cost?tempModel.cost:'0';
+      //处方价(拆零单位)
+      this.item.sale_price = tempModel.sale_price?tempModel.sale_price:'0';
+      //零售价(包装单位)
+      this.item.retail_min_price = tempModel.retail_min_price?tempModel.retail_min_price:'0';
+      //处方价(拆零单位)
+      this.item.retail_sale_price = tempModel.retail_sale_price?tempModel.retail_sale_price:'0';
+      //库存
+      this.item.begin_json = tempModel.begin_json;
+      //库存
+      this.item.begin_count = tempModel.begin_count?tempModel.begin_count:'0';
+      this.item.local_count = tempModel.local_count?tempModel.local_count:'0';
+      //药品状态
+      this.item.review_state_id = tempModel.review_state?tempModel.review_state.id:'1';
+    },
     // 选择照片
     clickChooseImage(){
       wx.chooseImage({
@@ -255,31 +349,24 @@ export default {
       // 2、药品类型赋值
       switch (index) {
         case 0:
-          this.testName = '西药';
-          // this.item.dug_type.key_name = '1111111';
-          this.testModel.dug_type.key_name = '我是测试模型';
-
-          // this.$set( this.item.dug_type ,"key_name", '12333333');
-          // this.item.dug_type = {"id":1,"key_name":'西药'};
-          // this.$forceUpdate();
+          this.item.dug_type_name = '西药';
+          this.item.dug_type_id = 1;
           break;
         case 1:
-          this.testName = '中成药';
-          this.item.dug_type = {"id":2,"key_name":'中成药'};
+          this.item.dug_type_name = '中成药';
+          this.item.dug_type_id = 2;
           break;
         case 2:
-          this.testName = '中药';
-          this.item.dug_type = {"id":3,"key_name":'中药'};
+          this.item.dug_type_name = '中药';
+          this.item.dug_type_id = 3;
           break;
         case 3:
-          this.testName = '医疗器械';
-          this.item.dug_type = {"id":4,"key_name":'医疗器械'};
+          this.item.dug_type_name = '医疗器械';
+          this.item.dug_type_id = 4;
           break;
         default:
           break;
       }
-      console.log(this.item.dug_type);
-      console.log(this.testName);
     },
     // 点击剂型
     clickFormCell(){
@@ -501,24 +588,24 @@ export default {
     usageAndFrequency(){
       // 1、用法(判断是中药还是西药)
       var instruction = '';
-      var dugType = parseInt(this.item.dug_type.id);
+      var dugType = parseInt(this.item.dug_type_id);
       if (dugType == 3) {//中药
-        instruction = this.item.instruction_zh?this.item.instruction_zh.key_name:'';
+        instruction = this.item.instruction_zh_name;
       }else{
-        instruction = this.item.instruction_en?this.item.instruction_en.key_name:'';
+        instruction = this.item.instruction_en_name;
       }
       // 2、频率
-      var frequency = this.item.common_frequency?this.item.common_frequency.key_name:'';
+      var frequency = this.item.common_frequency_name;
       // 3、单次用量
       var single_use = '';
       if (this.item.common_count == -1) {
         single_use = '每次适量';
       }else{
-        var unitName = this.item.single_unit?this.item.single_unit.key_name:'';
+        var unitName = this.item.single_name;
         single_use = (this.item.common_count == 0)?'':'每次' + this.item.common_count + unitName;
       }
       // 4、用药天数
-      var common_days = '用药' + parseInt(this.item.common_days?this.item.common_days:'0') + '天';
+      var common_days = '用药' + parseInt(this.item.common_days) + '天';
       // 5、总计
       var content = instruction + ';' + frequency + ';' + single_use + ';' + common_days + ';';
       return content;
@@ -526,11 +613,11 @@ export default {
     // 库存数量
     stockCount(){
       // 1、包装数量和单位
-      var minCount = parseFloat(this.item.local_count?this.item.local_count:'0') / parseInt(this.item.change_count?this.item.change_count:'1');
-      var minUnit = this.item.min_unit ? this.item.min_unit.key_name:'';
+      var minCount = parseFloat(this.item.local_count) / parseInt(this.item.change_count);
+      var minUnit = this.item.min_name
       // 2、拆零数量和单位
-      var rxCount = parseFloat(this.item.local_count?this.item.local_count:'0') - minCount * parseInt(this.item.change_count?this.item.change_count:'1');
-      var rxUnit = this.item.rx_unit ? this.item.rx_unit.key_name:'';
+      var rxCount = parseFloat(this.item.local_count) - minCount * parseInt(this.item.change_count);
+      var rxUnit = this.item.rx_name;
       // 3、判断库存是否为0
       var tempStockString = '';
       if ((minCount == 0) && (rxCount == 0)) {//都为0
@@ -550,20 +637,15 @@ export default {
     },
     // 药品状态
     drugState(){
-      var review_state = this.item.review_state;
-      if (this.isEmpty(review_state)) {//为空
-          review_state = {"id":"1","key_name":"启用"}; 
-          return true;
-      }else{
-        return (parseInt(review_state.id) == 1)?true:false;
-      }
+      return (parseInt(this.item.review_state_id) == 1)?true:false;
     }
   },
 
   onLoad: function (options) {
-    // 1、参数解析(图片解码)
-    this.item = JSON.parse(options.item);
-    this.item.image = decodeURIComponent(this.item.image);
+    // 1、模型转换(图片解码)
+    var tempModel = JSON.parse(options.item);
+    tempModel.image = decodeURIComponent(tempModel.image);
+    this.changeItemModle(tempModel);
     // 2、图片赋值
     // 2.1、判断是否存在
     if (!(this.item.image == 'undefined')) {
@@ -602,11 +684,9 @@ export default {
   },
   beforeUpdate() {
     console.log('beforeUpdatebeforeUpdatebeforeUpdate');
-    console.log(this.item.dug_type);
   },
   updated(){
     console.log('updatedupdatedupdatedupdated');
-    console.log(this.item.dug_type);
   },
 }
 </script>
