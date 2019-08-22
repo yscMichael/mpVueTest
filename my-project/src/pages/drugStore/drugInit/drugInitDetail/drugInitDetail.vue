@@ -82,7 +82,7 @@
         </div>
         <div class="line-big"></div>
         <!-- 4、规格管理 -->
-        <div class='common-view'>
+        <div class='common-view' @click="clickSpecButton">
           <div class='title'>规格管理</div>
           <div class="right-title">{{item.spec}}</div>
           <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
@@ -90,14 +90,14 @@
         <div class="line-big"></div>
         <!-- 5、 -->
         <!-- 用法用量 -->
-        <div class='common-view'>
+        <div class='common-view' @click="clickUsageAndFrequency">
           <div class='title-none max-width-100'>用法用量</div>
           <div class="right-title line-feed">{{usageAndFrequency}}</div>
           <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
         </div>
         <div class="line-small"></div>
         <!-- 有效期预警及库存安全范围 -->
-        <div class='common-view'>
+        <div class='common-view' @click="clickWarnAndInventory">
           <div class='title-none'>有效期预警及库存安全范围</div>
           <div class="right-title"></div>
           <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
@@ -105,14 +105,14 @@
         <div class="line-big"></div>
         <!-- 6、 -->
         <!-- 价格管理 -->
-        <div class='common-view'>
+        <div class='common-view' @click="clickPriceManage">
           <div class='title-none'>价格管理</div>
           <div class="right-title"></div>
           <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
         </div>
         <div class="line-small"></div>
         <!-- 库存管理 -->
-        <div class='common-view' v-show="isAddNewDrug">
+        <div class='common-view' v-show="isAddNewDrug" @click="clickInventoryManage">
           <div class='title-none'>库存管理</div>
           <div class="right-title"></div>
           <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
@@ -375,18 +375,40 @@ export default {
         url: '/pages/drugStore/drugInit/chooseForm/main',
       });
     },
-    // 判断字符串是否为空
-    isEmpty(obj){
-      if(typeof obj == "undefined" || obj == null || obj == ""){
-        return true;
-      }else{
-        return false;
-      }
+    // 点击规格管理
+    clickSpecButton(){
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/specManage/main',
+      });
+    },
+    // 点击用法用量
+    clickUsageAndFrequency(){
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/usageAndDosage/main',
+      });
+    },
+    // 点击有效期预警和库存安全范围
+    clickWarnAndInventory(){
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/validityAndInventory/main',
+      });
+    },
+    // 点击价格管理
+    clickPriceManage(){
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/priceManage/main',
+      });
+    },
+    // 点击库存管理
+    clickInventoryManage(){
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/inventoryManage/main',
+      });
     },
     // 点击保存按钮
     saveDrugInfo(){
       console.log('点击保存按钮');
-      
+
       // 1、校验参数
       // if (this.judgeParamiSLegal) {
         // 2、有图片，保存图片
@@ -394,6 +416,14 @@ export default {
         // 3、保存其它信息,发起网络请求
         // this.postDrugData();
       // }
+    },
+    // 判断字符串是否为空
+    isEmpty(obj){
+      if(typeof obj == "undefined" || obj == null || obj == ""){
+        return true;
+      }else{
+        return false;
+      }
     },
     // 校验参数
     judgeParamiSLegal(){

@@ -14,8 +14,8 @@
         <!-- 2、底部区域 -->
         <div class="bottom-view">
             <div class="input-view">
-                <input type="text" value="请输入">
-                <div>添加</div>
+                <input type="text" v-model="newFormType" placeholder="输入新增药品剂型">
+                <div @click="clickAddButton">添加</div>
             </div>
             <div class="tip-view">提示：长按标签，可删除自定义标签内容（灰色标签来自基础库，不可删除</div>
         </div>
@@ -34,25 +34,101 @@ export default {
             _type:'json',
             _password:this.globalData.password,
             _userid:this.globalData.userid
-        }
+        },
+        addTypeParam:{
+            op:'Add',
+            cloud:'drug_form_type[clinic]',
+            key_name:'',
+            _type:'json',
+            _password:this.globalData.password,
+            _userid:this.globalData.userid
+        },
+        newFormType:'',//新增药品剂型
     };
   },
   methods: {
-      clickCell(data){
-          console.log('clickCellclickCell');
-          //判断当前是不是删除状态
-          if (data.isDelete) {
-            data.isDelete = false;
-          }else{
-            data.isSelect = true;
-          }   
-      },
-      longTapCell(data){
-          console.log('longTapCell');
-          data.isDelete = !data.isDelete;
+    // 点击标签
+    clickCell(data){
+        console.log('clickCellclickCell');
+        //判断当前是不是删除状态
+        if (data.isDelete) {
+        data.isDelete = false;
+        }else{
+        data.isSelect = true;
+        }   
+    },
+    // 长按标签
+    longTapCell(data){
+        console.log('longTapCell');
+        data.isDelete = !data.isDelete;
+    },
+    //点击底部添加按钮
+    clickAddButton(){
+        // newFormType
+        if (this.isEmpty(this.newFormType)) {
+            wx.showToast({
+                title: '请输入药品剂型',
+                icon: 'none',
+                duration: 1500,
+                mask: false
+            });
+        }else{
+        // 参数拼接
+        this.addTypeParam._userid = this.globalData.userid;
+        this.addTypeParam._password = this.globalData.password;
+        this.addTypeParam.key_name = this.newFormType;
+        // 新增网络请求
+        wx.showLoading({
+            title: '新增中...',
+            mask: true,
+        });
+        this.$fly.get('/app',this.addTypeParam)
+            .then((response) => {
+                wx.hideLoading();
+                var code = response.data.code;
+                if (parseInt(code) == 200) {
+                    // 新增成功，返回上一级，同时进行赋值
+                    wx.showToast({
+                        title: '新增成功',
+                        icon: 'none',
+                        duration: 1500,
+                        mask: false
+                    });
+                    wx.navigateBack({
+                        delta: 1
+                    });
+                }else{
+                    wx.showToast({
+                        title: '新增失败',
+                        icon: 'none',
+                        duration: 1500,
+                        mask: false
+                    });
+                }
+            })
+            .catch(function(error){
+                wx.hideLoading();
+                wx.showToast({
+                    title: '新增失败',
+                    icon: 'none',
+                    duration: 1500,
+                    mask: false
+                });
+            });
+        }
+    },
+    // 判断字符串是否为空
+    isEmpty(obj){
+      if(typeof obj == "undefined" || obj == null || obj == ""){
+        return true;
+      }else{
+        return false;
       }
+    },
   },
   onLoad: function (options) {
+    // 清除缓存  
+    this.dataSource = [];
     // 1、参数赋值  
     this.param._userid = this.globalData.userid;
     this.param._password = this.globalData.password;
@@ -111,6 +187,8 @@ export default {
         left: 0px;
         right: 0px;
         height: 100px;
+        z-index: 999;
+        background-color: white;
     }
     .content-view{
         margin: 10px 10px 0px 0px;
