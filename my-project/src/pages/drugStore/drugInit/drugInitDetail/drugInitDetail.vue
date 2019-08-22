@@ -386,6 +386,7 @@ export default {
     // 点击保存按钮
     saveDrugInfo(){
       console.log('点击保存按钮');
+      
       // 1、校验参数
       // if (this.judgeParamiSLegal) {
         // 2、有图片，保存图片
@@ -683,10 +684,10 @@ export default {
     // }
   },
   beforeUpdate() {
-    console.log('beforeUpdatebeforeUpdatebeforeUpdate');
+    console.log('beforeUpdate');
   },
   updated(){
-    console.log('updatedupdatedupdatedupdated');
+    console.log('updated');
   },
 }
 </script>

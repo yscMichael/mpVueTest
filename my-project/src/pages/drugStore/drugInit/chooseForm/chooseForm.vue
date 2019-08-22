@@ -27,13 +27,14 @@ export default {
   data () {
     return {
         flag:false,
-        dataSource:[
-            {title:'药品',isDelete: false,isSelect:false},
-            {title:'我也是药品',isDelete: false,isSelect:false},
-            {title:'奥美制药',isDelete: false,isSelect:false},
-            {title:'感冒药',isDelete: false,isSelect:false},
-            {title:'发烧药发',isDelete: false,isSelect:false} 
-        ],
+        dataSource:[],
+        param:{
+            op :'List',
+            cloud:'drug_form_type[clinic]',
+            _type:'json',
+            _password:this.globalData.password,
+            _userid:this.globalData.userid
+        }
     };
   },
   methods: {
@@ -51,6 +52,45 @@ export default {
           data.isDelete = !data.isDelete;
       }
   },
+  onLoad: function (options) {
+    // 1、参数赋值  
+    this.param._userid = this.globalData.userid;
+    this.param._password = this.globalData.password;
+    // 2、网络请求
+    this.$fly.get('/app',this.param)
+    .then((response) => {
+        console.log(response);
+        var code = response.data.code;
+        if (parseInt(code) == 200) {
+            var array = response.data.rows;
+            for (let index = 0; index < array.length; index++) {
+                var element = array[index];
+                var tempModel = {
+                    title:'',
+                    isDelete:false,
+                    isSelect:false
+                }
+                tempModel.title = element.key_name;
+                this.dataSource.push(tempModel);
+            }
+        }else{
+            wx.showToast({
+                title: '无数据',
+                icon: 'none',
+                duration: 1500,
+                mask: false,
+            });
+        }
+    })
+    .catch(function(error){
+      wx.showToast({
+          title: '网络请求失败',
+          icon: 'none',
+          duration: 1500,
+          mask: false
+      });
+    });
+  }
 }
 </script>
 
