@@ -105,13 +105,15 @@ export default {
       return tempStockString;
     },
     hiddenImage(){
-      var review_state = this.item.review_state ? parseInt(this.item.review_state) : 0;
+      console.log('hiddenImage----------');
+      console.log(this.item.review_state);
+      var review_state = this.item.review_state ? parseInt(this.item.review_state.id) : 0;
       if (review_state == 0) {
-        console.log('falsefalsefalsefalse');
+        console.log('false');
         // 显示 禁用图片
         return false;
       }else{
-        console.log('truetruetruetrue');
+        console.log('true');
         // 不显示 禁用图片
         return true;
       }

@@ -57,7 +57,7 @@ export default {
         key_word:'',
         page:1,
         rows:10,
-        review_state:1,
+        review_state:'0,1',
         sort:"expire_date",
         order:"desc",
         _type:'json',
