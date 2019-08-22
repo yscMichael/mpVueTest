@@ -105,8 +105,6 @@ export default {
       return tempStockString;
     },
     hiddenImage(){
-      console.log('hiddenImage----------');
-      console.log(this.item.review_state);
       var review_state = this.item.review_state ? parseInt(this.item.review_state.id) : 0;
       if (review_state == 0) {
         console.log('false');

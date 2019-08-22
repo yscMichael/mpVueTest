@@ -5,8 +5,9 @@
             <div v-for="(item,index) in dataSource" :key="index" class="content-view">
                 <div :class="['content-title', item.isSelect?'select-cell':'',item.isDelete?'delete-cell':'']"
                     @tap="clickCell(item)"
-                    @longpress="longTapCell(item)">{{ item.title}}</div>
-                <img class="delete-img" 
+                    @longpress="longTapCell(item)">{{item.title}}</div>
+                <img class="delete-img"
+                    @click="clickDeleteCell(item)" 
                     v-show="item.isDelete" 
                     src="/static/images/drugstore/drugInit/redDelete.png">
             </div>
@@ -23,9 +24,11 @@
 </template>
 
 <script>
+import notificationCenter from '@/notification'
 export default {
   data () {
     return {
+        testTitle:'1212121212',
         flag:false,
         dataSource:[],
         param:{
@@ -43,6 +46,14 @@ export default {
             _password:this.globalData.password,
             _userid:this.globalData.userid
         },
+        deleteTypeParam:{
+            op:'Delete',
+            cloud:'drug_form_type[clinic]',
+            id:'',
+            _type:'json',
+            _password:this.globalData.password,
+            _userid:this.globalData.userid
+        },
         newFormType:'',//新增药品剂型
     };
   },
@@ -52,9 +63,21 @@ export default {
         console.log('clickCellclickCell');
         //判断当前是不是删除状态
         if (data.isDelete) {
-        data.isDelete = false;
+            data.isDelete = false;
         }else{
-        data.isSelect = true;
+            //将其它选中状态取消
+            for (let index = 0; index < this.dataSource.length; index++) {
+                var element = this.dataSource[index];
+                element.isSelect = false;
+            }
+            //选中当前
+            data.isSelect = true;
+            // 返回上一个界面并赋值
+            notificationCenter.postNotification('drug_forms_name', data.title);
+            // 返回上个界面
+            wx.navigateBack({
+                delta: 1
+            });
         }   
     },
     // 长按标签
@@ -62,9 +85,49 @@ export default {
         console.log('longTapCell');
         data.isDelete = !data.isDelete;
     },
+    // 点击删除按钮
+    clickDeleteCell(data){
+        console.log('点击删除按钮');
+        console.log(data);
+        // 参数拼接
+        this.deleteTypeParam._userid = this.globalData.userid;
+        this.deleteTypeParam._password = this.globalData.password;
+        this.deleteTypeParam.id = data.id;
+        // 发起删除网络请求
+        this.$fly.get('/app',this.deleteTypeParam)
+            .then((response) => {
+                var code = response.data.code;
+                if (parseInt(code) == 200) {
+                    wx.showToast({
+                        title: '删除成功',
+                        icon: 'none',
+                        duration: 1500,
+                        mask: false
+                    });
+                }else{
+                    var tips = '删除失败';
+                    if (parseInt(code) == 331) {
+                       tips = response.data.remark; 
+                    }
+                    wx.showToast({
+                        title: tips,
+                        icon: 'none',
+                        duration: 1500,
+                        mask: false
+                    });
+                }
+            })
+            .catch(function(error){
+                wx.showToast({
+                    title: '删除失败',
+                    icon: 'none',
+                    duration: 1500,
+                    mask: false
+                });
+            });
+    },
     //点击底部添加按钮
     clickAddButton(){
-        // newFormType
         if (this.isEmpty(this.newFormType)) {
             wx.showToast({
                 title: '请输入药品剂型',
@@ -78,13 +141,8 @@ export default {
         this.addTypeParam._password = this.globalData.password;
         this.addTypeParam.key_name = this.newFormType;
         // 新增网络请求
-        wx.showLoading({
-            title: '新增中...',
-            mask: true,
-        });
         this.$fly.get('/app',this.addTypeParam)
             .then((response) => {
-                wx.hideLoading();
                 var code = response.data.code;
                 if (parseInt(code) == 200) {
                     // 新增成功，返回上一级，同时进行赋值
@@ -107,7 +165,6 @@ export default {
                 }
             })
             .catch(function(error){
-                wx.hideLoading();
                 wx.showToast({
                     title: '新增失败',
                     icon: 'none',
@@ -142,10 +199,12 @@ export default {
             for (let index = 0; index < array.length; index++) {
                 var element = array[index];
                 var tempModel = {
+                    id:'',
                     title:'',
                     isDelete:false,
                     isSelect:false
                 }
+                tempModel.id = element.id;
                 tempModel.title = element.key_name;
                 this.dataSource.push(tempModel);
             }
@@ -166,7 +225,7 @@ export default {
           mask: false
       });
     });
-  }
+  },
 }
 </script>
 

@@ -157,6 +157,8 @@
  
 <script>
 const Check_Drug_URL = '/gmi/drug';
+import notificationCenter from '@/notification'
+
 export default {
   data () {
     return {
@@ -374,6 +376,10 @@ export default {
       wx.navigateTo({
         url: '/pages/drugStore/drugInit/chooseForm/main',
       });
+    },
+    // 剂型界面，反向传值
+    formNavBack(data){
+
     },
     // 点击规格管理
     clickSpecButton(){
@@ -612,6 +618,11 @@ export default {
 
       // 21、启用(0:禁用，1:启用)
 
+    },
+    // 剂型选择变化
+    formTypeChange(data){
+      console.log('formTypeChange');
+      this.item.drug_forms_name = data;
     }
   },
   computed: {
@@ -685,7 +696,9 @@ export default {
     // 3、判断是不是新增(只有字符串才能用length!!!)
     var idString = this.item.id + '';
     this.isAddNewDrug = (idString.length > 0) ? false:true;
-    // 4、检查是否是模版数据
+    // 4、添加通知
+    notificationCenter.addNotification('drug_forms_name', this.formTypeChange, this);
+    // 5、检查是否是模版数据
     this.param.drug_id = this.item.id;
     this.param._userid = this.globalData.userid;
     this.param._password = this.globalData.password;
@@ -703,6 +716,14 @@ export default {
       this.isPrescriptionDrug = false;
     });
   },
+  onUnload: function () {
+    notificationCenter.removeNotification('drug_forms_name', this)
+  },
+  onShow: function () {
+    // 类似于ios的viewDidAppear(可以利用vuex进行界面数据管理)
+    // 缺点是不管数据是否变化，都要重新赋值
+    console.log('onShowonShowonShow');
+  },
   mounted() {
     // 1、参数解析(图片解码)
     // this.item = JSON.parse(this.$root.$mp.query.item);
@@ -712,6 +733,7 @@ export default {
     // if (!(this.item.image == 'undefined')) {
       // this.selectImage = this.item.image;
     // }
+    console.log('mounted');
   },
   beforeUpdate() {
     console.log('beforeUpdate');
