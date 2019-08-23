@@ -4,11 +4,11 @@
         <div class="head-position-view">
             <!-- 1.1、序号和名称 -->
             <div class="number-view">
-                <div>2</div>
-                <div>12</div>
+                <div>{{item.ratioType}}</div>
+                <div>{{item.ratio_count}}</div>
             </div>
             <!-- 1.2、副标题 -->
-            <div class="subTitle-view">（包装与拆零单位换算）</div>
+            <div class="subTitle-view">{{item.ratioTip}}</div>
             <!-- 1.3、按钮区域 -->
             <div class="button-view">
                 <!-- 上一步 -->
@@ -67,10 +67,19 @@
 
 <script>
 export default {
-  data () {
-    return {
-    };
-  }
+    props:{
+        item:{
+            type: Object,
+            required:true,
+            default () {
+                return {}
+            }
+        }
+    },  
+    data () {
+        return {
+        };
+    }
 }
 </script>
 

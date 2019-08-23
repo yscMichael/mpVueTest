@@ -4,11 +4,11 @@
         <div class="head-position-view">
             <!-- 1.1、序号和名称 -->
             <div class="number-view">
-                <div>1</div>
-                <div>盒</div>
+                <div>{{item.unitType}}</div>
+                <div>{{item.unitName}}</div>
             </div>
             <!-- 1.2、副标题 -->
-            <div class="subTitle-view">（包装单位）</div>
+            <div class="subTitle-view">{{item.unitTip}}</div>
             <!-- 1.3、按钮区域 -->
             <div class="button-view">
                 <!-- 上一步 -->
@@ -46,6 +46,15 @@
 
 <script>
 export default {
+  props:{
+    item:{
+        type: Object,
+        required:true,
+        default () {
+            return {}
+        }
+    }
+  },  
   data () {
     return {
         unitArray:[
@@ -73,7 +82,10 @@ export default {
             {title:'鞘内注射',isSelect:false}
         ],
     };
-  }
+  },
+  computed: {
+
+  },
 }
 </script>
 
@@ -91,11 +103,11 @@ export default {
         top: 0px;
         left: 0px;
         right: 0px;
-        height: 77px;
+        height: 80px;
     }
     .unit-list-view{
         position: absolute;
-        top: 77px;
+        top: 80px;
         left: 0px;
         right: 0px;
         bottom: 90px;

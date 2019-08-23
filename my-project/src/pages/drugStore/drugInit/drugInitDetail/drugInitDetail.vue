@@ -383,8 +383,18 @@ export default {
     },
     // 点击规格管理
     clickSpecButton(){
+      // 模型传递
+      var tempModel = {
+          min_name:this.item.min_name,//包装单位
+          change_count:this.item.change_count,//包装单位与拆零单位换算
+          rx_name:this.item.rx_name,//拆零单位
+          taking_count:this.item.taking_count,//拆零单位与剂量单位换算
+          single_name:this.item.single_name,//剂量单位
+          spec:this.item.spec,//规格
+          drugType:'',//药品类型
+      }
       wx.navigateTo({
-        url: '/pages/drugStore/drugInit/specManage/main',
+        url: '/pages/drugStore/drugInit/specManage/main?item=' + JSON.stringify(tempModel),
       });
     },
     // 点击用法用量

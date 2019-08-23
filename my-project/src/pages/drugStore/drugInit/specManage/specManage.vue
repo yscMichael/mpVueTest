@@ -10,47 +10,51 @@
           <!-- 1.2、规格 -->
           <div class="spec-view">
             <div>规格：</div>
-            <input type="text" value="/盒">
+            <input type="text" v-model="item.spec">
           </div>
           <!-- 1.3、规格详情 -->
           <!-- scroll-view滚动方式 -->
           <scroll-view class="spec-detail-scroll"
                       scroll-x="true">
-              <div class="spec-detail-text margin-left-12 margin-right-4">每</div>
-              <div class="spec-detail-input">盒</div>
-              <div class="spec-detail-text">有</div>
-              <div class="spec-detail-input">12</div>
-              <div class="spec-detail-input">颗</div>
-              <div class="spec-detail-text margin-right-8">;</div>
-              <div class="spec-detail-text">每</div>
-              <div class="spec-detail-text max-width-67">拆</div>
-              <div class="spec-detail-text margin-right-4">有</div>
-              <div class="spec-detail-input margin-right-12">剂量</div>
+              <div class="spec-container">   
+                <div class="spec-detail-text margin-left-12 margin-right-4">每</div>
+                <div :class="['spec-detail-input',selectIndex==1?'spec-slect-border':'']" @click="clickScrollButton('1')">{{item.min_name}}</div>
+                <div class="spec-detail-text">有</div>
+                <div :class="['spec-detail-input',selectIndex==2?'spec-slect-border':'']" @click="clickScrollButton('2')">{{item.change_count}}</div>
+                <div :class="['spec-detail-input',selectIndex==3?'spec-slect-border':'']" @click="clickScrollButton('3')">{{item.rx_name}}</div>
+                <div class="spec-detail-text margin-right-8">;</div>
+                <div class="spec-detail-text">每</div>
+                <div class="spec-detail-text max-width-67">{{item.rx_name}}</div>
+                <div class="spec-detail-text margin-right-4">有</div>
+                <div :class="['spec-detail-input',selectIndex==4?'spec-slect-border':'']" @click="clickScrollButton('4')">{{item.taking_count}}</div>
+                <div :class="['spec-detail-input','margin-right-12',selectIndex==5?'spec-slect-border':'']" @click="clickScrollButton('5')">{{item.single_name}}</div>
+                <div class="spec-detail-space"></div>
+              </div>     
           </scroll-view>
         </div>
         <!-- 2、底部固定区域 -->
         <div class="bottom-position-view">
           <!-- 单位轮播界面 -->
-          <swiper>
+          <swiper :current="currentIndex">
               <!-- 包装单位 -->
               <swiper-item>
-                <unit-list-cell></unit-list-cell>
+                <unit-list-cell :item="minNameItem"></unit-list-cell>
               </swiper-item>
               <!-- 包装与拆零单位换算 -->
               <swiper-item>
-                <change-count-cell></change-count-cell>              
+                <change-count-cell :item="changeCountItem"></change-count-cell>              
               </swiper-item>
               <!-- 拆零单位 -->
               <swiper-item>
-                <unit-list-cell></unit-list-cell> 
+                <unit-list-cell :item="rxNameItem"></unit-list-cell> 
               </swiper-item>
               <!-- 拆零单位与剂量单位换算 -->
               <swiper-item>
-                <change-count-cell></change-count-cell>              
+                <change-count-cell :item="takeCountItem"></change-count-cell>              
               </swiper-item>
               <!-- 剂量单位 -->
               <swiper-item>
-                <unit-list-cell></unit-list-cell>           
+                <unit-list-cell :item="singleNameItem"></unit-list-cell>           
               </swiper-item>
           </swiper>
         </div>
@@ -67,14 +71,83 @@ export default {
   },
   data () {
     return {
+      // 滚动条选中的按钮
+      selectIndex:1,
+      // 当前轮播图位置
+      currentIndex:0,
+      // 包装单位模型
+      minNameItem:{
+        unitName:'盒',
+        unitTip:'(包装单位)',
+        unitType:'1'        
+      },
+      // 拆零单位模型
+      rxNameItem:{
+        unitName:'盒',
+        unitTip:'(拆零单位)',
+        unitType:'3'
+      },
+      // 剂量单位模型
+      singleNameItem:{
+        unitName:'盒',
+        unitTip:'(剂量单位)',
+        unitType:'5'
+      },
+      // 包装与拆零单位换算比例
+      changeCountItem:{
+        ratio_count:'1',
+        ratioTip:'(包装与拆零单位换算)',
+        ratioType:'2'
+      },
+      // 拆零与剂量单位换算比例
+      takeCountItem:{
+        ratio_count:'1',
+        ratioTip:'(拆零与剂量单位换算)',
+        ratioType:'4'
+      },
+      // 包装单位数据源
+      minDataSource:[],
+      // 拆零单位数据源
+      rxDataSource:[],
+      // 剂量单位数据源
+      singleDataSource:[],
+      // 总的模型
+      item:{
+        min_name:'',//包装单位
+        change_count:'',//包装与拆零单位换算
+        rx_name:'',//拆零单位
+        taking_count:'',//拆零与剂量单位换算
+        single_name:'',//剂量单位
+        spec:'',//规格
+      }
+
     };
+  },
+  methods: {
+    // 点击滚动条按钮
+    clickScrollButton(index){
+      console.log('点击滚动条按钮');
+      console.log(index);
+      this.currentIndex = index - 1;
+      this.selectIndex = index;
+    }
+  },
+  onLoad: function (options) {
+    // 1、解析参数
+    var tempModel = JSON.parse(options.item);
+    // 2、模型赋值
+    this.item.min_name = tempModel.min_name?tempModel.min_name:'';
+    this.item.change_count = tempModel.change_count?tempModel.change_count:'';
+    this.item.rx_name = tempModel.rx_name?tempModel.rx_name:'';
+    this.item.taking_count = tempModel.taking_count?tempModel.taking_count:'';
+    this.item.single_name = tempModel.single_name?tempModel.single_name:'';
+    this.item.spec = tempModel.spec?tempModel.spec:'';
   }
 }
 </script>
 
 <style scoped>
     .main-view{
-      background-color: red;
       position: absolute;
       top: 0px;
       left: 0px;
@@ -86,11 +159,11 @@ export default {
       top: 0px;
       left: 0px;
       right: 0px;
-      height: 124px;
+      height: 150px;
     }
     .bottom-position-view{
       position: absolute;
-      top: 124px;
+      top: 150px; 
       left: 0px;
       right: 0px;
       bottom: 0px;
@@ -101,7 +174,6 @@ export default {
       height: 100%;
       background-color: #888888;
     }
-
     .operation-view{
       background-color: #F1F1F4;
       height: 30px;
@@ -142,14 +214,26 @@ export default {
     .spec-detail-scroll{
       /* 这里设置100%是为了自动适应子类 */
       width: 100%;
-      height: 40px;
+      height: 60px;
       box-sizing: border-box;
-      border: 1px solid blue;
       white-space: nowrap;
       background-color: white;
+      margin-top: 6px;
+    }
+    .spec-container{
+      display: flex;
+      align-items: center;
+      height: 60px;
+    }
+    .spec-slect-border{
+      border: 1px solid red;
+      box-sizing: border-box;
     }
     .spec-detail-text{
-      display: inline-block;
+      /* 不放大 */
+      flex-grow: 0;
+      /* 不压缩 */
+      flex-shrink: 0;
     }
     .spec-detail-input{
         width: 67px;
@@ -159,14 +243,22 @@ export default {
         margin-left: 4px;
         margin-right: 4px;
         background-color: #F2F4F5;
-        display: inline-block;
-    }
-    .spec-swiper-class{
-        border: 1px solid green;
         box-sizing: border-box;
+        /* 不放大 */
+        flex-grow: 0;
+        /* 不压缩 */
+        flex-shrink: 0;
+    }
+    .spec-detail-space{
+      width: 5px;
+      height: 40px;
+      /* 不放大 */
+      flex-grow: 0;
+      /* 不压缩 */
+      flex-shrink: 0;
     }
     .margin-left-12{
-        margin-left: 12px;
+      margin-left: 12px;
     }
     .margin-right-4{
         margin-right: 4px;
