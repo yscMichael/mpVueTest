@@ -38,7 +38,9 @@
           <swiper :current="currentIndex">
               <!-- 包装单位 -->
               <swiper-item>
-                <unit-list-cell :item="minNameItem"></unit-list-cell>
+                <unit-list-cell :item="minNameItem" 
+                                :unitArray="unitDataSource" 
+                                @func="addNewUnit"></unit-list-cell>
               </swiper-item>
               <!-- 包装与拆零单位换算 -->
               <swiper-item>
@@ -46,7 +48,9 @@
               </swiper-item>
               <!-- 拆零单位 -->
               <swiper-item>
-                <unit-list-cell :item="rxNameItem"></unit-list-cell> 
+                <unit-list-cell :item="rxNameItem"
+                                :unitArray="unitDataSource" 
+                                @func="addNewUnit"></unit-list-cell> 
               </swiper-item>
               <!-- 拆零单位与剂量单位换算 -->
               <swiper-item>
@@ -54,7 +58,9 @@
               </swiper-item>
               <!-- 剂量单位 -->
               <swiper-item>
-                <unit-list-cell :item="singleNameItem"></unit-list-cell>           
+                <unit-list-cell :item="singleNameItem" 
+                                :unitArray="unitDataSource"
+                                @func="addNewUnit"></unit-list-cell>           
               </swiper-item>
           </swiper>
         </div>
@@ -106,11 +112,7 @@ export default {
         ratioType:'4'
       },
       // 包装单位数据源
-      minDataSource:[],
-      // 拆零单位数据源
-      rxDataSource:[],
-      // 剂量单位数据源
-      singleDataSource:[],
+      unitDataSource:[],
       // 总的模型
       item:{
         min_name:'',//包装单位
@@ -119,8 +121,24 @@ export default {
         taking_count:'',//拆零与剂量单位换算
         single_name:'',//剂量单位
         spec:'',//规格
+      },
+      // 列表参数
+      listParam:{
+        op:'List',
+        cloud:'drug_unit',
+        _type:'json',
+        _password:this.globalData.password,
+        _userid:this.globalData.userid
+      },
+      // 新增参数
+      addUnitParam:{
+        op:'Add',
+        cloud:'drug_unit',
+        key_name:'',
+        _type:'json',
+        _password:this.globalData.password,
+        _userid:this.globalData.userid
       }
-
     };
   },
   methods: {
@@ -130,6 +148,22 @@ export default {
       console.log(index);
       this.currentIndex = index - 1;
       this.selectIndex = index;
+    },
+    // 增加单位
+    addNewUnit(unit){
+      console.log(unit);
+      // 1、参数赋值
+      this.addUnitParam._password = this.globalData.password;
+      this.addUnitParam._userid = this.globalData.userid;
+      this.addUnitParam.key_name = unit;
+      // 2、网络请求
+      this.$fly.get('/app',this.param)
+      .then((response) => {
+        console.log('----------------');
+        console.log(response);
+      })
+      .catch(function(error){
+      }); 
     }
   },
   onLoad: function (options) {
@@ -142,6 +176,32 @@ export default {
     this.item.taking_count = tempModel.taking_count?tempModel.taking_count:'';
     this.item.single_name = tempModel.single_name?tempModel.single_name:'';
     this.item.spec = tempModel.spec?tempModel.spec:'';
+    // 3、请求单位数据源
+    // 3.1、参数赋值
+    this.listParam._password = this.globalData.password;
+    this.listParam._userid = this.globalData.userid;
+    // 3.2、网络请求
+    this.unitDataSource = [];
+    this.$fly.get('/app',this.listParam)
+    .then((response) => {
+        console.log('+++++++++++++++++');
+        console.log(response);
+        var code = response.data.code;
+        if (parseInt(code) == 200) {
+          var rows = response.data.rows;
+          for (let index = 0; index < rows.length; index++) {
+            var element = rows[index];
+            var tempItem = {
+              title:'',
+              isSelect:false
+            };
+            tempItem.title = element.key_name;
+            this.unitDataSource.push(tempItem);
+          }
+        }
+    })
+    .catch(function(error){
+    }); 
   }
 }
 </script>
@@ -226,7 +286,7 @@ export default {
       height: 60px;
     }
     .spec-slect-border{
-      border: 1px solid red;
+      border: 1px solid #4D81EE;
       box-sizing: border-box;
     }
     .spec-detail-text{

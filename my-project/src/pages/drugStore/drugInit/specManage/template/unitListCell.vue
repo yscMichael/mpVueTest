@@ -35,8 +35,8 @@
         <div class="bottom-add-view">
             <!--3.1、输入框 -->
             <div class="bottom-input-view">
-                <input type="text" placeholder="输入新增单位">
-                <div>确定</div>
+                <input type="text" placeholder="输入新增单位" v-model="newUnit">
+                <div @click="clickSureButton">确定</div>
             </div>
             <!--3.2、提示语 -->
             <div class="bottom-tip-view">提示：新增的单位可在个人中心-自定义设置-药品单位模块里面删除</div>
@@ -53,38 +53,30 @@ export default {
         default () {
             return {}
         }
+    },
+    unitArray:{
+        type: Array,
+        required:true,
+        default () {
+            return {}
+        }
     }
   },  
   data () {
     return {
-        unitArray:[
-            {title:'tomato2',isSelect:false},
-            {title:'beaf',isSelect:false},
-            {title:'aaaa',isSelect:false},
-            {title:'阿萨达',isSelect:false},
-            {title:'餐前口服',isSelect:false},
-            {title:'餐后口服',isSelect:false},
-            {title:'睡前口服',isSelect:false},
-            {title:'皮下注射',isSelect:false},
-            {title:'肌肉注射',isSelect:false},
-            {title:'静脉注射',isSelect:false},
-            {title:'静脉滴注',isSelect:false},
-            {title:'鞘内注射',isSelect:false},
-            {title:'皮下注射',isSelect:false},
-            {title:'肌肉注射',isSelect:false},
-            {title:'静脉注射',isSelect:false},
-            {title:'静脉滴注',isSelect:false},
-            {title:'鞘内注射',isSelect:false},
-            {title:'鞘内注射',isSelect:false},
-            {title:'鞘内注射',isSelect:false},
-            {title:'鞘内注射',isSelect:false},
-            {title:'鞘内注射',isSelect:false},
-            {title:'鞘内注射',isSelect:false}
-        ],
+        // 新增单位
+        newUnit:'',
     };
   },
   computed: {
 
+  },
+  methods: {
+    // 点击确定按钮
+    clickSureButton(){
+        console.log('点击确定按钮');
+        this.$emit('addNewUnit', this.newUnit);
+    }
   },
 }
 </script>
@@ -113,21 +105,20 @@ export default {
         bottom: 90px;
 
         background-color: white;
-        padding: 1px 1px 12px 12px;
-        display: flex;
-        flex-wrap: wrap;
+        padding: 6px;
         overflow: scroll;  
     }
     .content-view{
-        margin: 10px 10px 0px 0px;
-        display: flex;
-        align-items: center;
-        border: 1px solid red;
+        padding: 6px;
+        height: 52px;
+        width: 33.3%;
+        float: left;
+        box-sizing: border-box;
+
         /* 超出部分隐藏 */
         overflow: hidden;
     }
     .content-title{
-        padding: 0px 10px 0px 10px;
         height: 40px;
         line-height: 40px;
         border-radius: 20px;
