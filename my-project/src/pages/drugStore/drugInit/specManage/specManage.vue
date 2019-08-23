@@ -37,30 +37,40 @@
           <!-- 单位轮播界面 -->
           <swiper :current="currentIndex">
               <!-- 包装单位 -->
-              <swiper-item>
+              <swiper-item catchtouchmove='catchTouchMove'>
                 <unit-list-cell :item="minNameItem" 
-                                :unitArray="unitDataSource" 
-                                @addNewUnit="addNewUnit"></unit-list-cell>
+                                :unitArray="minDataSource" 
+                                @addNewUnit="addNewUnit"
+                                @clickUpButton="clickUpButton"
+                                @clickNextButton="clickNextButton"></unit-list-cell>
               </swiper-item>
               <!-- 包装与拆零单位换算 -->
-              <swiper-item>
-                <change-count-cell :item="changeCountItem"></change-count-cell>              
+              <swiper-item catchtouchmove='catchTouchMove'>
+                <change-count-cell :item="changeCountItem"
+                                   @clickUpButton="clickUpButton"
+                                   @clickNextButton="clickNextButton"></change-count-cell>              
               </swiper-item>
               <!-- 拆零单位 -->
-              <swiper-item>
+              <swiper-item catchtouchmove='catchTouchMove'>
                 <unit-list-cell :item="rxNameItem"
-                                :unitArray="unitDataSource" 
-                                @addNewUnit="addNewUnit"></unit-list-cell> 
+                                :unitArray="rxDataSource" 
+                                @addNewUnit="addNewUnit"
+                                @clickUpButton="clickUpButton"
+                                @clickNextButton="clickNextButton"></unit-list-cell> 
               </swiper-item>
               <!-- 拆零单位与剂量单位换算 -->
-              <swiper-item>
-                <change-count-cell :item="takeCountItem"></change-count-cell>              
+              <swiper-item catchtouchmove='catchTouchMove'>
+                <change-count-cell :item="takeCountItem"
+                                   @clickUpButton="clickUpButton"
+                                   @clickNextButton="clickNextButton"></change-count-cell>              
               </swiper-item>
               <!-- 剂量单位 -->
-              <swiper-item>
+              <swiper-item catchtouchmove='catchTouchMove'>
                 <unit-list-cell :item="singleNameItem" 
-                                :unitArray="unitDataSource"
-                                @addNewUnit="addNewUnit"></unit-list-cell>           
+                                :unitArray="singleDataSource"
+                                @addNewUnit="addNewUnit"
+                                @clickUpButton="clickUpButton"
+                                @clickNextButton="clickNextButton"></unit-list-cell>           
               </swiper-item>
           </swiper>
         </div>
@@ -68,6 +78,7 @@
 </template>
 
 <script>
+import notificationCenter from '@/notification'
 import unitListCell from '@/pages/drugStore/drugInit/specManage/template/unitListCell'
 import changeCountCell from '@/pages/drugStore/drugInit/specManage/template/changeCountCell'
 export default {
@@ -85,34 +96,38 @@ export default {
       minNameItem:{
         unitName:'盒',
         unitTip:'(包装单位)',
-        unitType:'1'        
+        type:'1'        
       },
       // 拆零单位模型
       rxNameItem:{
         unitName:'盒',
         unitTip:'(拆零单位)',
-        unitType:'3'
+        type:'3'
       },
       // 剂量单位模型
       singleNameItem:{
         unitName:'盒',
         unitTip:'(剂量单位)',
-        unitType:'5'
+        type:'5'
       },
       // 包装与拆零单位换算比例
       changeCountItem:{
         ratio_count:'1',
         ratioTip:'(包装与拆零单位换算)',
-        ratioType:'2'
+        type:'2'
       },
       // 拆零与剂量单位换算比例
       takeCountItem:{
         ratio_count:'1',
         ratioTip:'(拆零与剂量单位换算)',
-        ratioType:'4'
+        type:'4'
       },
       // 包装单位数据源
-      unitDataSource:[],
+      minDataSource:[],
+      // 拆零单位数据源
+      rxDataSource:[],
+      // 剂量单位数据源
+      singleDataSource:[],
       // 总的模型
       item:{
         min_name:'',//包装单位
@@ -142,6 +157,11 @@ export default {
     };
   },
   methods: {
+    // 截获滑动
+    catchTouchMove(){
+      console.log('截获滑动');
+      return false;
+    },
     // 点击滚动条按钮
     clickScrollButton(index){
       console.log('点击滚动条按钮');
@@ -149,13 +169,48 @@ export default {
       this.currentIndex = index - 1;
       this.selectIndex = index;
     },
+    // 包装单位--通知
+    minNameChange(unit){
+      console.log('包装单位--通知 ===== ' + unit);
+      this.item.min_name = unit;
+    },
+    // 包装与拆零单位换算--通知
+    changCountChange(count){
+      this.item.change_count = count;
+    },
+    // 拆零单位--通知
+    rxNameChange(unit){
+      this.item.rx_name = unit;
+    },
+    // 拆零与剂量单位换算--通知
+    takingCountChange(count){
+      this.item.taking_count = count;
+    },
+    // 剂量单位--通知
+    singleNameChange(unit){
+      this.item.single_name = unit;
+    },
+    // 点击上一步 
+    clickUpButton(type){
+      console.log(type);
+      // 滑动底部swiper
+      this.currentIndex = type - 1;
+    },
+    // 点击下一步
+    clickNextButton(type){
+      // 滑动底部swiper
+      console.log(type);
+      this.currentIndex = type;
+    },
     // 列表数据
     refreshData(){
       // 3.1、参数赋值
       this.listParam._password = this.globalData.password;
       this.listParam._userid = this.globalData.userid;
       // 3.2、网络请求
-      this.unitDataSource = [];
+      this.minDataSource = [];
+      this.rxDataSource = [];
+      this.singleDataSource = [];
       this.$fly.get('/app',this.listParam)
       .then((response) => {
         var code = response.data.code;
@@ -163,12 +218,28 @@ export default {
           var rows = response.data.rows;
           for (let index = 0; index < rows.length; index++) {
             var element = rows[index];
-            var tempItem = {
+            // 这里会有深拷贝和浅拷贝问题，暂时按照以下方法规避
+            // 初始化三个模型
+            var minItem = {
               title:'',
               isSelect:false
             };
-            tempItem.title = element.key_name;
-            this.unitDataSource.push(tempItem);
+            var rxItem = {
+              title:'',
+              isSelect:false
+            };
+            var singleItem = {
+              title:'',
+              isSelect:false
+            };
+            // 模型赋值
+            minItem.title = element.key_name;
+            rxItem.title = element.key_name;
+            singleItem.title = element.key_name;
+            // 添加到数组
+            this.minDataSource.push(minItem);
+            this.rxDataSource.push(rxItem);
+            this.singleDataSource.push(singleItem);
           }
         }
       })
@@ -217,9 +288,22 @@ export default {
     this.item.taking_count = tempModel.taking_count?tempModel.taking_count:'';
     this.item.single_name = tempModel.single_name?tempModel.single_name:'';
     this.item.spec = tempModel.spec?tempModel.spec:'';
-    // 3、请求单位数据源
+    // 3、添加通知
+    notificationCenter.addNotification('min_name', this.minNameChange, this);
+    notificationCenter.addNotification('chang_count', this.changCountChange, this);
+    notificationCenter.addNotification('rx_name', this.rxNameChange, this);
+    notificationCenter.addNotification('taking_count', this.takingCountChange, this);
+    notificationCenter.addNotification('single_name', this.singleNameChange, this);
+    // 4、请求单位数据源
     this.refreshData();
-  }
+  },
+  onUnload: function () {
+    notificationCenter.removeNotification('min_name', this);
+    notificationCenter.removeNotification('chang_count', this);
+    notificationCenter.removeNotification('rx_name', this);
+    notificationCenter.removeNotification('taking_count', this);
+    notificationCenter.removeNotification('single_name', this);
+  },
 }
 </script>
 
@@ -325,6 +409,14 @@ export default {
         flex-grow: 0;
         /* 不压缩 */
         flex-shrink: 0;
+
+        /* 多余的显示省略号 */
+        /* 超出部分隐藏 */
+        overflow: hidden;
+        /* 内容不换行 */
+        white-space: nowrap;
+        /* 超出部分用省略号 */
+        text-overflow: ellipsis;
     }
     .spec-detail-space{
       width: 5px;

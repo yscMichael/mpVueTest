@@ -4,7 +4,7 @@
         <div class="head-position-view">
             <!-- 1.1、序号和名称 -->
             <div class="number-view">
-                <div>{{item.unitType}}</div>
+                <div>{{item.type}}</div>
                 <div>{{item.unitName}}</div>
             </div>
             <!-- 1.2、副标题 -->
@@ -12,12 +12,12 @@
             <!-- 1.3、按钮区域 -->
             <div class="button-view">
                 <!-- 上一步 -->
-                <div class="up-button">
+                <div class="up-button" @click="clickUpBtn">
                     <div class="arrow-left"></div>
                     <div>上一步</div>
                 </div>
                 <!-- 下一步 -->
-                <div class="next-button">
+                <div class="next-button" @click="clickNextBtn">
                     <div>下一步</div>
                     <div class="arrow-right"></div>
                 </div>
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import notificationCenter from '@/notification'
 export default {
   props:{
     item:{
@@ -76,6 +77,33 @@ export default {
     clickSureButton(){
         console.log('点击确定按钮');
         this.$emit('addNewUnit', this.newUnit);
+    },
+    // 点击cell
+    clickUsageCell(data){
+        // 1、处理选中
+        for (let index = 0; index < this.unitArray.length; index++) {
+            var element = this.unitArray[index];
+            element.isSelect = false;
+        }
+        data.isSelect = true;
+        // 2、发送通知
+        if (parseInt(this.item.type) == 1) {//包装单位
+            notificationCenter.postNotification('min_name', data.title);   
+        }else if(parseInt(this.item.type) == 3){//拆零单位
+            notificationCenter.postNotification('rx_name', data.title);
+        }else{//剂量单位
+            notificationCenter.postNotification('single_name', data.title);
+        }
+    },
+    // 点击上一步
+    clickUpBtn(){
+        console.log('点击上一步');
+        this.$emit('clickUpButton',this.item.type);
+    },
+    // 点击下一步
+    clickNextBtn(){
+        console.log('点击下一步');
+        this.$emit('clickNextButton',this.item.type);
     }
   },
 }

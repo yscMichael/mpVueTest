@@ -4,7 +4,7 @@
         <div class="head-position-view">
             <!-- 1.1、序号和名称 -->
             <div class="number-view">
-                <div>{{item.ratioType}}</div>
+                <div>{{item.type}}</div>
                 <div>{{item.ratio_count}}</div>
             </div>
             <!-- 1.2、副标题 -->
@@ -12,12 +12,12 @@
             <!-- 1.3、按钮区域 -->
             <div class="button-view">
                 <!-- 上一步 -->
-                <div class="up-button">
+                <div class="up-button" @click="clickUpBtn">
                     <div class="arrow-left"></div>
                     <div>上一步</div>
                 </div>
                 <!-- 下一步 -->
-                <div class="next-button">
+                <div class="next-button" @click="clickNextBtn">
                     <div>下一步</div>
                     <div class="arrow-right"></div>
                 </div>
@@ -79,7 +79,19 @@ export default {
     data () {
         return {
         };
-    }
+    },
+    methods: {
+        // 点击上一步
+        clickUpBtn(){
+            console.log('点击上一步');
+            this.$emit('clickUpButton',this.item.type);
+        },
+        // 点击下一步
+        clickNextBtn(){
+            console.log('点击下一步');
+            this.$emit('clickNextButton',this.item.type);
+        }
+    },
 }
 </script>
 
