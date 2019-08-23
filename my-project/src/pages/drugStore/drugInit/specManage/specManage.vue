@@ -40,7 +40,7 @@
               <swiper-item>
                 <unit-list-cell :item="minNameItem" 
                                 :unitArray="unitDataSource" 
-                                @func="addNewUnit"></unit-list-cell>
+                                @addNewUnit="addNewUnit"></unit-list-cell>
               </swiper-item>
               <!-- 包装与拆零单位换算 -->
               <swiper-item>
@@ -50,7 +50,7 @@
               <swiper-item>
                 <unit-list-cell :item="rxNameItem"
                                 :unitArray="unitDataSource" 
-                                @func="addNewUnit"></unit-list-cell> 
+                                @addNewUnit="addNewUnit"></unit-list-cell> 
               </swiper-item>
               <!-- 拆零单位与剂量单位换算 -->
               <swiper-item>
@@ -60,7 +60,7 @@
               <swiper-item>
                 <unit-list-cell :item="singleNameItem" 
                                 :unitArray="unitDataSource"
-                                @func="addNewUnit"></unit-list-cell>           
+                                @addNewUnit="addNewUnit"></unit-list-cell>           
               </swiper-item>
           </swiper>
         </div>
@@ -149,6 +149,32 @@ export default {
       this.currentIndex = index - 1;
       this.selectIndex = index;
     },
+    // 列表数据
+    refreshData(){
+      // 3.1、参数赋值
+      this.listParam._password = this.globalData.password;
+      this.listParam._userid = this.globalData.userid;
+      // 3.2、网络请求
+      this.unitDataSource = [];
+      this.$fly.get('/app',this.listParam)
+      .then((response) => {
+        var code = response.data.code;
+        if (parseInt(code) == 200) {
+          var rows = response.data.rows;
+          for (let index = 0; index < rows.length; index++) {
+            var element = rows[index];
+            var tempItem = {
+              title:'',
+              isSelect:false
+            };
+            tempItem.title = element.key_name;
+            this.unitDataSource.push(tempItem);
+          }
+        }
+      })
+      .catch(function(error){
+      }); 
+    },
     // 增加单位
     addNewUnit(unit){
       console.log(unit);
@@ -157,12 +183,27 @@ export default {
       this.addUnitParam._userid = this.globalData.userid;
       this.addUnitParam.key_name = unit;
       // 2、网络请求
-      this.$fly.get('/app',this.param)
+      wx.showLoading({
+        title: '正在添加...',
+        mask: false,
+      });
+      this.$fly.get('/app',this.addUnitParam)
       .then((response) => {
-        console.log('----------------');
-        console.log(response);
+        wx.hideLoading();
+        var code = response.data.code;
+        if (parseInt(code) == 200) {
+          wx.showToast({
+            title: '添加成功',
+            icon: 'none',
+            duration: 1500,
+            mask: false
+          }); 
+          // 重新请求数据
+          this.refreshData();
+        }
       })
       .catch(function(error){
+        wx.hideLoading();
       }); 
     }
   },
@@ -177,31 +218,7 @@ export default {
     this.item.single_name = tempModel.single_name?tempModel.single_name:'';
     this.item.spec = tempModel.spec?tempModel.spec:'';
     // 3、请求单位数据源
-    // 3.1、参数赋值
-    this.listParam._password = this.globalData.password;
-    this.listParam._userid = this.globalData.userid;
-    // 3.2、网络请求
-    this.unitDataSource = [];
-    this.$fly.get('/app',this.listParam)
-    .then((response) => {
-        console.log('+++++++++++++++++');
-        console.log(response);
-        var code = response.data.code;
-        if (parseInt(code) == 200) {
-          var rows = response.data.rows;
-          for (let index = 0; index < rows.length; index++) {
-            var element = rows[index];
-            var tempItem = {
-              title:'',
-              isSelect:false
-            };
-            tempItem.title = element.key_name;
-            this.unitDataSource.push(tempItem);
-          }
-        }
-    })
-    .catch(function(error){
-    }); 
+    this.refreshData();
   }
 }
 </script>
