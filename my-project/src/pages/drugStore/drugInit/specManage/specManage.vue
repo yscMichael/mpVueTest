@@ -48,7 +48,8 @@
               <swiper-item catchtouchmove='catchTouchMove'>
                 <change-count-cell :item="changeCountItem"
                                    @clickUpButton="clickUpButton"
-                                   @clickNextButton="clickNextButton"></change-count-cell>              
+                                   @clickNextButton="clickNextButton"
+                                   :hiddenFlag="true"></change-count-cell>              
               </swiper-item>
               <!-- 拆零单位 -->
               <swiper-item catchtouchmove='catchTouchMove'>
@@ -62,7 +63,8 @@
               <swiper-item catchtouchmove='catchTouchMove'>
                 <change-count-cell :item="takeCountItem"
                                    @clickUpButton="clickUpButton"
-                                   @clickNextButton="clickNextButton"></change-count-cell>              
+                                   @clickNextButton="clickNextButton"
+                                   :hiddenFlag="false"></change-count-cell>              
               </swiper-item>
               <!-- 剂量单位 -->
               <swiper-item catchtouchmove='catchTouchMove'>
@@ -135,7 +137,8 @@ export default {
         rx_name:'',//拆零单位
         taking_count:'',//拆零与剂量单位换算
         single_name:'',//剂量单位
-        spec:'',//规格
+        spec:'',//规格,
+        drugType:'',//药品类型
       },
       // 列表参数
       listParam:{
@@ -159,48 +162,91 @@ export default {
   methods: {
     // 截获滑动
     catchTouchMove(){
-      console.log('截获滑动');
       return false;
     },
     // 点击滚动条按钮
     clickScrollButton(index){
-      console.log('点击滚动条按钮');
-      console.log(index);
       this.currentIndex = index - 1;
       this.selectIndex = index;
     },
     // 包装单位--通知
     minNameChange(unit){
-      console.log('包装单位--通知 ===== ' + unit);
       this.item.min_name = unit;
+      this.appendSpec();
     },
     // 包装与拆零单位换算--通知
     changCountChange(count){
-      this.item.change_count = count;
+      if (count == '-1') {//删除
+        this.item.change_count = this.item.change_count.substring(0,this.item.change_count.length - 1); 
+      }else{//增加
+        this.item.change_count = this.item.change_count + count;
+      }
+      this.appendSpec();
     },
     // 拆零单位--通知
     rxNameChange(unit){
       this.item.rx_name = unit;
+      this.appendSpec();
     },
     // 拆零与剂量单位换算--通知
     takingCountChange(count){
-      this.item.taking_count = count;
+      if (count == '-1') {//删除
+        this.item.taking_count = this.item.taking_count.substring(0,this.item.taking_count.length - 1); 
+      }else{//增加
+        this.item.taking_count = this.item.taking_count + count;
+      }
+      this.appendSpec();
     },
     // 剂量单位--通知
     singleNameChange(unit){
       this.item.single_name = unit;
+      this.appendSpec();
+    },
+    // 拼接规格
+    appendSpec(){
+      var minName = this.item.min_name?this.item.min_name:'';
+      var rxName = this.item.rx_name?this.item.rx_name:'';
+      var singleName = this.item.single_name?this.item.single_name:'';
+      var changeCount = this.item.change_count?this.item.change_count:'';
+      var takeCount = this.item.taking_count?this.item.taking_count:'';
+      if (minName == rxName) 
+      {// 包装单位 == 拆零单位
+          if (rxName == singleName) 
+          {//拆零单位 == 剂量单位
+            this.item.spec = '1' + rxName; 
+          }
+          else
+          {//拆零单位 != 剂量单位
+            this.item.spec = takeCount + singleName + '/' + rxName;
+          }
+      }
+      else
+      {//包装单位 != 拆零单位
+          if (rxName == singleName) 
+          {//拆零单位 == 剂量单位
+            this.item.spec = changeCount + rxName + '/' + minName; 
+          } 
+          else
+          {//拆零单位 != 剂量单位
+            this.item.spec = takeCount + singleName + '/' + rxName + ';' + changeCount + rxName + '/' + minName;
+            var drugType = this.item.drugType;
+            if (parseInt(drugType) == 4) {
+              this.item.spec = changeCount + rxName + '/' + minName;
+            }
+          }
+      }
     },
     // 点击上一步 
     clickUpButton(type){
-      console.log(type);
       // 滑动底部swiper
-      this.currentIndex = type - 1;
+      this.currentIndex = type - 2;
+      this.selectIndex = type - 1;
     },
     // 点击下一步
     clickNextButton(type){
       // 滑动底部swiper
-      console.log(type);
       this.currentIndex = type;
+      this.selectIndex = parseInt(type) + 1;
     },
     // 列表数据
     refreshData(){
@@ -248,7 +294,6 @@ export default {
     },
     // 增加单位
     addNewUnit(unit){
-      console.log(unit);
       // 1、参数赋值
       this.addUnitParam._password = this.globalData.password;
       this.addUnitParam._userid = this.globalData.userid;
@@ -288,6 +333,7 @@ export default {
     this.item.taking_count = tempModel.taking_count?tempModel.taking_count:'';
     this.item.single_name = tempModel.single_name?tempModel.single_name:'';
     this.item.spec = tempModel.spec?tempModel.spec:'';
+    this.item.drugType = tempModel.drugType?tempModel.drugType:'1';
     // 3、添加通知
     notificationCenter.addNotification('min_name', this.minNameChange, this);
     notificationCenter.addNotification('chang_count', this.changCountChange, this);

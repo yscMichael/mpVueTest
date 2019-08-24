@@ -391,7 +391,7 @@ export default {
           taking_count:this.item.taking_count,//拆零单位与剂量单位换算
           single_name:this.item.single_name,//剂量单位
           spec:this.item.spec,//规格
-          drugType:'',//药品类型
+          drugType:this.item.dug_type_id,//药品类型
       }
       wx.navigateTo({
         url: '/pages/drugStore/drugInit/specManage/main?item=' + JSON.stringify(tempModel),

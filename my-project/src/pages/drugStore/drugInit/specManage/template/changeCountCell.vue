@@ -25,40 +25,43 @@
         </div>
         <!-- 3、键盘区域 -->
         <div class="bottom-keyboard-view">
-            <div class="section-view">
+            <div class="section-view" @click="clickKeyboard('1')">
                 <div>1</div>
             </div>
-            <div class="section-view">
+            <div class="section-view" @click="clickKeyboard('2')">
                 <div>2</div>
             </div>
-            <div class="section-view">
+            <div class="section-view" @click="clickKeyboard('3')">
                 <div>3</div>
             </div>
-            <div class="section-view">
+            <div class="section-view" @click="clickKeyboard('4')">
                 <div>4</div>
             </div>
-            <div class="section-view">
+            <div class="section-view" @click="clickKeyboard('5')">
                 <div>5</div>
             </div>
-            <div class="section-view">
+            <div class="section-view" @click="clickKeyboard('6')">
                 <div>6</div>
             </div>
-            <div class="section-view">
+            <div class="section-view" @click="clickKeyboard('7')">
                 <div>7</div>
             </div>
-            <div class="section-view">
+            <div class="section-view" @click="clickKeyboard('8')">
                 <div>8</div>
             </div>
-            <div class="section-view">
+            <div class="section-view" @click="clickKeyboard('9')">
                 <div>9</div>
             </div>
-            <div class="section-view">
+            <!-- 这里隐藏要特殊处理以下 -->
+            <div :class="['section-view',hiddenFlag?'hidden-div':'']" @click="clickKeyboard('.')">
                 <div>.</div>
             </div>
-            <div class="section-view">
+            <div :class="['section-view',!hiddenFlag?'hidden-div':'']">
+            </div>
+            <div class="section-view" @click="clickKeyboard('0')">
                 <div>0</div>
             </div>
-            <div class="section-view">
+            <div class="section-view" @click="clickDeleteButton">
                 <img class="keyboard-img" src="/static/images/drugstore/drugInit/icon_del.png" alt="">
             </div>
         </div>
@@ -66,6 +69,7 @@
 </template>
 
 <script>
+import notificationCenter from '@/notification'
 export default {
     props:{
         item:{
@@ -74,7 +78,14 @@ export default {
             default () {
                 return {}
             }
-        }
+        },
+        hiddenFlag:{
+            type: Boolean,
+            required:true,
+            default () {
+                return {}
+            }
+        },
     },  
     data () {
         return {
@@ -90,6 +101,25 @@ export default {
         clickNextBtn(){
             console.log('点击下一步');
             this.$emit('clickNextButton',this.item.type);
+        },
+        // 点击键盘
+        clickKeyboard(index){
+            console.log('点击键盘');
+            console.log(index);
+            if (parseInt(this.item.type) == 2) {//包装与拆零单位换算
+                notificationCenter.postNotification('chang_count', index);   
+            }else{//拆零与剂量单位换算
+                notificationCenter.postNotification('taking_count', index);   
+            }
+        },
+        // 点击删除按钮
+        clickDeleteButton(){
+            console.log('点击删除按钮');
+            if (parseInt(this.item.type) == 2) {//包装与拆零单位换算
+                notificationCenter.postNotification('chang_count', '-1');   
+            }else{//拆零与剂量单位换算
+                notificationCenter.postNotification('taking_count', '-1');   
+            } 
         }
     },
 }
@@ -232,5 +262,8 @@ export default {
         border-right-style: solid;
         border-top-color: transparent;
         border-bottom-color: transparent;
+    }
+    .hidden-div{
+        display: none !important;
     }
 </style>
