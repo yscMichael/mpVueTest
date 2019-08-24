@@ -176,6 +176,7 @@ export default {
         'dug_type_id':'',//药品类型id
         'drug_forms_name':'',//剂型
         'spec':'',//规格
+        'single_flag':'',//小单位标记
         'min_name':'',//包装单位
         'change_count':'',//包装单位与拆零单位换算
         'rx_name':'',//拆零单位
@@ -248,6 +249,8 @@ export default {
       this.item.drug_forms_name = tempModel.drug_forms?tempModel.drug_forms.key_name:'';
       //规格
       this.item.spec = tempModel.spec?tempModel.spec:'';
+      // 单位标记
+      this.item.single_flag = tempModel.single_flag?tempModel.single_flag:'1';
       //包装单位
       this.item.min_name = tempModel.min_unit?tempModel.min_unit.key_name:'';
       //包装单位与拆零单位换算
@@ -391,7 +394,7 @@ export default {
           taking_count:this.item.taking_count,//拆零单位与剂量单位换算
           single_name:this.item.single_name,//剂量单位
           spec:this.item.spec,//规格
-          drugType:this.item.dug_type_id,//药品类型
+          dug_type_id:this.item.dug_type_id,//药品类型
           local_count:this.item.local_count,//库存
       }
       wx.navigateTo({
@@ -400,8 +403,27 @@ export default {
     },
     // 点击用法用量
     clickUsageAndFrequency(){
+      // 传递模型
+      var item = {
+        // 药品类型
+        dug_type_id:this.item.dug_type_id,
+        // 用法名称
+        instruction_en_name:this.item.instruction_en_name,
+        // 频率
+        common_frequency_name:this.item.common_frequency_name,
+        // 单次用量
+        common_count:this.item.common_count,
+        // 用药天数
+        common_days:this.item.common_days,
+        // 拆零单位
+        rx_name:this.item.rx_name,
+        // 剂量单位
+        single_name:this.item.single_name,
+        // 单位标记
+        single_flag:this.item.single_flag,
+      }
       wx.navigateTo({
-        url: '/pages/drugStore/drugInit/usageAndDosage/main',
+        url: '/pages/drugStore/drugInit/usageAndDosage/main?item=' + JSON.stringify(item),
       });
     },
     // 点击有效期预警和库存安全范围
@@ -484,7 +506,7 @@ export default {
       {//修改药品
         if ((dugType == 1) || (dugType == 2)) 
         {
-          if (this.isEmpty(this.item.drug_word) && this.isEmpty(this.item.uuid)) 
+          if_userid (this.isEmpty(this.item.drug_word) && this.isEmpty(this.item.uuid)) 
           {
             wx.showToast({
               title: '国药准字和条形码不能同时为空',

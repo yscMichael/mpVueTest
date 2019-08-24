@@ -148,7 +148,7 @@ export default {
         taking_count:'',//拆零与剂量单位换算
         single_name:'',//剂量单位
         spec:'',//规格,
-        drugType:'',//药品类型
+        dug_type_id:'',//药品类型
         local_count:'',//库存
       },
       // 列表参数
@@ -240,8 +240,8 @@ export default {
           else
           {//拆零单位 != 剂量单位
             this.item.spec = takeCount + singleName + '/' + rxName + ';' + changeCount + rxName + '/' + minName;
-            var drugType = this.item.drugType;
-            if (parseInt(drugType) == 4) {
+            var dug_type_id = this.item.dug_type_id;
+            if (parseInt(dug_type_id) == 4) {
               this.item.spec = changeCount + rxName + '/' + minName;
             }
           }
@@ -395,7 +395,7 @@ export default {
         return;
       }
       // 剂量单位(非医疗器械)
-      if (parseInt(this.item.drugType) != 4) {
+      if (parseInt(this.item.dug_type_id) != 4) {
         if (this.item.single_name.length == 0) {
           wx.showToast({
             title: '请先选择剂量单位',
@@ -440,7 +440,7 @@ export default {
         }
       }
       // 2、非医疗器械才判断
-      if (parseInt(this.item.drugType) != 4) {
+      if (parseInt(this.item.dug_type_id) != 4) {
         // 2.1、拆零单位与剂量单位相同、taking_count不等于1
         if (this.item.rx_name == this.item.single_name) {
           if (parseInt(this.item.taking_count) != 1) {
@@ -501,7 +501,7 @@ export default {
     this.item.taking_count = tempModel.taking_count?tempModel.taking_count:'';
     this.item.single_name = tempModel.single_name?tempModel.single_name:'';
     this.item.spec = tempModel.spec?tempModel.spec:'';
-    this.item.drugType = tempModel.drugType?tempModel.drugType:'1';
+    this.item.dug_type_id = tempModel.dug_type_id?tempModel.dug_type_id:'1';
     this.item.local_count = tempModel.local_count?tempModel.local_count:'0';
     // 3、添加通知
     notificationCenter.addNotification('min_name', this.minNameChange, this);
@@ -591,11 +591,6 @@ export default {
       color: white;
       font-size: 16px;
       background-color: #2993EF;
-    }
-    .bottom-position-view swiper{
-      width: 100%;
-      height: 100%;
-      background-color: #888888;
     }
     .operation-view{
       background-color: #F1F1F4;

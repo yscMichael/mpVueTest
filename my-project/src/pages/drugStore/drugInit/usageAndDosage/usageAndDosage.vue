@@ -5,7 +5,7 @@
         <!-- 用法 -->
         <div class="common-view">
             <div>用法：</div>
-            <div>口服</div>
+            <div>{{item.instruction_en_name}}</div>
         </div>
         <div class="usage-frequency-view">
             <div v-for="(item,index) in usageDataSource" :key="index"  
@@ -17,7 +17,7 @@
         <!-- 频率 -->
         <div class="common-view">
             <div>频率：</div>
-            <div>一日3次</div>
+            <div>{{item.common_frequency_name}}</div>
         </div>
         <div class="usage-frequency-view">
             <div v-for="(item,index) in frequencyDataSource" :key="index"  
@@ -31,7 +31,7 @@
         <div class="single-view">
             <div>单次用量：</div>
             <div>每次</div>
-            <input class="count-input-view" type="text" value="5">
+            <input class="count-input-view" type="text" v-model="item.common_count">
             <div>片</div>
             <div class="arrow-margin arrow-bottom"></div>
             <div class="grow-div"></div>
@@ -42,57 +42,191 @@
         <!-- 用药天数 -->
         <div class="day-view">
             <div>用药天数：</div>
-            <input class="count-input-view" type="text" value="5">
+            <input class="count-input-view" type="text" v-model="item.common_days">
             <div>天</div>
         </div>
     </div>
 </template>
 
 <script>
+import { timeout } from 'q';
 export default {
   data () {
     return {
-        headTitle:'口服；一日3次；每次5片；用药3天',
-        usageDataSource:[
-            {title:'tomato2',isSelect:false},
-            {title:'beaf',isSelect:false},
-            {title:'aaaa',isSelect:false},
-            {title:'阿萨达',isSelect:false},
-            {title:'餐前口服',isSelect:false},
-            {title:'餐后口服',isSelect:false},
-            {title:'睡前口服',isSelect:false},
-            {title:'皮下注射',isSelect:false},
-            {title:'肌肉注射',isSelect:false},
-            {title:'静脉注射',isSelect:false},
-            {title:'静脉滴注',isSelect:false},
-            {title:'鞘内注射',isSelect:false}
-        ],
-        frequencyDataSource:[
-            {title:'一日1次(QD)',isSelect:false},
-            {title:'一日2次(BID)',isSelect:false},
-            {title:'一日3次(TID)',isSelect:false},
-            {title:'一日4次(QID)',isSelect:false},
-            {title:'每二小时1次(Q2H)',isSelect:false},
-            {title:'每四小时1次(Q4H)',isSelect:false},
-            {title:'每六小时1次(Q6H)',isSelect:false},
-            {title:'每八小时1次(Q8H)',isSelect:false},
-            {title:'隔日1次(QOD)',isSelect:false},
-            {title:'隔三日1次(Q3D)',isSelect:false},
-            {title:'每晚1次(QN)',isSelect:false},
-            {title:'必要时(PRN)',isSelect:false}
-        ]
+        // 用法参数
+        usageParam:{
+            op:'List',
+            cloud:'drug_usage[enclinic]',
+            _type:'json',
+            _password:this.globalData.password,
+            _userid:this.globalData.userid
+        },
+        // 频率参数
+        frequencyParam:{
+            op:'LoadDict',
+            key_name:'DayType',
+            _type:'json',
+            _password:this.globalData.password,
+            _userid:this.globalData.userid
+        },
+        // 当前模型
+        item:{
+           instruction_en_name:'',// 用法名称
+           common_frequency_name:'',//频率
+           common_count:'',//单次用量
+           common_days:'',//用药天数
+           rx_name:'',//拆零单位
+           single_name:'',//剂量单位
+           single_flag:'',//单位标记
+        },
+        // 用法数据源
+        usageDataSource:[],
+        // 频率数据源
+        frequencyDataSource:[]
     };
   },
-  methods: {
-      clickUsageCell(data){
-          console.log('clickUsageCell');
-          data.isSelect = true;
-      },
-      clickFrequencyCell(data){
-          console.log('clickFrequencyCell');
-          data.isSelect = true;
-      }
+  computed: {
+    // 顶部标题 
+    headTitle(){
+        // 1、用法(判断是中药还是西药)
+        var instruction = '';
+        var dugType = parseInt(this.item.dug_type_id);
+        if (dugType == 3) {//中药
+            instruction = this.item.instruction_zh_name;
+        }else{
+            instruction = this.item.instruction_en_name;
+        }
+        // 2、频率
+        var frequency = this.item.common_frequency_name;
+        // 3、单次用量
+        var single_use = '';
+        if (this.item.common_count == -1) {
+            single_use = '每次适量';
+        }else{
+            var unitName = this.item.single_name;
+            single_use = (this.item.common_count == 0)?'':'每次' + this.item.common_count + unitName;
+        }
+        // 4、用药天数
+        var common_days = '用药' + parseInt(this.item.common_days) + '天';
+        // 5、总计
+        var content = instruction + ';' + frequency + ';' + single_use + ';' + common_days + ';';
+        return content;
+    }
   },
+  methods: {
+    // 模型转换
+    changeItemModel(tempModel){
+        // 用法名称
+        this.item.instruction_en_name = tempModel.instruction_en_name;
+        // 频率
+        this.item.common_frequency_name = tempModel.common_frequency_name;
+        // 单次用量
+        this.item.common_count = tempModel.common_count;
+        // 用药天数
+        this.item.common_days = tempModel.common_days;
+        // 拆零单位
+        this.item.rx_name = tempModel.rx_name;
+        // 剂量单位
+        this.item.single_name = tempModel.single_name;
+        // 单位标记
+        this.item.single_flag = tempModel.single_flag;     
+    },
+    // 点击用法  
+    clickUsageCell(data){
+        console.log('clickUsageCell');
+        for (let index = 0; index < this.usageDataSource.length; index++) {
+            var element = this.usageDataSource[index];
+            element.isSelect = false;
+        }
+        data.isSelect = true;
+        this.item.instruction_en_name = data.title;
+    },
+    // 点击频率
+    clickFrequencyCell(data){
+        console.log('clickFrequencyCell');
+        for (let index = 0; index < this.frequencyDataSource.length; index++) {
+            var element = this.frequencyDataSource[index];
+            element.isSelect = false;
+        }
+        data.isSelect = true;
+        this.item.common_frequency_name = data.title;
+    },
+    // 处理用法选中
+    dealUsageChoosed(){
+        for (let index = 0; index < this.usageDataSource.length; index++) {
+            var element = this.usageDataSource[index];
+            var elementTitle = element.title;
+            if (elementTitle == this.item.instruction_en_name) {
+                element.isSelect = true;
+                break;
+            }
+        }
+    },
+    //处理频率选中
+    dealFrequencyChoosed(){
+        for (let index = 0; index < this.frequencyDataSource.length; index++) {
+            var element = this.frequencyDataSource[index];
+            var elementTitle = element.title;
+            if (elementTitle == this.item.common_frequency_name) {
+                element.isSelect = true;
+                break;
+            }
+        }
+    }
+  },
+  onLoad: function (options) {
+    // 1、模型转换
+    var tempModel = JSON.parse(options.item);
+    this.changeItemModel(tempModel);
+    //2、用法网络请求
+    this.usageDataSource = [];
+    this.usageParam._userid = this.globalData.userid;
+    this.usageParam._password = this.globalData.password;
+    this.$fly.get('/app',this.usageParam)
+    .then((response) => {
+        var code = response.data.code;
+        if (parseInt(code) == 200) {
+            var array = response.data.rows;
+            for (let index = 0; index < array.length; index++) {
+                var element = array[index];
+                var tempModel = {
+                    title:'',
+                    isSelect:false
+                };
+                tempModel.title = element.key_name;
+                this.usageDataSource.push(tempModel);
+            }
+            // 处理用法选中
+            this.dealUsageChoosed();
+        }
+    })
+    .catch(function(error){
+    });
+    //3、频率网络请求
+    this.frequencyDataSource = [];
+    this.frequencyParam._userid = this.globalData.userid;
+    this.frequencyParam._password = this.globalData.password;
+    this.$fly.get('/sys',this.frequencyParam)
+    .then((response) => {
+        var code = response.data.code;
+        if (parseInt(code) == 200) {
+            var array = response.data.rows;
+            for (let index = 0; index < array.length; index++) {
+                var element = array[index];
+                var tempModel = {
+                    title:'',
+                    isSelect:false
+                };
+                tempModel.title = element.key_name;
+                this.frequencyDataSource.push(tempModel);
+                // 处理频率选中
+                this.dealFrequencyChoosed();
+            }
+        }
+    })
+    .catch(function(error){
+    });
+  }
 }
 </script>
 
@@ -207,7 +341,6 @@ export default {
         margin: 10px 10px 0px 0px;
         display: flex;
         align-items: center;
-        border: 1px solid red;
         /* 超出部分隐藏 */
         overflow: hidden;
     }
