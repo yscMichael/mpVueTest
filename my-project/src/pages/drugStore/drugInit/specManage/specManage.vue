@@ -76,6 +76,8 @@
               </swiper-item>
           </swiper>
         </div>
+        <!-- 3、保存按钮 -->
+        <div class="bottom-save-button" @click="clickSaveButton">保存</div>
     </div>
 </template>
 
@@ -134,11 +136,13 @@ export default {
       item:{
         min_name:'',//包装单位
         change_count:'',//包装与拆零单位换算
+        temp_change_count:'',//保存临时值
         rx_name:'',//拆零单位
         taking_count:'',//拆零与剂量单位换算
         single_name:'',//剂量单位
         spec:'',//规格,
         drugType:'',//药品类型
+        local_count:'',//库存
       },
       // 列表参数
       listParam:{
@@ -177,6 +181,8 @@ export default {
     // 包装与拆零单位换算--通知
     changCountChange(count){
       if (count == '-1') {//删除
+        // 防止不是字符串
+        this.item.change_count = this.item.change_count + '';
         this.item.change_count = this.item.change_count.substring(0,this.item.change_count.length - 1); 
       }else{//增加
         this.item.change_count = this.item.change_count + count;
@@ -191,6 +197,8 @@ export default {
     // 拆零与剂量单位换算--通知
     takingCountChange(count){
       if (count == '-1') {//删除
+        // 防止不是字符串
+        this.item.taking_count = this.item.taking_count + '';
         this.item.taking_count = this.item.taking_count.substring(0,this.item.taking_count.length - 1); 
       }else{//增加
         this.item.taking_count = this.item.taking_count + count;
@@ -321,6 +329,157 @@ export default {
       .catch(function(error){
         wx.hideLoading();
       }); 
+    },
+    // 点击保存按钮
+    clickSaveButton(){
+      console.log('点击保存按钮');
+      // 1、判断是否有库存(有库存、判断是否确定修改change_count)
+      if (parseInt(this.item.local_count) > 0) {//库存不为0
+        if (this.item.change_count != this.item.temp_change_count) {//change_count被修改、要提示
+          wx.showModal({
+            title: '提示',
+            content: '修改包装单位与拆零单位的换算比例将清空已有库存,是否继续?(APP重新录入库存请在”药房-采购入库“模块进行)',
+            showCancel: true,
+            cancelText: '取消',
+            cancelColor: '#000000',
+            confirmText: '确定',
+            confirmColor: '#3CC51F',
+            success: (result) => {
+              if(result.confirm){
+                // 2、判断其它条件是否满足
+                this.judgeOtherCondition();
+              }
+            }
+          });
+        }
+        else
+        {
+            this.judgeOtherCondition();
+        }
+      }
+      else
+      {
+        this.judgeOtherCondition();
+      }
+    },
+    // 判断其它条件是否满足
+    judgeOtherCondition(){
+      if (this.item.min_name.length == 0) {
+        wx.showToast({
+          title: '请先选择包装单位',
+          icon: 'none',
+          duration: 1500,
+          mask: false
+        });
+        return;
+      }
+      if (this.item.change_count.length == 0) {
+        wx.showToast({
+          title: '请先填写包装与拆零单位换算比例',
+          icon: 'none',
+          duration: 1500,
+          mask: false
+        });
+        return;
+      }
+      if (this.item.rx_name.length == 0) {
+        wx.showToast({
+          title: '请先选择拆零单位',
+          icon: 'none',
+          duration: 1500,
+          mask: false
+        });
+        return;
+      }
+      // 剂量单位(非医疗器械)
+      if (parseInt(this.item.drugType) != 4) {
+        if (this.item.single_name.length == 0) {
+          wx.showToast({
+            title: '请先选择剂量单位',
+            icon: 'none',
+            duration: 1500,
+            mask: false
+          });
+          return;
+        }
+        if (this.item.taking_count.length == 0) {
+          wx.showToast({
+            title: '请先填写拆零与剂量单位换算比例',
+            icon: 'none',
+            duration: 1500,
+            mask: false
+          });
+          return;
+        }
+      }
+      // 检测换算比例问题
+      if (this.checkCondition()) 
+      {//模型赋值(发送通知)
+        notificationCenter.postNotification('spec', this.item);
+        // 返回上一级
+        wx.navigateBack({
+          delta: 1
+        });
+      } 
+    },
+    // 检测换算比例
+    checkCondition(){
+      // 1、包装与拆零单位相同、change_count不等于1
+      if (this.item.min_name == this.item.rx_name) {
+        if (parseInt(this.item.change_count) != 1) {
+          wx.showToast({
+            title: '您的包装单位与拆零单位相同,换算比例应该是1,请先修改换算比例或单位.',
+            icon: 'none',
+            duration: 1500,
+            mask: false,
+          });
+          return false;
+        }
+      }
+      // 2、非医疗器械才判断
+      if (parseInt(this.item.drugType) != 4) {
+        // 2.1、拆零单位与剂量单位相同、taking_count不等于1
+        if (this.item.rx_name == this.item.single_name) {
+          if (parseInt(this.item.taking_count) != 1) {
+            wx.showToast({
+              title: '您的拆零单位与剂量单位相同,换算比例应该是1,请先修改换算比例或单位.',
+              icon: 'none',
+              duration: 1500,
+              mask: false,
+            });
+            return false;     
+          }
+        }
+        // 2.2、包装与剂量单位相同、拆零不同、两个换算比例不为1
+        if ((this.item.min_name == this.item.single_name) && 
+            (this.item.min_name != this.item.rx_name)) {
+          if ((parseInt(this.item.change_count) != 1) || 
+              (parseInt(this.item.taking_count) != 1)) {
+              wx.showToast({
+                title: '您的包装单位与剂量单位相同,换算比例应该均是1,请先修改换算比例或单位.',
+                icon: 'none',
+                duration: 1500,
+                mask: false,
+              });
+              return false;
+          }
+        }
+        // 2.3、所有单位都相同、两个换算比例不为1
+        if ((this.item.min_name == this.item.single_name) && 
+            (this.item.min_name == this.item.rx_name)) {
+            if ((parseInt(this.item.change_count) != 1) || 
+              (parseInt(this.item.taking_count) != 1)) {
+              wx.showToast({
+                title: '您的选择的三个单位相同,换算比例应该均是1,请先修改换算比例或单位.',
+                icon: 'none',
+                duration: 1500,
+                mask: false,
+              });
+              return false;
+            }
+        }
+      }
+      return true;
     }
   },
   onLoad: function (options) {
@@ -329,11 +488,13 @@ export default {
     // 2、模型赋值
     this.item.min_name = tempModel.min_name?tempModel.min_name:'';
     this.item.change_count = tempModel.change_count?tempModel.change_count:'';
+    this.item.temp_change_count = tempModel.change_count?tempModel.change_count:'';
     this.item.rx_name = tempModel.rx_name?tempModel.rx_name:'';
     this.item.taking_count = tempModel.taking_count?tempModel.taking_count:'';
     this.item.single_name = tempModel.single_name?tempModel.single_name:'';
     this.item.spec = tempModel.spec?tempModel.spec:'';
     this.item.drugType = tempModel.drugType?tempModel.drugType:'1';
+    this.item.local_count = tempModel.local_count?tempModel.local_count:'0';
     // 3、添加通知
     notificationCenter.addNotification('min_name', this.minNameChange, this);
     notificationCenter.addNotification('chang_count', this.changCountChange, this);
@@ -373,8 +534,20 @@ export default {
       top: 150px; 
       left: 0px;
       right: 0px;
-      bottom: 0px;
+      bottom: 45px;
       background-color: aqua;
+    }
+    .bottom-save-button{
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      height: 45px;
+      text-align: center;
+      line-height: 45px;      
+      color: white;
+      font-size: 16px;
+      background-color: #2993EF;
     }
     .bottom-position-view swiper{
       width: 100%;

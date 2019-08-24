@@ -392,6 +392,7 @@ export default {
           single_name:this.item.single_name,//剂量单位
           spec:this.item.spec,//规格
           drugType:this.item.dug_type_id,//药品类型
+          local_count:this.item.local_count,//库存
       }
       wx.navigateTo({
         url: '/pages/drugStore/drugInit/specManage/main?item=' + JSON.stringify(tempModel),
@@ -633,6 +634,16 @@ export default {
     formTypeChange(data){
       console.log('formTypeChange');
       this.item.drug_forms_name = data;
+    },
+    // 规格变化
+    specChange(data){
+      // 模型赋值
+      this.item.min_name = data.min_name;
+      this.item.rx_name = data.rx_name;
+      this.item.single_name = data.single_name;
+      this.item.change_count = data.change_count;
+      this.item.taking_count = data.taking_count;
+      this.item.spec = data.spec;
     }
   },
   computed: {
@@ -708,6 +719,7 @@ export default {
     this.isAddNewDrug = (idString.length > 0) ? false:true;
     // 4、添加通知
     notificationCenter.addNotification('drug_forms_name', this.formTypeChange, this);
+    notificationCenter.addNotification('spec', this.specChange, this);
     // 5、检查是否是模版数据
     this.param.drug_id = this.item.id;
     this.param._userid = this.globalData.userid;
