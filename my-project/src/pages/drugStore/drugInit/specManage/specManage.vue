@@ -34,47 +34,52 @@
         </div>
         <!-- 2、底部固定区域 -->
         <div class="bottom-position-view">
-          <!-- 单位轮播界面 -->
-          <swiper :current="currentIndex">
-              <!-- 包装单位 -->
-              <swiper-item catchtouchmove='catchTouchMove'>
-                <unit-list-cell :item="minNameItem" 
-                                :unitArray="minDataSource" 
-                                @addNewUnit="addNewUnit"
+          <!-- 容器 -->
+          <div class="bottom-container-view" :style="{'width':5 * screenWidth + 'px','left':leftDistance + 'px'}">
+            <!-- 包装单位 -->
+            <div class="min-view" :style="{'width':screenWidth + 'px'}">
+              <unit-list-cell :item="minNameItem" 
+                              :unitArray="minDataSource" 
+                              @addNewUnit="addNewUnit"
+                              @clickUpButton="clickUpButton"
+                              @clickNextButton="clickNextButton">
+              </unit-list-cell>
+            </div>
+            <!-- 包装与拆零单位换算 -->
+            <div class="change-count-view" :style="{'width':screenWidth + 'px'}">
+              <change-count-cell :item="changeCountItem"
                                 @clickUpButton="clickUpButton"
-                                @clickNextButton="clickNextButton"></unit-list-cell>
-              </swiper-item>
-              <!-- 包装与拆零单位换算 -->
-              <swiper-item catchtouchmove='catchTouchMove'>
-                <change-count-cell :item="changeCountItem"
-                                   @clickUpButton="clickUpButton"
-                                   @clickNextButton="clickNextButton"
-                                   :hiddenFlag="true"></change-count-cell>              
-              </swiper-item>
-              <!-- 拆零单位 -->
-              <swiper-item catchtouchmove='catchTouchMove'>
-                <unit-list-cell :item="rxNameItem"
-                                :unitArray="rxDataSource" 
-                                @addNewUnit="addNewUnit"
+                                @clickNextButton="clickNextButton"
+                                :hiddenFlag="true">
+              </change-count-cell>        
+            </div>
+            <!-- 拆零单位 -->
+            <div class="rx-view" :style="{'width':screenWidth + 'px'}">
+              <unit-list-cell :item="rxNameItem"
+                              :unitArray="rxDataSource" 
+                              @addNewUnit="addNewUnit"
+                              @clickUpButton="clickUpButton"
+                              @clickNextButton="clickNextButton">
+              </unit-list-cell> 
+            </div>
+            <!-- 拆零与剂量单位换算 -->
+            <div class="take-count-view" :style="{'width':screenWidth + 'px'}">
+              <change-count-cell :item="takeCountItem"
                                 @clickUpButton="clickUpButton"
-                                @clickNextButton="clickNextButton"></unit-list-cell> 
-              </swiper-item>
-              <!-- 拆零单位与剂量单位换算 -->
-              <swiper-item catchtouchmove='catchTouchMove'>
-                <change-count-cell :item="takeCountItem"
-                                   @clickUpButton="clickUpButton"
-                                   @clickNextButton="clickNextButton"
-                                   :hiddenFlag="false"></change-count-cell>              
-              </swiper-item>
-              <!-- 剂量单位 -->
-              <swiper-item catchtouchmove='catchTouchMove'>
-                <unit-list-cell :item="singleNameItem" 
-                                :unitArray="singleDataSource"
-                                @addNewUnit="addNewUnit"
-                                @clickUpButton="clickUpButton"
-                                @clickNextButton="clickNextButton"></unit-list-cell>           
-              </swiper-item>
-          </swiper>
+                                @clickNextButton="clickNextButton"
+                                :hiddenFlag="false">
+              </change-count-cell>   
+            </div>
+            <!-- 剂量单位 -->
+            <div class="single-view" :style="{'width':screenWidth + 'px'}">
+              <unit-list-cell :item="singleNameItem" 
+                              :unitArray="singleDataSource"
+                              @addNewUnit="addNewUnit"
+                              @clickUpButton="clickUpButton"
+                              @clickNextButton="clickNextButton">
+              </unit-list-cell>   
+            </div>
+          </div>
         </div>
         <!-- 3、保存按钮 -->
         <div class="bottom-save-button" @click="clickSaveButton">保存</div>
@@ -94,8 +99,10 @@ export default {
     return {
       // 滚动条选中的按钮
       selectIndex:1,
-      // 当前轮播图位置
-      currentIndex:0,
+      // 轮播图宽度
+      screenWidth:0,
+      // 左边距离
+      leftDistance:0,
       // 包装单位模型
       minNameItem:{
         unitName:'盒',
@@ -164,14 +171,10 @@ export default {
     };
   },
   methods: {
-    // 截获滑动
-    catchTouchMove(){
-      return false;
-    },
     // 点击滚动条按钮
     clickScrollButton(index){
-      this.currentIndex = index - 1;
       this.selectIndex = index;
+      this.leftDistance = (this.selectIndex - 1) * this.screenWidth * (-1);
     },
     // 包装单位--通知
     minNameChange(unit){
@@ -247,14 +250,14 @@ export default {
     // 点击上一步 
     clickUpButton(type){
       // 滑动底部swiper
-      this.currentIndex = type - 2;
       this.selectIndex = type - 1;
+      this.leftDistance = (this.selectIndex - 1) * this.screenWidth * (-1);
     },
     // 点击下一步
     clickNextButton(type){
       // 滑动底部swiper
-      this.currentIndex = type;
       this.selectIndex = parseInt(type) + 1;
+      this.leftDistance = (this.selectIndex - 1) * this.screenWidth * (-1);
     },
     // 列表数据
     refreshData(){
@@ -482,7 +485,12 @@ export default {
       return true;
     }
   },
+  created() {
+    this.screenWidth = wx.getSystemInfoSync().windowWidth;
+    console.log(this.screenWidth);
+  },
   onLoad: function (options) {
+    console.log('onLoad');
     // 1、解析参数
     var tempModel = JSON.parse(options.item);
     // 2、模型赋值
@@ -536,6 +544,41 @@ export default {
       right: 0px;
       bottom: 45px;
       background-color: aqua;
+    }
+    .bottom-container-view{
+      background-color: antiquewhite;
+      height: 100%;
+      position: relative;
+    }
+    .min-view{
+      background-color: red;
+      height: 100%;
+      float: left;
+      position: relative;
+    }
+    .change-count-view{
+      background-color: #2993EF;
+      height: 100%;
+      float: left;
+      position: relative;
+    }
+    .rx-view{
+      background-color: brown;
+      height: 100%;
+      float: left;
+      position: relative;
+    }
+    .take-count-view{
+      background-color: gold;
+      height: 100%;
+      float: left;
+      position: relative;
+    }
+    .single-view{
+      background-color: lightblue;
+      height: 100%;
+      float: left;
+      position: relative;
     }
     .bottom-save-button{
       position: absolute;

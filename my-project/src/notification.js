@@ -7,7 +7,7 @@ let _notifications = []
 * observe           事件监听者
 * */
 function addNotification (notificationName, selector, observe) {
-  console.log('addNotification=', notificationName, 'selector=', selector, 'observe=', observe)
+  //console.log('addNotification=', notificationName, 'selector=', selector, 'observe=', observe)
   if (!notificationName || !selector || !observe) {
     console.log('addNotification error')
     return
@@ -46,7 +46,7 @@ function addNotification (notificationName, selector, observe) {
 * payload          事件回调函数所需参数
 * */
 function postNotification (notificationName, payload) {
-  console.log('postNotification=' + notificationName, 'payload=', payload)
+  //console.log('postNotification=' + notificationName, 'payload=', payload)
   if (!notificationName) {
     console.log('postNotification error')
     return
