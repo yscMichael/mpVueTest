@@ -3,7 +3,7 @@
         <!-- 有效期预警 -->
         <div class="validity-title">
             <div>有效期预警</div>
-            <div>{{validityData}}</div>
+            <div>{{item.warning_time}}</div>
         </div>
         <div class="validity-list">
             <div class="float-item" v-for="(item,index) in listArray" :key="index">
@@ -17,11 +17,13 @@
         <div class="inventory-title">
             <div>库存安全范围</div>
             <div class="grow-flex"></div>
-            <input type="text">
+            <input type="text" v-model="item.range_low">
             <div></div>
-            <input type="text">
-            <div>盒</div>
+            <input type="text" v-model="item.range_up">
+            <div>{{item.single_name}}</div>
         </div> 
+        <!-- 3、保存按钮 -->
+        <div class="bottom-save-button" @click="clickSaveButton">保存</div>
     </div>
 </template>
 
@@ -29,53 +31,86 @@
 export default {
   data () {
     return {
-        validityData:'5个月',
+        item:{
+            range_low:'',
+            range_up:'',
+            warning_time:'',
+            warning_time_id:'',
+            single_name:''
+        },
         listArray:[
             {
                 title:'1个月',
                 selected:false,
-                index:0
+                index:1
             },
             {
                 title:'2个月',
                 selected:false,
-                index:1
+                index:2
             },
             {
                 title:'3个月',
                 selected:false,
-                index:2
+                index:3
             },
             {
                 title:'4个月',
                 selected:false,
-                index:3
+                index:4
             },
             {
                 title:'5个月',
                 selected:false,
-                index:4
+                index:5
             },
             {
                 title:'6个月',
                 selected:false,
-                index:5
+                index:6
             }
         ]
     };
   },
   methods: {
-      clickItem(item){
+    // 处理选中
+    dealChoosed(){
+        for (let index = 0; index < this.listArray.length; index++) {
+            var element = this.listArray[index];
+            var selectIndex = this.item.warning_time_id;
+            if (parseInt(element.index) == parseInt(selectIndex)) {
+                element.selected = true;
+            }
+        }
+    },
+    // 点击cell
+    clickItem(item){
         //将之前选中全部清除
         for (let index = 0; index < this.listArray.length; index++) {
-            const element = this.listArray[index];
+            var element = this.listArray[index];
             element.selected = false;
         }
         //将当前的选中
         item.selected = true;
         this.validityData = item.title;
-      }
+    },
+    // 点击保存
+    clickSaveButton(){
+        console.log('点击保存');
+    }
   },
+  onLoad: function (options) {
+    // 1、解析参数
+    var tempModel = JSON.parse(options.item);
+    // 2、模型赋值
+    this.item.range_low = tempModel.range_low?tempModel.range_low:'';
+    this.item.range_up = tempModel.range_up?tempModel.range_up:'';
+    this.item.warning_time = tempModel.warning_time?tempModel.warning_time:'';
+    this.item.warning_time_id = tempModel.warning_time_id?tempModel.warning_time_id:'';
+    console.log(this.item.warning_time);
+    // 3、处理选中
+    this.dealChoosed();
+  }
 }
 </script>
 
@@ -153,6 +188,7 @@ export default {
     .inventory-title > input:nth-child(3){
         width: 41px;
         height: 26px;
+        text-align: center;
         background-color: #E8E9EB;    
     }   
     .inventory-title > div:nth-child(4){
@@ -165,6 +201,7 @@ export default {
     .inventory-title > input:nth-child(5){
         width: 41px;
         height: 26px;
+        text-align: center;
         background-color: #E8E9EB;
     }
     .inventory-title > div:last-child{
@@ -172,5 +209,17 @@ export default {
         font-size: 15px;
         margin-right: 12px;
         margin-left: 5px;
+    }
+    .bottom-save-button{
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      height: 45px;
+      text-align: center;
+      line-height: 45px;      
+      color: white;
+      font-size: 16px;
+      background-color: #2993EF;
     }
 </style>

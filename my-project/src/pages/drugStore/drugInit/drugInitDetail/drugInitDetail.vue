@@ -433,8 +433,15 @@ export default {
     },
     // 点击有效期预警和库存安全范围
     clickWarnAndInventory(){
+      var item = {
+        range_low:this.item.range_low,
+        range_up:this.item.range_up,
+        warning_time:this.item.warning_time,
+        warning_time_id:this.item.warning_time_id,
+        single_name:this.item.single_name
+      }
       wx.navigateTo({
-        url: '/pages/drugStore/drugInit/validityAndInventory/main',
+        url: '/pages/drugStore/drugInit/validityAndInventory/main?item=' + JSON.stringify(item),
       });
     },
     // 点击价格管理
