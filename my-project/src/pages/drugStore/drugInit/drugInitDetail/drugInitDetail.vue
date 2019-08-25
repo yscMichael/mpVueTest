@@ -118,7 +118,7 @@
           <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
         </div>
         <!-- 库存 -->
-        <div class='common-view' v-show="!isAddNewDrug">
+        <div class='common-view' v-show="!isAddNewDrug" @click="clickInventoryManage">
           <div class='title-none'>库存</div>
           <div class="right-title">{{stockCount}}</div>
         </div>
@@ -459,8 +459,13 @@ export default {
     },
     // 点击库存管理
     clickInventoryManage(){
+      var item = {
+        min_name:this.item.min_name,//包装单位
+        rx_name:this.item.rx_name,//拆零单位
+        change_count:this.item.change_count,//包装与拆零单位换算
+      };
       wx.navigateTo({
-        url: '/pages/drugStore/drugInit/inventoryManage/main',
+        url: '/pages/drugStore/drugInit/inventoryManage/main?item=' + JSON.stringify(item),
       });
     },
     // 点击保存按钮

@@ -1,0 +1,8 @@
+{
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#2591F8",
+    "navigationBarTitleText":"供应商",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": true,
+    "onReachBottomDistance": -40
+}

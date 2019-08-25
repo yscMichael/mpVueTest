@@ -9,36 +9,52 @@
         <!-- 内容 -->
         <div class="main-list-view">
             <!-- 失效日期 -->
-            <div class="content-view">
-                <div class="red-title">失效日期</div>
-                <input class="date-input" type="text" placeholder="请选择">
-                <img class="arrow-image" src="/static/images/drugstore/drugInit/more.png" alt="">
-            </div> 
+            <picker mode="date"
+                    start="2000-01-01" 
+                    end="2100-01-01" 
+                    @change="expireDateChange">
+                <div class="content-view">
+                    <div class="red-title">失效日期</div>
+                    <input class="date-input" type="text" placeholder="请选择" disabled='disabled' v-model="item.expire_date">
+                    <img class="arrow-image" src="/static/images/drugstore/drugInit/more.png" alt="">
+                </div> 
+            </picker>  
             <div class="line-view"></div>
             <!-- 批号 -->
             <div class="content-view">
                 <div class="white-title">批号</div>
-                <input class="batch-input" type="text" placeholder="请输入批号">
+                <input class="batch-input" type="text" placeholder="请输入批号" v-model="item.batch_no">
             </div> 
             <div class="line-view"></div>
             <!-- 进货单价 -->
             <div class="content-view">
                 <div class="white-title">进货单价</div>
                 <div class="grow-flex"></div>
-                <input class="price-input" type="text">
+                <input class="price-input" v-model="item.cost">
                 <div class="last-title">盒</div>
             </div> 
             <div class="line-view"></div>
-            <!-- 库存数量 -->
+            <!-- 库存数量(包装单位) -->
             <div class="content-view">
                 <div class="red-title">库存数量</div>
                 <div class="grow-flex"></div>
                 <div class="input-view">
-                    <div class="minus-plus-view">-</div>
-                    <div class="count-view">120</div>
-                    <div class="minus-plus-view">+</div>
+                    <div class="minus-plus-view" @click="clickReduceMinCount">-</div>
+                    <input class="count-view" v-model="item.minCount">
+                    <div class="minus-plus-view" @click="clickAddMinCount">+</div>
                 </div>
-                <div>盒</div>
+                <div>{{item.min_name}}</div>
+            </div> 
+            <!-- 库存数量(拆零单位) -->
+            <div class="content-view">
+                <div class="white-title"></div>
+                <div class="grow-flex"></div>
+                <div class="input-view">
+                    <div class="minus-plus-view" @click="clickReduceRxCount">-</div>
+                    <input class="count-view" v-model="item.rxCount">
+                    <div class="minus-plus-view" @click="clickAddRxCount">+</div>
+                </div>
+                <div>{{item.rx_name}}</div>
             </div> 
         </div>
     </div>
@@ -46,10 +62,44 @@
 
 <script>
 export default {
-  data () {
-    return {
-    };
-  }
+    props:{
+        item:{
+          type: Object,
+          required:true,
+          default () {
+            return {}
+          }
+      },
+    },
+    data () {
+        return {
+            disabled:true
+        };
+    },
+    methods: {
+        expireDateChange(e){
+            console.log('失效时间');
+            this.$emit('expireDateChange',e.mp.detail.value);
+            console.log(e.mp.detail.value);
+            this.item.expire_date = e.mp.detail.value;
+        },
+        // 点击包装-
+        clickReduceMinCount(){
+            this.item.minCount = parseInt(this.item.minCount) - 1;
+        },
+        //点击包装+
+        clickAddMinCount(){
+            this.item.minCount = parseInt(this.item.minCount) + 1;
+        },
+        //点击拆零-
+        clickReduceRxCount(){   
+            this.item.rxCount = parseInt(this.item.rxCount) - 1;
+        },
+        //点击拆零+
+        clickAddRxCount(){
+            this.item.rxCount = parseInt(this.item.rxCount) + 1;
+        }
+    },
 }
 </script>
 
@@ -132,6 +182,7 @@ export default {
         width: 41px;
         height: 26px;
         margin-right: 8px;
+        text-align: center;
     }
     .last-title{
         color: #333333;
@@ -139,7 +190,7 @@ export default {
         margin-right: 12px;
     }
     .input-view{
-        width: 90px;
+        width: 100px;
         height: 30px;
         background-color: #E8E9EB;
         margin-right: 8px;
@@ -147,7 +198,7 @@ export default {
         align-items: center;
     }
     .minus-plus-view{
-        width: 25px;
+        flex: 0 0 30px;
         height: 30px;
         line-height:30px;
         color: #9C9C9C;

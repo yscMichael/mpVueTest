@@ -18,7 +18,9 @@
     "pages/drugStore/drugInit/drugInitDetail/main",
     "pages/drugStore/drugInit/searchAdd/main",
     "pages/drugStore/drugInit/inventoryFlow/main",
-    "pages/drugStore/drugInit/batchListDetail/main"
+    "pages/drugStore/drugInit/batchListDetail/main",
+    "pages/drugStore/drugInit/vendorManage/main",
+    "pages/drugStore/drugInit/wareHouse/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
