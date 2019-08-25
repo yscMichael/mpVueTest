@@ -177,6 +177,7 @@ export default {
         'drug_forms_name':'',//剂型
         'spec':'',//规格
         'single_flag':'',//小单位标记
+        'single_list':'',//单位列表
         'min_name':'',//包装单位
         'change_count':'',//包装单位与拆零单位换算
         'rx_name':'',//拆零单位
@@ -251,6 +252,8 @@ export default {
       this.item.spec = tempModel.spec?tempModel.spec:'';
       // 单位标记
       this.item.single_flag = tempModel.single_flag?tempModel.single_flag:'1';
+      // 单位列表
+      this.item.single_list = tempModel.singleFlagList?tempModel.singleFlagList:[];
       //包装单位
       this.item.min_name = tempModel.min_unit?tempModel.min_unit.key_name:'';
       //包装单位与拆零单位换算
@@ -421,6 +424,8 @@ export default {
         single_name:this.item.single_name,
         // 单位标记
         single_flag:this.item.single_flag,
+        // 单位列表
+        single_list:this.item.single_list
       }
       wx.navigateTo({
         url: '/pages/drugStore/drugInit/usageAndDosage/main?item=' + JSON.stringify(item),

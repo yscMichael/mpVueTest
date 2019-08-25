@@ -32,7 +32,7 @@
             <div>单次用量：</div>
             <div>每次</div>
             <input class="count-input-view" type="text" v-model="item.common_count">
-            <div>片</div>
+            <div>{{(item.single_name == '每次适量')?'':item.single_name}}</div>
             <!-- 箭头和单位列表 -->
             <div class="arrow-container">
                 <!-- 箭头 -->
@@ -46,15 +46,16 @@
                     </div>
                     <!-- 拆零单位列表 -->
                     <div class="arrow-list-content">
-                        <div class="arrow-text">长林</div>
+                        <div class="arrow-text" @click="clickSingleList(0)">{{item.single_list[0].key_name}}</div>
                         <div class="arrow-line"></div>
-                        <div class="arrow-text">单位</div>
+                        <div class="arrow-text" @click="clickSingleList(1)">{{item.single_list[1].key_name}}</div>
                     </div>
                 </div>
             </div>
             <div class="grow-div"></div>
-            <div class="frame"></div>
-            <div>每次适量</div>
+            <div :class="['frame',isSelected?'select-single-name':'']"
+                 @click="clickSelectButton"></div>
+            <div @click="clickSelectButton">每次适量</div>
         </div>
         <div class="line-big"></div>
         <!-- 用药天数 -->
@@ -75,6 +76,8 @@ export default {
     return {
         // 箭头
         arrowDown:true,
+        // 是否适量
+        isSelected:false,
         // 用法参数
         usageParam:{
             op:'List',
@@ -100,6 +103,7 @@ export default {
            rx_name:'',//拆零单位
            single_name:'',//剂量单位
            single_flag:'',//单位标记
+           single_list:'',//单位列表
         },
         // 用法数据源
         usageDataSource:[],
@@ -151,7 +155,9 @@ export default {
         // 剂量单位
         this.item.single_name = tempModel.single_name;
         // 单位标记
-        this.item.single_flag = tempModel.single_flag;     
+        this.item.single_flag = tempModel.single_flag; 
+        // 单位列表
+        this.item.single_list = tempModel.single_list;
     },
     // 点击用法  
     clickUsageCell(data){
@@ -200,6 +206,25 @@ export default {
         console.log('点击单次用量箭头');
         this.arrowDown = !this.arrowDown;
     },
+    // 点击单剂量列表
+    clickSingleList(index){
+        console.log('点击单剂量列表');
+        console.log(index);
+        if (this.isSelected) {//每次适量
+            return;
+        }
+        var single_list_item = this.item.single_list[index];
+        this.item.single_name = single_list_item.key_name;
+        this.arrowDown = true;
+    },
+    // 点击每次适量
+    clickSelectButton(){
+        this.isSelected = !this.isSelected;
+        if (this.isSelected) {
+            this.item.single_name = '每次适量';
+            this.item.common_count = -1;
+        }
+    },
     // 点击保存
     clickSaveButton(){
         console.log('点击保存');
@@ -208,7 +233,10 @@ export default {
   onLoad: function (options) {
     // 1、模型转换
     var tempModel = JSON.parse(options.item);
+    console.log('模型转换');
+    console.log(tempModel.single_list);
     this.changeItemModel(tempModel);
+    console.log(this.item.single_list);
     //2、用法网络请求
     this.usageDataSource = [];
     this.usageParam._userid = this.globalData.userid;
@@ -411,7 +439,7 @@ export default {
         background-color: #2993EF;
     }
     .arrow-container{
-        background-color: lightblue;
+        background-color: white;
         position: relative;
     }
     .arrow-list{
@@ -455,6 +483,10 @@ export default {
     .arrow-line{
         background-color: #F8F7FA;
         height: 1px;
+    }
+    .select-single-name{
+        background-color: #81C8FA;
+        border: 1px solid #81C8FA;
     }
     /* 向上的箭头 */
     .arrow-top {
