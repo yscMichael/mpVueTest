@@ -33,7 +33,25 @@
             <div>每次</div>
             <input class="count-input-view" type="text" v-model="item.common_count">
             <div>片</div>
-            <div class="arrow-margin arrow-bottom"></div>
+            <!-- 箭头和单位列表 -->
+            <div class="arrow-container">
+                <!-- 箭头 -->
+                <div :class="['arrow-margin', arrowDown?'arrow-bottom':'arrow-top']"
+                 @click="clickArrowButton"></div>
+                <!-- 列表 -->
+                <div class="arrow-list" v-show="!arrowDown">
+                    <!-- 箭头 -->
+                    <div class="arrow-list-top">
+                        <div class="arrow-top-white"></div>    
+                    </div>
+                    <!-- 拆零单位列表 -->
+                    <div class="arrow-list-content">
+                        <div class="arrow-text">长林</div>
+                        <div class="arrow-line"></div>
+                        <div class="arrow-text">单位</div>
+                    </div>
+                </div>
+            </div>
             <div class="grow-div"></div>
             <div class="frame"></div>
             <div>每次适量</div>
@@ -45,6 +63,8 @@
             <input class="count-input-view" type="text" v-model="item.common_days">
             <div>天</div>
         </div>
+        <!-- 3、保存按钮 -->
+        <div class="bottom-save-button" @click="clickSaveButton">保存</div>
     </div>
 </template>
 
@@ -53,6 +73,8 @@ import { timeout } from 'q';
 export default {
   data () {
     return {
+        // 箭头
+        arrowDown:true,
         // 用法参数
         usageParam:{
             op:'List',
@@ -172,6 +194,15 @@ export default {
                 break;
             }
         }
+    },
+    // 点击单次用量箭头
+    clickArrowButton(){
+        console.log('点击单次用量箭头');
+        this.arrowDown = !this.arrowDown;
+    },
+    // 点击保存
+    clickSaveButton(){
+        console.log('点击保存');
     }
   },
   onLoad: function (options) {
@@ -309,6 +340,7 @@ export default {
         height: 66px;
         display: flex;
         align-items: center;  
+        margin-bottom: 45px;
     }
     .day-view > div:first-child{
         color: #888888;
@@ -366,12 +398,70 @@ export default {
        background-color: white;
        color: #4D81EE;
     }
+    .bottom-save-button{
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        height: 45px;
+        text-align: center;
+        line-height: 45px;      
+        color: white;
+        font-size: 16px;
+        background-color: #2993EF;
+    }
+    .arrow-container{
+        background-color: lightblue;
+        position: relative;
+    }
+    .arrow-list{
+        background-color: white;
+        position: absolute;
+        width: 50px;
+        height: 60px;
+        top: 15px;
+        left: -32px;
+    }
+    .arrow-list-top{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .arrow-top-white{
+        width: 2px;
+        height: 1px;
+        border-color: #121212;
+        font-size: 0;
+        line-height: 0;
+        border-width: 8px;
+        border-top-width: 0;
+        border-style: dashed;
+        border-bottom-style: solid;
+        border-left-color: transparent;
+        border-right-color: transparent;
+    }
+    .arrow-list-content{
+        border: 1px solid #F8F7FA;
+        box-shadow: -2px -2px 2px #888888;
+    }
+    .arrow-text{
+        color: #474747;
+        font-size: 12px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .arrow-line{
+        background-color: #F8F7FA;
+        height: 1px;
+    }
     /* 向上的箭头 */
     .arrow-top {
         font-size: 0;
         line-height: 0;
-        border-width: 10px;
-        border-color: red;
+        border-width: 8px;
+        border-color: #121212;
         border-top-width: 0;
         border-style: dashed;
         border-bottom-style: solid;
@@ -394,8 +484,8 @@ export default {
     .arrow-right {
         font-size: 0;
         line-height: 0;
-        border-width: 10px;
-        border-color: red;
+        border-width: 8px;
+        border-color: #121212;
         border-right-width: 0;
         border-style: dashed;
         border-left-style: solid;
@@ -406,8 +496,8 @@ export default {
     .arrow-left {
         font-size: 0;
         line-height: 0;
-        border-width: 10px;
-        border-color: red;
+        border-width: 8px;
+        border-color: #121212;
         border-left-width: 0;
         border-style: dashed;
         border-right-style: solid;
