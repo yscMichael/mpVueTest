@@ -92,7 +92,8 @@ export default {
         }
         //将当前的选中
         item.selected = true;
-        this.validityData = item.title;
+        this.item.warning_time = element.title;
+        this.item.warning_time_id = element.index;
     },
     // 点击保存
     clickSaveButton(){

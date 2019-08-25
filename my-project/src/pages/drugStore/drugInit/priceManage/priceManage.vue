@@ -9,7 +9,7 @@
         <div class="content-view">
             <div>按包装单位</div>
             <div class="grow-div"></div>
-            <input type="text">
+            <input type="text" v-model="item.cost">
             <div>元/盒</div>
         </div>
         <!-- 处方价 -->
@@ -21,13 +21,13 @@
         <div class="content-view">
             <div>按包装单位</div>
             <div class="grow-div"></div>
-            <input type="text">
+            <input type="text" v-model="item.min_price">
             <div>元/盒</div>
         </div>
         <div class="content-view">
             <div>按拆零单位</div>
             <div class="grow-div"></div>
-            <input type="text">
+            <input type="text" v-model="item.sale_price">
             <div>元/袋</div>
         </div>
         <!-- 提示信息 -->
@@ -45,13 +45,13 @@
         <div class="content-view">
             <div>按包装单位</div>
             <div class="grow-div"></div>
-            <input type="text">
+            <input type="text" v-model="item.retail_min_price">
             <div>元/盒</div>
         </div>
         <div class="content-view">
             <div>按拆零单位</div>
             <div class="grow-div"></div>
-            <input type="text">
+            <input type="text" v-model="item.retail_sale_price">
             <div>元/袋</div>
         </div>
         <!-- 提示信息 -->
@@ -60,6 +60,8 @@
             <div>药房-零售卖药</div>
             <div>模块的药品价格</div>
         </div>
+        <!-- 3、保存按钮 -->
+        <div class="bottom-save-button" @click="clickSaveButton">保存</div>
     </div>
 </template>
 
@@ -67,7 +69,33 @@
 export default {
   data () {
     return {
+        item : {
+            cost:'',//进货价
+            min_price:'',//处方价(包装单位)
+            sale_price:'',//处方价(拆零单位)
+            retail_min_price:'',//零售价(包装单位)
+            retail_sale_price:''//零售价(拆零单位)
+      },
     };
+  },
+  methods: {
+    // 点击保存  
+    clickSaveButton(){
+        console.log('点击保存---------');
+
+    }
+  },
+  onLoad: function (options) {
+    // 1、模型解析  
+    var tempModel = JSON.parse(options.item);
+    console.log('模型解析');
+    console.log(tempModel);
+    // 2、模型赋值
+    this.item.cost = tempModel.cost?tempModel.cost:'0';
+    this.item.min_price = tempModel.min_price?tempModel.min_price:'0';
+    this.item.sale_price = tempModel.sale_price?tempModel.sale_price:'0';
+    this.item.retail_min_price = tempModel.retail_min_price?tempModel.retail_min_price:'0';
+    this.item.retail_sale_price = tempModel.retail_sale_price?tempModel.retail_sale_price:'0';
   }
 }
 </script>
@@ -150,5 +178,16 @@ export default {
         color: #888888;
         font-size:12px;
     }
-
+    .bottom-save-button{
+      position: absolute;
+      left: 0px;
+      right: 0px;
+      bottom: 0px;
+      height: 45px;
+      text-align: center;
+      line-height: 45px;      
+      color: white;
+      font-size: 16px;
+      background-color: #2993EF;
+    }
 </style>

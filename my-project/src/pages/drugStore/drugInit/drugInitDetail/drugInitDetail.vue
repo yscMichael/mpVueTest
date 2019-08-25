@@ -446,8 +446,15 @@ export default {
     },
     // 点击价格管理
     clickPriceManage(){
+      var item = {
+        cost:this.item.cost,//进货价
+        min_price:this.item.min_price,//处方价(包装单位)
+        sale_price:this.item.sale_price,//处方价(拆零单位)
+        retail_min_price:this.item.retail_min_price,//零售价(包装单位)
+        retail_sale_price:this.item.retail_sale_price//零售价(拆零单位)
+      };
       wx.navigateTo({
-        url: '/pages/drugStore/drugInit/priceManage/main',
+        url: '/pages/drugStore/drugInit/priceManage/main?item=' + JSON.stringify(item),
       });
     },
     // 点击库存管理
