@@ -16,7 +16,7 @@
                     src='/static/images/mine/mine_message.png'></image>
             <div class='center-title'>我的消息</div>
             <image class='right-image'
-                    src='/static/images/mine/more.png'></image>
+                    src='/static/images/home/moreButton.png'></image>
         </div>
         <!-- 分割线(大) -->
         <div class='line-big'></div>
@@ -26,7 +26,7 @@
                     src='/static/images/mine/news.png'></image>
             <div class='center-title'>资讯</div>
             <image class='right-image'
-                    src='/static/images/mine/more.png'></image>
+                    src='/static/images/home/moreButton.png'></image>
         </div>
         <!-- 分割线(大) -->
         <div class='line-big'></div>
@@ -36,7 +36,7 @@
                     src='/static/images/mine/setAccount.png'></image>
             <div class='center-title'>账号设置</div>
             <image class='right-image'
-                    src='/static/images/mine/more.png'></image>
+                    src='/static/images/home/moreButton.png'></image>
         </div>
 
         <!-- 分割线(小) -->
@@ -47,7 +47,7 @@
                     src='/static/images/mine/init.png'></image>
             <div class='center-title'>初始设置</div>
             <image class='right-image'
-                    src='/static/images/mine/more.png'></image>
+                    src='/static/images/home/moreButton.png'></image>
         </div>
         <!-- 分割线(小) -->
         <div class='line-small'></div>
@@ -57,7 +57,7 @@
                     src='/static/images/mine/setCustomize.png'></image>
             <div class='center-title'>自定义设置</div>
             <image class='right-image'
-                    src='/static/images/mine/more.png'></image>
+                    src='/static/images/home/moreButton.png'></image>
         </div>
         <!-- 分割线(小) -->
         <div class='line-small'></div>
@@ -67,7 +67,7 @@
                     src='/static/images/mine/quick.png'></image>
             <div class='center-title'>快捷菜单设置</div>
             <image class='right-image'
-                    src='/static/images/mine/more.png'></image>
+                    src='/static/images/home/moreButton.png'></image>
         </div>
         <!-- 分割线(大) -->
         <div class='line-big'></div>
@@ -77,7 +77,7 @@
                     src='/static/images/mine/clear.png'></image>
             <div class='center-title'>清除缓存</div>
             <image class='right-image'
-                    src='/static/images/mine/more.png'></image>
+                    src='/static/images/home/moreButton.png'></image>
         </div>
         <!-- 分割线(大) -->
         <div class='line-big'></div>
@@ -87,7 +87,7 @@
                     src='/static/images/mine/about.png'></image>
             <div class='center-title'>关于好医宝</div>
             <image class='right-image'
-                    src='/static/images/mine/more.png'></image>
+                    src='/static/images/home/moreButton.png'></image>
         </div>
         <!-- 客服热线 -->
         <div class='hot-line'>全国统一客服热线：0755-88694966-802</div>
@@ -105,35 +105,70 @@ export default {
   methods: {
     // 我的消息  
     clickMessage(){
-        console.log('点击我的消息');
+      console.log('点击我的消息');
+      wx.navigateTo({
+        url: '/pages/mine/mineMessage/main',
+      });
     },
     // 我的资讯
     clickInformation(){
-        console.log('点击我的资讯');
+      console.log('点击我的资讯');
+      wx.navigateTo({
+        url: '/pages/mine/Information/main',
+      });
     },
     // 账号设置
     clickSetAccount(){
-        console.log('账号设置');
+      console.log('账号设置');
+      wx.navigateTo({
+        url: '/pages/mine/accountList/main',
+      });
     },
     // 初始设置
     clickInitButton(){
-        console.log('点击初始设置');
+      console.log('点击初始设置');
+      wx.navigateTo({
+        url: '/pages/mine/initSet/main',
+      });
     },
     // 自定义设置
     clickSetCustomize(){
-        console.log('自定义设置');
+      console.log('自定义设置');
+      wx.navigateTo({
+        url: '/pages/mine/setCustomize/main',
+      });
     },
     // 快捷菜单设置
     clickFastMenu(){
-        console.log('快捷菜单设置');
+      console.log('快捷菜单设置');
+      wx.navigateTo({
+        url: '/pages/home/menuDetail/main',
+      });
     },
     // 清除缓存
     clickClearCache(){
-        console.log('清除缓存');
+      console.log('清除缓存');
+      wx.showModal({
+        title: '提示',
+        content: '确定清除缓存?',
+        showCancel: true,
+        cancelText: '取消',
+        cancelColor: '#000000',
+        confirmText: '确定',
+        confirmColor: '#3CC51F',
+        success: (result) => {
+          if(result.confirm){
+            console.log('确认清除缓存!!!');
+          }
+        }
+      });
     },
     // 关于好医宝
     clickAboutMine(){
-        console.log('关于好医宝');
+      console.log('关于好医宝');
+      wx.navigateTo({
+        url: '/pages/mine/aboutMine/main',
+      });
     },
     // 退出登陆
     clickLogout(){

@@ -21,7 +21,15 @@
     "pages/drugStore/drugInit/inventoryFlow/main",
     "pages/drugStore/drugInit/batchListDetail/main",
     "pages/drugStore/drugInit/vendorManage/main",
-    "pages/drugStore/drugInit/wareHouse/main"
+    "pages/drugStore/drugInit/wareHouse/main",
+    "pages/mine/aboutMine/main",
+    "pages/mine/accountList/main",
+    "pages/mine/Information/main",
+    "pages/mine/initSet/main",
+    "pages/mine/mineMessage/main",
+    "pages/mine/setCustomize/main",
+    "pages/mine/mineMessage/systemNotify/main",
+    "pages/mine/mineMessage/transferNotify/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
