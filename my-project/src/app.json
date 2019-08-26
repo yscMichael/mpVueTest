@@ -5,6 +5,7 @@
     "pages/clinic/main",
     "pages/analysis/main",
     "pages/drugStore/main",
+    "pages/mine/main",
     "pages/home/menuDetail/main",
     "pages/drugStore/drugInit/main",
     "pages/drugStore/purchase/main",
@@ -54,6 +55,11 @@
       "pagePath": "pages/analysis/main",
       "iconPath": "static/tabs/yunying.png",
       "selectedIconPath": "static/tabs/yunying-active.png"
+    },{
+      "text": "个人中心",
+      "pagePath": "pages/mine/main",
+      "iconPath": "static/tabs/personal.png",
+      "selectedIconPath": "static/tabs/personal-active.png"
     }],
 
     "items": [{
@@ -76,6 +82,11 @@
       "pagePath": "pages/analysis/main",
       "icon": "static/tabs/yunying.png",
       "activeIcon": "static/tabs/yunying-active.png"
+    },{
+      "name": "个人中心",
+      "pagePath": "pages/mine/main",
+      "icon": "static/tabs/personal.png",
+      "activeIcon": "static/tabs/personal-active.png"
     }],
     "position": "bottom"
   }
