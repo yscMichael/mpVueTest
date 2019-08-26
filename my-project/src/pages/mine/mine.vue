@@ -11,8 +11,7 @@
         <!-- 分割线(大) -->
         <div class='line-big'></div>
         <!-- 我的消息 -->
-        <div class='message'
-              bindtap='clickMessage'>
+        <div class='message' @click='clickMessage'>
             <image class='left-image'
                     src='/static/images/mine/mine_message.png'></image>
             <div class='center-title'>我的消息</div>
@@ -22,8 +21,7 @@
         <!-- 分割线(大) -->
         <div class='line-big'></div>
         <!-- 资讯 -->
-        <div class='message'
-              bindtap='clickMessage'>
+        <div class='message' @click='clickInformation'>
             <image class='left-image'
                     src='/static/images/mine/news.png'></image>
             <div class='center-title'>资讯</div>
@@ -33,8 +31,7 @@
         <!-- 分割线(大) -->
         <div class='line-big'></div>
         <!-- 账号设置 -->
-        <div class='message'
-                bindtap='clickMessage'>
+        <div class='message' @click='clickSetAccount'>
             <image class='left-image'
                     src='/static/images/mine/setAccount.png'></image>
             <div class='center-title'>账号设置</div>
@@ -45,8 +42,7 @@
         <!-- 分割线(小) -->
         <div class='line-small'></div>
         <!-- 初始设置 -->
-        <div class='message'
-                bindtap='clickInitButton'>
+        <div class='message' @click='clickInitButton'>
             <image class='left-image'
                     src='/static/images/mine/init.png'></image>
             <div class='center-title'>初始设置</div>
@@ -55,9 +51,18 @@
         </div>
         <!-- 分割线(小) -->
         <div class='line-small'></div>
+        <!-- 自定义设置 -->
+        <div class='message' @click='clickSetCustomize'>
+            <image class='left-image'
+                    src='/static/images/mine/setCustomize.png'></image>
+            <div class='center-title'>自定义设置</div>
+            <image class='right-image'
+                    src='/static/images/mine/more.png'></image>
+        </div>
+        <!-- 分割线(小) -->
+        <div class='line-small'></div>
         <!-- 快捷菜单设置 -->
-        <div class='message'
-                bindtap='clickMessage'>
+        <div class='message' @click='clickFastMenu'>
             <image class='left-image'
                     src='/static/images/mine/quick.png'></image>
             <div class='center-title'>快捷菜单设置</div>
@@ -67,8 +72,7 @@
         <!-- 分割线(大) -->
         <div class='line-big'></div>
         <!-- 清除缓存 -->
-        <div class='message'
-                bindtap='clickMessage'>
+        <div class='message' @click='clickClearCache'>
             <image class='left-image'
                     src='/static/images/mine/clear.png'></image>
             <div class='center-title'>清除缓存</div>
@@ -78,8 +82,7 @@
         <!-- 分割线(大) -->
         <div class='line-big'></div>
         <!-- 关于好医宝 -->
-        <div class='message'
-                bindtap='clickMessage'>
+        <div class='message' @click='clickAboutMine'>
             <image class='left-image'
                     src='/static/images/mine/about.png'></image>
             <div class='center-title'>关于好医宝</div>
@@ -89,8 +92,7 @@
         <!-- 客服热线 -->
         <div class='hot-line'>全国统一客服热线：0755-88694966-802</div>
         <!-- 退出登陆 -->
-        <div class='logout'
-                bindtap='clickLogout'>退出登录</div>
+        <div class='logout' @click='clickLogout'>退出登录</div>
     </div>
 </template>
 
@@ -99,7 +101,45 @@ export default {
   data () {
     return {
     };
-  }
+  },
+  methods: {
+    // 我的消息  
+    clickMessage(){
+        console.log('点击我的消息');
+    },
+    // 我的资讯
+    clickInformation(){
+        console.log('点击我的资讯');
+    },
+    // 账号设置
+    clickSetAccount(){
+        console.log('账号设置');
+    },
+    // 初始设置
+    clickInitButton(){
+        console.log('点击初始设置');
+    },
+    // 自定义设置
+    clickSetCustomize(){
+        console.log('自定义设置');
+    },
+    // 快捷菜单设置
+    clickFastMenu(){
+        console.log('快捷菜单设置');
+    },
+    // 清除缓存
+    clickClearCache(){
+        console.log('清除缓存');
+    },
+    // 关于好医宝
+    clickAboutMine(){
+        console.log('关于好医宝');
+    },
+    // 退出登陆
+    clickLogout(){
+        console.log('退出登陆');
+    }
+  },
 }
 </script>
 
