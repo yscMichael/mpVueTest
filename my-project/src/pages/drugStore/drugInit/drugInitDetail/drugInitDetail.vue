@@ -900,6 +900,7 @@ export default {
     height: 45px;
     text-align: center;
     line-height: 45px;
+    margin-bottom: 45px;
     background-color: white;
   }
   .line-big{
