@@ -29,7 +29,8 @@
     "pages/mine/mineMessage/main",
     "pages/mine/setCustomize/main",
     "pages/mine/mineMessage/systemNotify/main",
-    "pages/mine/mineMessage/transferNotify/main"
+    "pages/mine/mineMessage/transferNotify/main",
+    "pages/mine/setCustomize/commonUsage/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
