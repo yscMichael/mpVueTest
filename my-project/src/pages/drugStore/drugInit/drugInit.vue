@@ -59,6 +59,20 @@
               <div class="add-button">继续添加</div>
             </picker>
         </div>
+        <!-- 底部弹出界面 -->
+        <div class="main-back-view" v-show="showPicker">
+          <div class="main-picker-view">
+            <!-- 标题 -->
+            <div class="picker-title">选择药品类型</div>
+            <!-- 选择内容 -->
+            <div class="choose-view" 
+                 v-for="(item,index) in drugTypeArr" 
+                 :key="index"
+                @click="clickChooseItem(index)">{{item}}</div>
+            <!-- 底部取消按钮 -->
+            <div class="picker-cancel" @click="clickCancelPicker">取消</div>
+          </div>
+        </div>
     </div>
 </template>
 
@@ -77,6 +91,8 @@ export default {
   },
   data () {
     return {
+      showPicker:false,//不显示底部弹出框
+      drugTypeArr:['西药','中成药','中药','医疗器械'],//药品类型
       selectIndex:0,
       parentTotalCount:0,
       westTotalCount:0,
@@ -128,7 +144,7 @@ export default {
       console.log(e.mp.detail.value);
       var value = parseInt(e.mp.detail.value);
       if (value == 0) {//扫码添加
-        this.addFromScanCode();
+        this.addDrugByScan();
       }else if(value == 1){//搜索添加
         this.addFromSearch();
       }else if(value == 2){//自定义添加
@@ -138,7 +154,7 @@ export default {
       }
     },
     // 扫码添加
-    addFromScanCode(){
+    addDrugByScan(){
       console.log('扫码添加');
       wx.scanCode({
         onlyFromCamera: false,
@@ -161,10 +177,54 @@ export default {
     // 搜索添加
     addFromSearch(){
       console.log('搜索添加');
+      // 当前药品类型
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/searchAdd/main',
+      });
     },
     // 自定义添加
     addFromCustomize(){
       console.log('自定义添加');
+      // 显示弹出框
+      this.showPicker = true;
+    },
+    // 点击某个药品类型(自定义添加)
+    clickChooseItem(index){
+      console.log('点击某个药品类型');
+      console.log(index);
+      // 1、关闭弹出框
+      this.showPicker = false;
+      // 2、初始化模型
+      var tempModel = this.initListModel();
+      // 3、药品类型赋值
+      switch (index) {
+        case 0:
+          tempModel.dug_type_name = '西药';
+          tempModel.dug_type_id = 1;
+          break;
+        case 1:
+          tempModel.dug_type_name = '中成药';
+          tempModel.dug_type_id = 2;
+          break;
+        case 2:
+          tempModel.dug_type_name = '中药';
+          tempModel.dug_type_id = 3;
+          break;
+        case 3:
+          tempModel.dug_type_name = '医疗器械';
+          tempModel.dug_type_id = 4;
+          break;
+        default:
+          break;
+      }
+      // 4、进入详情界面、可编辑
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/drugInitDetail/main?item=' + JSON.stringify(tempModel),
+      });
+    },
+    // 点击picker取消按钮
+    clickCancelPicker(){
+      this.showPicker = false;
     },
     // 扫码添加
     //1、根据code码查询药品是否已经初始化过
@@ -245,7 +305,7 @@ export default {
                     this.goToEditDetailByScan(model);
                   }else if(result.cancel){
                     // 继续扫码添加
-                    this.addFromScanCode();
+                    this.addDrugByScan();
                   }
                 }
               });
@@ -266,8 +326,32 @@ export default {
         });
     },
     // 2.2、根据code查询药品是否在基础库
-    checkDrugInBase(code){
+    checkDrugInBase(uuid){
       console.log('查询基础库');
+      var drugParam = {
+        _userid: this.globalData.userid,
+        _password: this.globalData.password,
+        page: 1,
+        rows:50,
+        key_word:uuid
+      };
+      this.$fly.get('/app?op=Page&cloud=drug_basis',drugParam)
+        .then((response) => {
+          console.log('根据code查询药品是否在基础库');
+          console.log(response);
+          var rows = response.data.rows;
+          if (rows.length > 0) {//基础库里面有、进入详情界面、不可编辑
+              var model = rows[0];
+              this.goToNoEditDetailByScan(model);
+          }else{//基础库中没有、直接查询第三方接口
+            this.loadDrugFromNetAPI(uuid);
+          }
+        })
+        .catch(function(error){
+          wx.showToast({
+            title: "数据加载失败",
+          });
+        });
     },
     // 进入到详情界面
     goToEditDetailByScan(model){
@@ -280,6 +364,97 @@ export default {
       wx.navigateTo({
         url: '/pages/drugStore/drugInit/drugInitDetail/main?item=' + JSON.stringify(model),
       });
+    },
+    // 从第三方接口查询药品信息
+    loadDrugFromNetAPI(uuid){
+      console.log('从第三方接口查询药品信息');
+      wx.showLoading({
+        title: '第三方数据加载中...',
+      });
+      var tempURl = '/barcode/barcode?barcode=' + uuid;
+      this.$otherFly.get(tempURl)
+        .then((response) => {
+          wx.hideLoading();
+          // 初始化模型
+          var tempModel = this.initListModel();
+          // 根据第三方信息进行赋值
+          var result = response.data;
+          // 条形码
+          tempModel.uuid = uuid;
+          // 通用名
+          tempModel.common_name = result.name ? result.name : '';
+          // 商品名
+          tempModel.key_name = result.name ? result.name : '';
+          // 生产厂商
+          tempModel.manufacturer_name = result.company ? result.company : '';
+          // 规格
+          tempModel.spec = result.spec ? result.spec : '';
+          // 进入不可编辑界面
+          this.goToNoEditDetailByScan(tempModel);
+        })
+        .catch((error) => {//暂不处理
+          wx.hideLoading();
+        });
+    },
+    // 进入非编辑界面(扫码)
+    goToNoEditDetailByScan(model){
+      console.log('进入非编辑界面(扫码)');
+      //1、这里要对image进行特殊编码(防止出现特殊字符、解析失败)
+      // if (model.image) {//编码
+      //   model.image = model.image[0].url;
+      //   model.image = encodeURIComponent(model.image);
+      // }
+      //2、界面传值
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/drugInitDetail/main?item=' + JSON.stringify(model),
+      });
+      // wx.navigateTo({
+      //   url: '/pages/drugStore/drugInit/drugInitDetail/main?item=' + JSON.stringify(model) + '&isEdit=0',
+      // });
+    },
+    // 初始化模型
+    initListModel:function(){
+      var item = {
+        'id':'',//药品id
+        'is_basic_id':'',//是否是基础库
+        'image':'',//图片
+        'common_name':'',//通用名
+        'key_name':'',//商品名
+        'manufacturer_name':'',//生产厂家
+        'drug_word':'',//国药准字
+        'uuid':'',//条形码
+        'dug_type_name':'',//药品类型
+        'dug_type_id':'',//药品类型id
+        'drug_forms_name':'',//剂型
+        'spec':'',//规格
+        'single_flag':'',//小单位标记
+        'single_list':'',//单位列表
+        'min_name':'',//包装单位
+        'change_count':'',//包装单位与拆零单位换算
+        'rx_name':'',//拆零单位
+        'taking_count':'',//拆零单位与剂量单位换算
+        'single_name':'',//剂量单位
+        'instruction_zh_name':'',//中药用法名称
+        'instruction_en_name':'',//西药用法名称
+        'common_frequency_name':'',//频率名称
+        'common_frequency_id':'',//频率id
+        'common_count':'',//单次用量
+        'common_days':'',//用药天数
+        'warning_time':'',//有效期预警时间
+        'warning_time_id':'',//有效期预警时间id
+        'range_low':'',//库存安全下限
+        'range_up':'',//库存安全上限
+        'min_price':'',//进货价
+        'cost':'',//处方价(包装单位)
+        'sale_price':'',//处方价(拆零单位)
+        'retail_min_price':'',//零售价(包装单位)
+        'retail_sale_price':'',//处方价(拆零单位)
+        'begin_json':'',//库存
+        'begin_count':'',//库存
+        'local_count':'',//库存
+        'review_state_id':''//药品状态
+      }
+      return item;
     },
     // 西药网络请求totalCount更新
     getWestTotalFromSon(data){
@@ -402,5 +577,47 @@ export default {
     color: white;
     height: 60px;
     line-height: 60px;
+  }
+  .main-back-view{
+    background-color: rgba(0,0,0,.5);
+    position: fixed;
+    top:0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 9999;
+  }
+  .main-picker-view{
+    background-color: #F2F4F6;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+  }
+  .picker-title{
+    color: #7B7B7C;
+    font-size: 12px;
+    background-color: #F2F4F6;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+  }
+  .choose-view{
+    color: #343434;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    margin-bottom: 1px;
+    background-color: white;
+  }
+  .picker-cancel{
+    color: #343434;
+    font-size: 15px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background-color: white;
+    margin-top: 5px;
   }
 </style>

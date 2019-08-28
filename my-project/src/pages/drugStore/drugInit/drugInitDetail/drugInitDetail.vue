@@ -202,7 +202,6 @@ export default {
         'begin_count':'',//库存
         'local_count':'',//库存
         'review_state_id':''//药品状态
-
       },
       // 选择照片
       selectImage:'/static/images/drugstore/drugInit/img_default.png',
