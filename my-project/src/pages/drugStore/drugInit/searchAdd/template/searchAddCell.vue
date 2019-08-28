@@ -1,15 +1,15 @@
 <template>
-    <div class="main-view">
+    <div class="main-view" @click="clickSearchCell">
       <!-- 药品信息 -->
        <div class="top-view">
          <img src="/static/images/drugstore/drugInit/img_default.png" alt="">
          <div class="top-content">
-             <div class="first-title">肉豆蔻</div>
+             <div class="first-title">{{item.common_name}}</div>
              <div class="second-title">
-                <div>北京悦康药业有限公司</div>
-                <div>肉豆蔻</div>
+                <div>{{item.manufacturer?item.manufacturer.key_name:''}}</div>
+                <div>{{item.key_name}}</div>
              </div>
-             <div class="third-title">规格</div>
+             <div class="third-title">{{item.spec}}</div>
          </div>
        </div>
        <!-- 底部分割线 -->
@@ -19,10 +19,24 @@
 
 <script>
 export default {
+  props:{
+    item:{
+      type: Object,
+      required:true,
+      default () {
+        return {}
+      }
+    }
+  },
   data () {
     return {
     };
-  }
+  },
+  methods: {
+    clickSearchCell(){
+      this.$emit('clickSearchCell',this.item);
+    }
+  },
 }
 </script>
 
