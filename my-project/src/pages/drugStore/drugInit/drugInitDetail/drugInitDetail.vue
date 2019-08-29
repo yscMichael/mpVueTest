@@ -81,10 +81,10 @@
           <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
         </div>
         <div class="line-big"></div>
-        <!-- 4、规格管理 -->
+        <!-- 4、规格管理和药品单位 -->
         <div class='common-view' @click="clickSpecButton">
-          <div class='title'>规格管理</div>
-          <div class="right-title">{{item.spec}}</div>
+          <div class='title'>{{specAndUnit}}</div>
+          <div class="right-title">{{specAndUnitTitle}}</div>
           <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">                      
         </div>
         <div class="line-big"></div>
@@ -99,16 +99,16 @@
         <div class="common-view" v-show="isShowChineseSingleUsage">
           <div class='title-none'>单剂量</div>
           <div class="grow-flex"></div>
-          <input class='right-input'
+          <input class='single-input'
                   type="text"
                   v-model.lazy="item.common_count">
-          <div>{{item.single_name}}</div>        
+          <div class="single-tilte">{{item.single_name}}</div>        
         </div>
         <div class="line-small"></div>
         <!-- 用法(中药) -->
         <div class="common-view" v-show="isShowChineseSingleUsage">
-          <div class='title'>用法</div>
-          <div class="right-title">{{item.instruction_zh_name}}</div>
+          <div class='title-none'>用法</div>
+          <div class="right-title">{{item.instruction_zh_name?item.instruction_zh_name:'请选择'}}</div>
           <img class="moreButton" src="/static/images/drugstore/drugInit/more.png" alt="">   
         </div>
         <div class="line-small"></div>
@@ -451,20 +451,26 @@ export default {
     },
     // 点击规格管理
     clickSpecButton(){
-      // 模型传递
-      var tempModel = {
-          min_name:this.item.min_name,//包装单位
-          change_count:this.item.change_count,//包装单位与拆零单位换算
-          rx_name:this.item.rx_name,//拆零单位
-          taking_count:this.item.taking_count,//拆零单位与剂量单位换算
-          single_name:this.item.single_name,//剂量单位
-          spec:this.item.spec,//规格
-          dug_type_id:this.item.dug_type_id,//药品类型
-          local_count:this.item.local_count,//库存
+      // 1、判断是不是中药
+      var drugId = this.item.dug_type_id;
+      if (parseInt(drugId) == 3) {//中药
+          
+      }else{//西药、中成药、医疗器械
+        // 模型传递
+        var tempModel = {
+            min_name:this.item.min_name,//包装单位
+            change_count:this.item.change_count,//包装单位与拆零单位换算
+            rx_name:this.item.rx_name,//拆零单位
+            taking_count:this.item.taking_count,//拆零单位与剂量单位换算
+            single_name:this.item.single_name,//剂量单位
+            spec:this.item.spec,//规格
+            dug_type_id:this.item.dug_type_id,//药品类型
+            local_count:this.item.local_count,//库存
+        }
+        wx.navigateTo({
+          url: '/pages/drugStore/drugInit/specManage/main?item=' + JSON.stringify(tempModel),
+        });
       }
-      wx.navigateTo({
-        url: '/pages/drugStore/drugInit/specManage/main?item=' + JSON.stringify(tempModel),
-      });
     },
     // 点击用法用量
     clickUsageAndFrequency(){
@@ -794,6 +800,24 @@ export default {
     }
   },
   computed: {
+    // 规格管理/药品单位
+    specAndUnit(){
+      var drugTypeId = this.item.dug_type_id;
+      if (parseInt(drugTypeId) == 3) {//中药
+        return '药品单位';
+      }else{//西药、中成药、医疗器械
+        return '规格管理';
+      }
+    },
+    //规格管理/药品单位---内容
+    specAndUnitTitle(){
+      var drugTypeId = this.item.dug_type_id;
+      if (parseInt(drugTypeId) == 3) {//中药
+        return this.item.rx_name;
+      }else{//西药、中成药、医疗器械
+        return this.item.spec;
+      }
+    },
     //用法用量
     usageAndFrequency(){
       // 1、用法(判断是中药还是西药)
@@ -1028,6 +1052,17 @@ export default {
     margin-left: 5px;
     margin-right: 12px;
     text-align: right;
+  }
+  .single-input{
+    margin-left: 5px;
+    margin-right: 12px;
+    text-align: right;
+    background-color: #EDEDEF;
+    width: 50px;
+    text-align: center;
+  }
+  .single-tilte{
+    margin-right: 10px;
   }
   .scanButton{
     width: 16px;
