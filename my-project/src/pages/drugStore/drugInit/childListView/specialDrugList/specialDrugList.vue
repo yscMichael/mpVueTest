@@ -62,7 +62,20 @@ export default {
     };
   },
   methods: {
-    clickDrugListCell(){
+    clickDrugListCell(drugItem){
+      console.log('点击cell----');
+      console.log(drugItem);
+      //1、这里要对image进行特殊编码(防止出现特殊字符、解析失败)
+      if (!this.isEmpty(drugItem.image)) {
+        if (drugItem.image.length > 0) {
+          drugItem.image = drugItem.image[0].url;
+          drugItem.image = encodeURIComponent(drugItem.image);
+        }
+      }
+      //2、界面传值
+      wx.navigateTo({
+        url: '/pages/drugStore/drugInit/drugInitDetail/main?item=' + JSON.stringify(drugItem),
+      });
     },
     refreshData(){
       // 1、判断当前是否进行下拉刷新和上拉加载、不能重复加载

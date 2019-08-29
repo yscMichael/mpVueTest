@@ -81,6 +81,7 @@ import westDrugList from '@/pages/drugStore/drugInit/childListView/westDrugList/
 import specialDrugList from '@/pages/drugStore/drugInit/childListView/specialDrugList/specialDrugList'
 import chineseDrugList from '@/pages/drugStore/drugInit/childListView/chineseDrugList/chineseDrugList'
 import instrumentList from '@/pages/drugStore/drugInit/childListView/instrumentList/instrumentList'
+import notificationCenter from '@/notification'
 
 export default {
   components:{
@@ -217,6 +218,8 @@ export default {
         default:
           break;
       }
+      console.log('点击某个药品类型--------自定义添加');
+      console.log(tempModel.dug_type_id);
       // 4、进入详情界面、可编辑
       wx.navigateTo({
         url: '/pages/drugStore/drugInit/drugInitDetail/main?item=' + JSON.stringify(tempModel),
@@ -417,6 +420,8 @@ export default {
       var item = {
         'id':'',//药品id
         'is_basic_id':'',//是否是基础库
+        
+        //第一组信息
         'image':'',//图片
         'common_name':'',//通用名
         'key_name':'',//商品名
@@ -426,33 +431,51 @@ export default {
         'dug_type_name':'',//药品类型
         'dug_type_id':'',//药品类型id
         'drug_forms_name':'',//剂型
-        'spec':'',//规格
-        'single_flag':'',//小单位标记
-        'single_list':'',//单位列表
+
+        //规格管理
         'min_name':'',//包装单位
         'change_count':'',//包装单位与拆零单位换算
         'rx_name':'',//拆零单位
         'taking_count':'',//拆零单位与剂量单位换算
         'single_name':'',//剂量单位
+        'spec':'',//规格
+
+        //用法用量
         'instruction_zh_name':'',//中药用法名称
         'instruction_en_name':'',//西药用法名称
         'common_frequency_name':'',//频率名称
         'common_frequency_id':'',//频率id
         'common_count':'',//单次用量
         'common_days':'',//用药天数
+        'single_flag':'',//小单位标记
+
+        //有效期预警及库存安全范围
         'warning_time':'',//有效期预警时间
         'warning_time_id':'',//有效期预警时间id
         'range_low':'',//库存安全下限
         'range_up':'',//库存安全上限
-        'min_price':'',//进货价
+
+        //价格管理
         'cost':'',//处方价(包装单位)
+        'min_price':'',//进货价(包装单位)
         'sale_price':'',//处方价(拆零单位)
         'retail_min_price':'',//零售价(包装单位)
         'retail_sale_price':'',//处方价(拆零单位)
-        'begin_json':'',//库存
-        'begin_count':'',//库存
-        'local_count':'',//库存
-        'review_state_id':''//药品状态
+
+        //库存管理
+        "warehouse_name":'',//仓库名称
+        "warehouse_id":'',//仓库id
+        "vendor_name":'',//供应商名称
+        "vendor_id":'',//供应商名称id
+        "in_date":'',//入库时间
+        'begin_json':'',//库存json
+        'begin_count':'',//库存数量
+        'review_state_id':'',//药品状态
+
+        //原有库存
+        'local_count':'',//库存(当前)
+        // 单位选择列表
+        'single_list':'',//单位列表
       }
       return item;
     },
@@ -483,6 +506,13 @@ export default {
       if (this.selectIndex == 3) {
          this.parentTotalCount = this.instrumentTotalCount;
       }
+    },
+    // 刷新列表
+    refreshAllData(){
+      this.$refs.westdrug.refreshData();
+      this.$refs.specialdrug.refreshData();
+      this.$refs.chinesedrug.refreshData();
+      this.$refs.instrument.refreshData();
     }
   },
   created() {
@@ -495,11 +525,10 @@ export default {
   },
   mounted() {
     // 这个每次进来会执行多次
-    //首先加载西药列表
-    this.$refs.westdrug.refreshData();
-    this.$refs.specialdrug.refreshData();
-    this.$refs.chinesedrug.refreshData();
-    this.$refs.instrument.refreshData();
+    //1、 添加通知
+    notificationCenter.addNotification('refreshAllData', this.refreshAllData, this);
+    //2、首先加载西药列表
+    this.refreshAllData();
   }
 }
 </script>

@@ -101,7 +101,7 @@ export default {
                 item.image = encodeURIComponent(item.image);
             }
         }
-        // 2、进入药品初始化详情界面
+        //2、进入药品初始化详情界面
         wx.navigateTo({
             url: '/pages/drugStore/drugInit/drugInitDetail/main?item=' + JSON.stringify(item),
         });
